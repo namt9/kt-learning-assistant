@@ -14,6 +14,7 @@ main.c:9:13: warning: suggest parentheses around assignment used as truth value 
 main.c:8:13: warning: 'sum' may be used uninitialized [-Wmaybe-uninitialized]
 main.c:4:5: error: expected ',' or ';' before 'scanf'
 main.c:5:20: error: 'total' undeclared (first use in this function)
+main.c:12:5: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
 main.c:6:5: warning: ignoring return value of 'scanf' [-Wunused-result]
 """
     assert codes(parse_gcc(out)) == {
@@ -22,6 +23,7 @@ main.c:6:5: warning: ignoring return value of 'scanf' [-Wunused-result]
         ("UNINIT_VAR", 8),
         ("SYNTAX_ERROR", 4),
         ("UNDECLARED_ID", 5),
+        ("MISSING_BRACES", 12),
     }
 
 
@@ -34,6 +36,7 @@ def test_parse_cppcheck():
 8|error|legacyUninitvar|Uninitialized variable: sum
 14|warning|ctunullpointer|Null pointer dereference: p
 15|style|someNewCheck|Unknown check id
+9|style|knownConditionTrueFalse|Condition 'x=0' is always false
 """
     assert codes(parse_cppcheck(out)) == {
         ("ARRAY_OOB", 7),
@@ -43,6 +46,7 @@ def test_parse_cppcheck():
         ("UNINIT_VAR", 8),
         ("NULL_DEREF", 14),
         ("UNCLASSIFIED", 15),
+        ("CONST_CONDITION", 9),
     }
 
 

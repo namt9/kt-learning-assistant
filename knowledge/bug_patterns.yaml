@@ -34,11 +34,21 @@ bug_patterns:
     concepts: [toan_tu, cau_lenh_dieu_kien]
     detected_by: [gcc, custom_rule]
     hint: Trong điều kiện, "=" là phép gán, còn so sánh bằng phải dùng "==".
+  - code: CONST_CONDITION
+    name: Điều kiện luôn đúng hoặc luôn sai
+    concepts: [cau_lenh_dieu_kien, toan_tu]
+    detected_by: [gcc, cppcheck]
+    hint: Điều kiện này luôn cho cùng một kết quả nên nhánh if/vòng lặp không bao giờ (hoặc luôn luôn) chạy. Thường do gán nhầm "=" thay "==", so sánh sai biến, hoặc điều kiện bị lặp.
   - code: STRAY_SEMICOLON
     name: Dấu ";" thừa ngay sau if/for/while
     concepts: [cau_lenh_dieu_kien, vong_lap]
     detected_by: [gcc, custom_rule]
     hint: Dấu ";" ngay sau if(...)/for(...)/while(...) tạo ra thân rỗng, nên khối lệnh phía sau không còn thuộc câu lệnh đó.
+  - code: MISSING_BRACES
+    name: Thiếu {} nên lệnh không thuộc khối if/for/while như ý định
+    concepts: [cau_lenh_dieu_kien, vong_lap, cu_phap]
+    detected_by: [gcc]
+    hint: Không có {} thì if/for/while chỉ áp dụng cho MỘT câu lệnh ngay sau nó; các dòng thụt lề phía dưới vẫn chạy bên ngoài. Hãy bọc khối lệnh trong {} (và kiểm tra dấu ";" thừa).
   - code: SCANF_MISSING_AMP
     name: Thiếu "&" khi đọc biến bằng scanf
     concepts: [con_tro, nhap_xuat]

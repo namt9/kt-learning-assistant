@@ -32,6 +32,10 @@ _GCC_FLAG_MAP = {
     "-Wincompatible-pointer-types": "TYPE_MISMATCH",
     "-Wint-conversion": "TYPE_MISMATCH",
     "-Wimplicit-function-declaration": "UNDECLARED_ID",
+    "-Wmisleading-indentation": "MISSING_BRACES",
+    "-Wtautological-compare": "CONST_CONDITION",
+    "-Wtype-limits": "CONST_CONDITION",
+    "-Wlogical-op": "CONST_CONDITION",
 }
 
 # Cảnh báo chỉ mang tính phong cách, không đưa thành lỗi
@@ -117,6 +121,13 @@ _CPPCHECK_MAP = {
     "zerodiv": "DIV_BY_ZERO",
     "zerodivcond": "DIV_BY_ZERO",
     "integerOverflow": "INT_OVERFLOW",
+    "knownConditionTrueFalse": "CONST_CONDITION",
+    "duplicateCondition": "CONST_CONDITION",
+    "oppositeInnerCondition": "CONST_CONDITION",
+    "identicalInnerCondition": "CONST_CONDITION",
+    "identicalConditionAfterEarlyExit": "CONST_CONDITION",
+    "comparisonError": "CONST_CONDITION",
+    "badBitmaskCheck": "CONST_CONDITION",
 }
 
 # Mã lỗi cppcheck đổi tên theo phiên bản (vd. uninitvar -> legacyUninitvar),

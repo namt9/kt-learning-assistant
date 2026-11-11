@@ -57,3 +57,12 @@ def test_buggy_programs(judge, problems, catalog, fixture, pid, verdict, expecte
         assert rep.grading.verdict == verdict, rep.grading
     assert expected <= patterns(rep), rep.findings
     assert all(f.hint for f in rep.findings)  # mọi lỗi đều có gợi ý từ danh mục
+
+
+def test_no_unclassified_from_tools_on_fixtures(judge, problems):
+    """Mọi cảnh báo công cụ trên bộ chương trình mẫu phải được phân loại vào một Bug Pattern."""
+    leftovers = []
+    for fixture, pid, _, _ in CASES:
+        rep = run(judge, problems, pid, (FIXTURES / fixture).read_text())
+        leftovers += [(fixture, f.message) for f in rep.findings if f.bug_pattern == "UNCLASSIFIED"]
+    assert not leftovers, leftovers
