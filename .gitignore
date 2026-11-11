@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Bí mật
+.env
+*.key
+
+# Dữ liệu và artefact lớn
+data/raw/*
+!data/raw/README.md
+data/processed/
+*.sqlite
+*.db
+models/
+vectorstore/
+neo4j_data/
+
+# Sản phẩm biên dịch từ sandbox
+*.out
+*.o
+a.out
+!data/problems/**/tests/*.out
+
+# Frontend
+node_modules/
+dist/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+# File Office tạm
+~$*

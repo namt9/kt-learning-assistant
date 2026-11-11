@@ -1,0 +1,13 @@
+# Điền username GitHub của từng người rồi bỏ dấu # đầu dòng.
+# Người sở hữu được tự động yêu cầu review khi có PR sửa vào thư mục tương ứng.
+# /knowledge/            @user-A
+# /backend/app/kg/       @user-A
+# /backend/app/judge/    @user-B
+# /backend/app/rules/    @user-B @user-D
+# /sandbox/              @user-B
+# /data/ /mining/ /evaluation/  @user-C
+# /backend/app/agents/   @user-D
+# /backend/app/rag/      @user-D
+# /frontend/             @user-E
+# /backend/app/student/  @user-E
+# /backend/app/schemas.py  @user-A @user-B @user-C @user-D @user-E

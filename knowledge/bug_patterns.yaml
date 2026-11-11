@@ -1,0 +1,47 @@
+# Danh mục Bug Pattern dùng chung cho rule engine (v0), Knowledge Graph và schemas.Finding.
+# BẢN NHÁP do A và B chốt trong tuần 1 (mục tiêu 20–30 mẫu). Mã viết HOA, không dấu, không đổi sau khi chốt.
+bug_patterns:
+  - code: UNINIT_VAR
+    name: Dùng biến chưa khởi tạo
+    concepts: [bien, khoi_tao]
+    detected_by: [gcc, cppcheck]
+  - code: ASSIGN_IN_COND
+    name: Dùng "=" thay cho "==" trong điều kiện
+    concepts: [toan_tu, cau_lenh_dieu_kien]
+    detected_by: [gcc]
+  - code: SCANF_MISSING_AMP
+    name: Thiếu "&" khi đọc biến bằng scanf
+    concepts: [con_tro, nhap_xuat]
+    detected_by: [gcc, custom_rule]
+  - code: INT_DIVISION
+    name: Chia nguyên ngoài ý muốn
+    concepts: [kieu_du_lieu, ep_kieu]
+    detected_by: [custom_rule]
+  - code: OFF_BY_ONE
+    name: Sai biên vòng lặp (lệch một phần tử)
+    concepts: [vong_lap, mang]
+    detected_by: [custom_rule, asan]
+  - code: ARRAY_OOB
+    name: Truy cập mảng ngoài phạm vi
+    concepts: [mang, bo_nho]
+    detected_by: [cppcheck, asan]
+  - code: NULL_DEREF
+    name: Giải tham chiếu con trỏ NULL
+    concepts: [con_tro]
+    detected_by: [cppcheck, asan]
+  - code: MEM_LEAK
+    name: Rò rỉ bộ nhớ (malloc/new không giải phóng)
+    concepts: [cap_phat_dong, quan_ly_bo_nho]
+    detected_by: [cppcheck, asan]
+  - code: DOUBLE_FREE
+    name: Giải phóng bộ nhớ hai lần
+    concepts: [cap_phat_dong, quan_ly_bo_nho]
+    detected_by: [asan]
+  - code: DANGLING_PTR
+    name: Dùng con trỏ sau khi đã free / trỏ tới biến cục bộ đã hết phạm vi
+    concepts: [con_tro, quan_ly_bo_nho]
+    detected_by: [gcc, asan]
+  - code: MISSING_RETURN
+    name: Hàm có kiểu trả về nhưng thiếu return
+    concepts: [ham]
+    detected_by: [gcc]

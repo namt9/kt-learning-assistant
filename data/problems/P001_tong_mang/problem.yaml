@@ -1,0 +1,6 @@
+id: P001
+title: Tổng các phần tử của mảng
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [mang, vong_lap]
