@@ -25,21 +25,47 @@ Hệ thống gồm hai phiên bản:
 | `mining/` | Khai phá luật chẩn đoán | C |
 | `evaluation/` | Benchmark và script so sánh LLM thuần / Rule-based / Hybrid | C |
 | `sandbox/` | Docker image chạy code sinh viên | B |
-| `frontend/` | Giao diện chat, KG viewer, hồ sơ năng lực | E |
+| `frontend/` | `v0/index.html`: giao diện nộp bài v0; sau mở rộng thành chat, KG viewer, hồ sơ năng lực | E |
 | `docs/` | Đề bài, kế hoạch, kiến trúc, báo cáo | A |
+
+## Hệ nền v0 (đã có)
+
+Luồng xử lý một lần nộp bài (`backend/app/judge/judge.py`):
+
+1. Biên dịch bằng `gcc -std=c11` / `g++ -std=c++17` với `-Wall -Wextra`. Cảnh báo và lỗi được ánh xạ sang mã Bug Pattern.
+2. Phân tích tĩnh: `cppcheck` (nếu có) cộng với 6 luật tự viết (`backend/app/rules/custom.py`): thiếu `&` trong scanf, `=` trong điều kiện, `;` thừa sau if/for/while, lệch biên vòng lặp, chia nguyên gán cho số thực, malloc không free.
+3. Chạy test trong sandbox, trả về AC / WA / CE / RE / TLE / MLE và điểm theo tỉ lệ test đạt.
+4. Biên dịch lại với AddressSanitizer + UBSan và chạy lại tối đa 3 test, ưu tiên test sai: phát hiện tràn mảng, rò rỉ bộ nhớ, dùng con trỏ đã free, NULL, tràn số...
+5. Gộp và khử trùng lặp lỗi, gắn câu gợi ý cố định từ `knowledge/bug_patterns.yaml`, lưu log vào SQLite (bảng `submissions` và `findings`).
+
+API (xem đầy đủ tại `/docs`): `GET /problems`, `GET /problems/{id}`, `POST /submit`,
+`GET /submissions/{id}`, `GET /students/{id}/submissions`. Giao diện v0 nằm ở `/`.
 
 ## Chạy thử
 
-Yêu cầu: Python 3.10+, Docker.
+Yêu cầu: Python 3.10+, gcc/g++, Docker (cho chế độ an toàn).
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
 cp .env.example .env            # rồi điền giá trị thật, KHÔNG commit .env
-docker compose up -d neo4j       # Neo4j: http://localhost:7474
-docker build -t kt-sandbox sandbox/
-uvicorn backend.app.main:app --reload   # API: http://localhost:8000/docs
-pytest
+```
+
+**Chế độ sandbox** (`SANDBOX_MODE` trong `.env`):
+
+| Chế độ | Dùng khi | Cách chạy |
+|---|---|---|
+| `docker` | Demo, chấm code của người khác | `docker build -t kt-sandbox sandbox/` rồi `uvicorn backend.app.main:app --reload` |
+| `local` | Tự phát triển, chạy test | `SANDBOX_MODE=local uvicorn backend.app.main:app --reload` |
+
+`local` chạy code thẳng trên máy, chỉ giới hạn bằng rlimit nên **không an toàn**: chỉ dùng với code của chính mình.
+Ở chế độ `local`, nếu máy không có `cppcheck` thì bước đó được bỏ qua và ghi vào `tools_unavailable` của kết quả.
+
+Mở http://localhost:8000 để dùng giao diện, http://localhost:8000/docs để xem API.
+
+```bash
+pytest                           # test LocalRunner (cần gcc) + test Docker nếu đã build kt-sandbox
+docker compose up -d neo4j       # Neo4j cho phần v1: http://localhost:7474
 ```
 
 ## Làm việc nhóm
