@@ -31,12 +31,18 @@ def test_parse_cppcheck():
 5|warning|invalidScanfArgTypeInt|%d in format string (no. 1) requires 'int *' but the argument type is 'int'.
 0|information|missingIncludeSystem|Include file: <stdio.h> not found.
 9|style|unusedVariable|Unused variable: tmp
+8|error|legacyUninitvar|Uninitialized variable: sum
+14|warning|ctunullpointer|Null pointer dereference: p
+15|style|someNewCheck|Unknown check id
 """
     assert codes(parse_cppcheck(out)) == {
         ("ARRAY_OOB", 7),
         ("MEM_LEAK", 12),
         ("SCANF_MISSING_AMP", 5),
         ("UNUSED_VAR", 9),
+        ("UNINIT_VAR", 8),
+        ("NULL_DEREF", 14),
+        ("UNCLASSIFIED", 15),
     }
 
 

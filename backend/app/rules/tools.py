@@ -119,6 +119,25 @@ _CPPCHECK_MAP = {
     "integerOverflow": "INT_OVERFLOW",
 }
 
+# Mã lỗi cppcheck đổi tên theo phiên bản (vd. uninitvar -> legacyUninitvar),
+# nên khi không có trong bảng thì đoán theo họ mã lỗi.
+_CPPCHECK_FAMILIES = [
+    ("uninit", "UNINIT_VAR"),
+    ("nullpointer", "NULL_DEREF"),
+    ("memleak", "MEM_LEAK"),
+    ("leak", "MEM_LEAK"),
+    ("outofbounds", "ARRAY_OOB"),
+    ("doublefree", "DOUBLE_FREE"),
+    ("dangling", "DANGLING_PTR"),
+    ("zerodiv", "DIV_BY_ZERO"),
+]
+
+
+def _cppcheck_family(cid: str) -> str:
+    low = cid.lower()
+    return next((code for key, code in _CPPCHECK_FAMILIES if key in low), "UNCLASSIFIED")
+
+
 _CPPCHECK_IGNORE = {"missingIncludeSystem", "checkersReport", "normalCheckLevelMaxBranches"}
 
 
@@ -136,7 +155,7 @@ def parse_cppcheck(output: str) -> list[Finding]:
         elif cid.startswith(("invalidPrintfArgType", "wrongPrintfScanfArgNum")):
             code = "FORMAT_MISMATCH"
         else:
-            code = _CPPCHECK_MAP.get(cid, "UNCLASSIFIED")
+            code = _CPPCHECK_MAP.get(cid) or _cppcheck_family(cid)
         findings.append(
             Finding(
                 bug_pattern=code,

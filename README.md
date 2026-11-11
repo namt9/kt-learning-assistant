@@ -64,7 +64,7 @@ cp .env.example .env            # rồi điền giá trị thật, KHÔNG commit
 Mở http://localhost:8000 để dùng giao diện, http://localhost:8000/docs để xem API.
 
 ```bash
-pytest                           # test chạy bằng LocalRunner, cần gcc
+pytest                           # test LocalRunner (cần gcc) + test Docker nếu đã build kt-sandbox
 docker compose up -d neo4j       # Neo4j cho phần v1: http://localhost:7474
 ```
 
