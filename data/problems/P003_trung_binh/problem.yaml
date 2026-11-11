@@ -1,0 +1,6 @@
+id: P003
+title: Điểm trung bình
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [kieu_du_lieu, ep_kieu, vong_lap]

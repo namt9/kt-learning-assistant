@@ -1,47 +1,113 @@
 # Danh mục Bug Pattern dùng chung cho rule engine (v0), Knowledge Graph và schemas.Finding.
-# BẢN NHÁP do A và B chốt trong tuần 1 (mục tiêu 20–30 mẫu). Mã viết HOA, không dấu, không đổi sau khi chốt.
+# Mã viết HOA, không dấu, KHÔNG đổi sau khi chốt (KG và log nộp bài tham chiếu tới mã này).
+# hint: câu gợi ý cố định của hệ v0 (chưa dùng LLM).
 bug_patterns:
+  # ---- Lỗi biên dịch ----
+  - code: SYNTAX_ERROR
+    name: Lỗi cú pháp (thiếu ;, ngoặc, ...)
+    concepts: [cu_phap]
+    detected_by: [gcc]
+    hint: Đọc dòng lỗi đầu tiên mà trình biên dịch báo; thường thiếu dấu ";" hoặc ngoặc ở ngay dòng đó hoặc dòng phía trên.
+  - code: UNDECLARED_ID
+    name: Dùng biến/hàm chưa khai báo
+    concepts: [bien, ham]
+    detected_by: [gcc]
+    hint: Biến hoặc hàm phải được khai báo trước khi dùng. Kiểm tra chính tả tên và phạm vi (scope) của biến; hàm thư viện cần #include đúng header.
+  - code: TYPE_MISMATCH
+    name: Sai kiểu dữ liệu khi gán / truyền tham số
+    concepts: [kieu_du_lieu, ham]
+    detected_by: [gcc]
+    hint: Kiểu của giá trị không khớp với kiểu biến hoặc tham số. Xem lại khai báo hàm và kiểu từng đối số.
+  # ---- Biến, toán tử, điều khiển ----
   - code: UNINIT_VAR
     name: Dùng biến chưa khởi tạo
     concepts: [bien, khoi_tao]
     detected_by: [gcc, cppcheck]
+    hint: Biến cục bộ trong C không tự bằng 0. Hãy gán giá trị ban đầu (ví dụ int sum = 0;) trước khi đọc hoặc cộng dồn.
+  - code: UNUSED_VAR
+    name: Khai báo biến nhưng không dùng
+    concepts: [bien]
+    detected_by: [gcc, cppcheck]
+    hint: Biến được khai báo nhưng không dùng. Có thể bạn đã dùng nhầm sang một biến khác cùng mục đích.
   - code: ASSIGN_IN_COND
     name: Dùng "=" thay cho "==" trong điều kiện
     concepts: [toan_tu, cau_lenh_dieu_kien]
-    detected_by: [gcc]
+    detected_by: [gcc, custom_rule]
+    hint: Trong điều kiện, "=" là phép gán, còn so sánh bằng phải dùng "==".
+  - code: STRAY_SEMICOLON
+    name: Dấu ";" thừa ngay sau if/for/while
+    concepts: [cau_lenh_dieu_kien, vong_lap]
+    detected_by: [gcc, custom_rule]
+    hint: Dấu ";" ngay sau if(...)/for(...)/while(...) tạo ra thân rỗng, nên khối lệnh phía sau không còn thuộc câu lệnh đó.
   - code: SCANF_MISSING_AMP
     name: Thiếu "&" khi đọc biến bằng scanf
     concepts: [con_tro, nhap_xuat]
-    detected_by: [gcc, custom_rule]
+    detected_by: [gcc, cppcheck, custom_rule]
+    hint: scanf cần địa chỉ của biến để ghi giá trị vào, hãy viết scanf("%d", &x). Riêng mảng ký tự đọc bằng %s thì không cần "&".
+  - code: FORMAT_MISMATCH
+    name: Đặc tả định dạng printf/scanf không khớp kiểu
+    concepts: [nhap_xuat, kieu_du_lieu]
+    detected_by: [gcc, cppcheck]
+    hint: Đặc tả định dạng phải khớp kiểu biến, ví dụ %d cho int, %ld cho long, %lld cho long long, %f cho float/double khi in, %lf cho double khi đọc.
   - code: INT_DIVISION
     name: Chia nguyên ngoài ý muốn
-    concepts: [kieu_du_lieu, ep_kieu]
+    concepts: [kieu_du_lieu, ep_kieu, toan_tu]
     detected_by: [custom_rule]
-  - code: OFF_BY_ONE
-    name: Sai biên vòng lặp (lệch một phần tử)
-    concepts: [vong_lap, mang]
-    detected_by: [custom_rule, asan]
-  - code: ARRAY_OOB
-    name: Truy cập mảng ngoài phạm vi
-    concepts: [mang, bo_nho]
-    detected_by: [cppcheck, asan]
-  - code: NULL_DEREF
-    name: Giải tham chiếu con trỏ NULL
-    concepts: [con_tro]
-    detected_by: [cppcheck, asan]
-  - code: MEM_LEAK
-    name: Rò rỉ bộ nhớ (malloc/new không giải phóng)
-    concepts: [cap_phat_dong, quan_ly_bo_nho]
-    detected_by: [cppcheck, asan]
-  - code: DOUBLE_FREE
-    name: Giải phóng bộ nhớ hai lần
-    concepts: [cap_phat_dong, quan_ly_bo_nho]
-    detected_by: [asan]
-  - code: DANGLING_PTR
-    name: Dùng con trỏ sau khi đã free / trỏ tới biến cục bộ đã hết phạm vi
-    concepts: [con_tro, quan_ly_bo_nho]
-    detected_by: [gcc, asan]
+    hint: Chia hai số nguyên trong C cho kết quả nguyên (5/2 = 2). Muốn ra số thực, hãy ép kiểu một toán hạng, ví dụ (double)a / b.
+  - code: INT_OVERFLOW
+    name: Tràn số nguyên
+    concepts: [kieu_du_lieu]
+    detected_by: [ubsan]
+    hint: Kết quả vượt quá phạm vi của kiểu int (khoảng ±2.1 tỉ). Hãy dùng long long cho tổng hoặc tích lớn.
+  - code: DIV_BY_ZERO
+    name: Chia cho 0
+    concepts: [toan_tu]
+    detected_by: [cppcheck, ubsan]
+    hint: Có phép chia (hoặc %) mà mẫu số bằng 0. Hãy kiểm tra mẫu số trước khi chia.
   - code: MISSING_RETURN
     name: Hàm có kiểu trả về nhưng thiếu return
     concepts: [ham]
-    detected_by: [gcc]
+    detected_by: [gcc, cppcheck]
+    hint: Hàm khai báo có giá trị trả về nhưng có nhánh kết thúc mà không có return. Hãy bảo đảm mọi nhánh đều return.
+  # ---- Mảng, con trỏ, bộ nhớ ----
+  - code: OFF_BY_ONE
+    name: Sai biên vòng lặp (lệch một phần tử)
+    concepts: [vong_lap, mang]
+    detected_by: [custom_rule]
+    hint: Mảng n phần tử có chỉ số từ 0 đến n-1. Vòng lặp bắt đầu từ 0 thì điều kiện thường là i < n, không phải i <= n.
+  - code: ARRAY_OOB
+    name: Truy cập mảng ngoài phạm vi
+    concepts: [mang, bo_nho]
+    detected_by: [gcc, cppcheck, asan, ubsan]
+    hint: Chương trình đọc hoặc ghi ra ngoài vùng nhớ của mảng. Hãy kiểm tra chỉ số lớn nhất và kích thước khai báo của mảng.
+  - code: NULL_DEREF
+    name: Giải tham chiếu con trỏ NULL
+    concepts: [con_tro]
+    detected_by: [cppcheck, asan, ubsan]
+    hint: Con trỏ đang là NULL (hoặc chưa trỏ tới vùng nhớ hợp lệ) mà vẫn được dùng. Hãy kiểm tra kết quả malloc và khởi tạo con trỏ trước khi dùng.
+  - code: MEM_LEAK
+    name: Rò rỉ bộ nhớ (malloc/new không giải phóng)
+    concepts: [cap_phat_dong, quan_ly_bo_nho]
+    detected_by: [cppcheck, asan, custom_rule]
+    hint: Vùng nhớ cấp phát bằng malloc/calloc/new phải được giải phóng bằng free/delete khi không dùng nữa.
+  - code: DOUBLE_FREE
+    name: Giải phóng bộ nhớ hai lần
+    concepts: [cap_phat_dong, quan_ly_bo_nho]
+    detected_by: [cppcheck, asan]
+    hint: Một vùng nhớ chỉ được free một lần. Sau khi free hãy gán con trỏ = NULL để tránh free lại.
+  - code: DANGLING_PTR
+    name: Dùng con trỏ sau khi đã free / trỏ tới biến cục bộ đã hết phạm vi
+    concepts: [con_tro, quan_ly_bo_nho]
+    detected_by: [gcc, cppcheck, asan]
+    hint: Con trỏ đang trỏ tới vùng nhớ đã bị giải phóng hoặc đã hết phạm vi. Không trả về địa chỉ biến cục bộ, và không dùng con trỏ sau khi free.
+  # ---- Theo kết quả chấm ----
+  - code: INFINITE_LOOP
+    name: Vòng lặp không dừng / thuật toán quá chậm
+    concepts: [vong_lap, do_phuc_tap]
+    detected_by: [judge]
+    hint: Chương trình chạy quá thời gian cho phép. Hãy kiểm tra điều kiện dừng và biến đếm của vòng lặp, hoặc giảm độ phức tạp thuật toán.
+  - code: UNCLASSIFIED
+    name: Cảnh báo chưa phân loại
+    concepts: []
+    detected_by: [gcc, cppcheck, asan, ubsan]
+    hint: Trình biên dịch hoặc công cụ phân tích có cảnh báo; đọc kỹ nội dung cảnh báo bên dưới.

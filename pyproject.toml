@@ -7,3 +7,7 @@ select = ["E", "F", "I", "B", "UP"]
 
 [tool.pytest.ini_options]
 testpaths = ["backend/tests"]
+
+[tool.ruff.lint.per-file-ignores]
+# output mẫu của công cụ và mã C mẫu để nguyên cho dễ đọc
+"backend/tests/**" = ["E501"]
