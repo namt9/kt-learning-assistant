@@ -115,8 +115,11 @@ class Diagnosis(BaseModel):
 
 class LearningStep(BaseModel):
     concept: str
-    action: str  # Pedagogical_Action, ví dụ "xem ví dụ", "làm bài tập P007"
-    resource: str | None = None
+    action: str  # tiêu đề Pedagogical_Action, ví dụ "Chỉ số mảng từ 0 đến n-1"
+    action_id: str | None = None  # id node PedagogicalAction trong KG
+    action_type: str | None = None  # GIAI_THICH | VI_DU | TRUC_QUAN | GO_LOI | BAI_TAP | CAU_HOI
+    resource: str | None = None  # id bài tập (Problem) nếu hành động là luyện tập
+    reason: str | None = None  # vì sao bước này có trong lộ trình
 
 
 class LearningPath(BaseModel):

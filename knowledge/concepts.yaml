@@ -1,0 +1,240 @@
+# Concept Map lập trình C/C++ (nguồn tri thức cho Knowledge Graph).
+#
+# - groups: các cụm khái niệm theo đề bài (Biến, Con trỏ, Cấu trúc dữ liệu, Quản lý bộ nhớ)
+#   cộng một cụm Nền tảng chứa các khái niệm điều khiển mà các cụm kia cần.
+# - prerequisites: khái niệm phải nắm TRƯỚC (cạnh Concept -[:PREREQUISITE_OF]-> Concept).
+# - level: 1 cơ bản, 2 trung bình, 3 nâng cao. Dùng để sắp lộ trình học.
+# - id không dấu, không đổi sau khi chốt (bug_patterns.yaml và problem.yaml tham chiếu tới).
+
+groups:
+  - id: nhom_nen_tang
+    name: Nền tảng
+  - id: nhom_bien
+    name: Biến và kiểu dữ liệu
+  - id: nhom_con_tro
+    name: Con trỏ
+  - id: nhom_ctdl
+    name: Cấu trúc dữ liệu
+  - id: nhom_bo_nho
+    name: Quản lý bộ nhớ
+
+concepts:
+  # ------------------------------------------------------------ Nền tảng
+  - id: cu_phap
+    name: Cú pháp C/C++
+    group: nhom_nen_tang
+    level: 1
+    prerequisites: []
+    description: Cấu trúc chương trình, câu lệnh kết thúc bằng ";", khối lệnh {}, #include, hàm main.
+  - id: nhap_xuat
+    name: Nhập/xuất chuẩn
+    group: nhom_nen_tang
+    level: 1
+    prerequisites: [cu_phap, bien]
+    description: printf/scanf với đặc tả định dạng (%d, %lf, %s...), cin/cout trong C++.
+  - id: toan_tu
+    name: Toán tử và biểu thức
+    group: nhom_nen_tang
+    level: 1
+    prerequisites: [bien]
+    description: Toán tử số học, so sánh (==, !=), logic (&&, ||), gán (=, +=), độ ưu tiên.
+  - id: cau_lenh_dieu_kien
+    name: Câu lệnh điều kiện
+    group: nhom_nen_tang
+    level: 1
+    prerequisites: [toan_tu, cu_phap]
+    description: if/else, switch; điều kiện là biểu thức khác 0 thì đúng.
+  - id: vong_lap
+    name: Vòng lặp
+    group: nhom_nen_tang
+    level: 1
+    prerequisites: [cau_lenh_dieu_kien]
+    description: for, while, do-while; biến đếm, điều kiện dừng, break/continue.
+  - id: ham
+    name: Hàm
+    group: nhom_nen_tang
+    level: 2
+    prerequisites: [bien, cu_phap]
+    description: Khai báo, định nghĩa, tham số, giá trị trả về, nguyên mẫu hàm.
+  - id: de_quy
+    name: Đệ quy
+    group: nhom_nen_tang
+    level: 3
+    prerequisites: [ham, cau_lenh_dieu_kien]
+    description: Hàm tự gọi lại chính nó; điều kiện dừng; ngăn xếp lời gọi.
+  - id: do_phuc_tap
+    name: Độ phức tạp thuật toán
+    group: nhom_nen_tang
+    level: 2
+    prerequisites: [vong_lap]
+    description: Ước lượng số phép tính theo kích thước dữ liệu (O(n), O(n^2)...), giới hạn thời gian.
+
+  # ------------------------------------------------------------ Biến và kiểu dữ liệu
+  - id: bien
+    name: Biến
+    group: nhom_bien
+    level: 1
+    prerequisites: [cu_phap]
+    description: Vùng nhớ có tên và kiểu; khai báo trước khi dùng.
+  - id: kieu_du_lieu
+    name: Kiểu dữ liệu cơ bản
+    group: nhom_bien
+    level: 1
+    prerequisites: [bien]
+    description: int, long long, char, float, double, bool; kích thước và phạm vi giá trị.
+  - id: khoi_tao
+    name: Khởi tạo biến
+    group: nhom_bien
+    level: 1
+    prerequisites: [bien]
+    description: Biến cục bộ không tự bằng 0; phải gán giá trị ban đầu trước khi đọc.
+  - id: pham_vi_bien
+    name: Phạm vi và vòng đời biến
+    group: nhom_bien
+    level: 2
+    prerequisites: [bien, ham]
+    description: Biến cục bộ, toàn cục, static; biến chỉ tồn tại trong khối khai báo nó.
+  - id: ep_kieu
+    name: Ép kiểu và chuyển kiểu
+    group: nhom_bien
+    level: 2
+    prerequisites: [kieu_du_lieu, toan_tu]
+    description: Chuyển kiểu ngầm định và tường minh; chia nguyên và chia thực.
+  - id: tran_so
+    name: Giới hạn và tràn số
+    group: nhom_bien
+    level: 2
+    prerequisites: [kieu_du_lieu]
+    description: Giá trị vượt phạm vi kiểu gây tràn; chọn kiểu đủ lớn (long long).
+  - id: hang_so
+    name: Hằng số
+    group: nhom_bien
+    level: 1
+    prerequisites: [bien]
+    description: const, #define; dùng hằng cho kích thước mảng.
+
+  # ------------------------------------------------------------ Con trỏ
+  - id: dia_chi
+    name: Địa chỉ bộ nhớ
+    group: nhom_con_tro
+    level: 2
+    prerequisites: [bien, bo_nho]
+    description: Toán tử & lấy địa chỉ của biến; mỗi biến nằm ở một địa chỉ.
+  - id: con_tro
+    name: Con trỏ
+    group: nhom_con_tro
+    level: 2
+    prerequisites: [dia_chi, kieu_du_lieu]
+    description: Biến lưu địa chỉ; khai báo T *p; giải tham chiếu *p.
+  - id: con_tro_null
+    name: Con trỏ NULL và con trỏ chưa khởi tạo
+    group: nhom_con_tro
+    level: 2
+    prerequisites: [con_tro, khoi_tao]
+    description: NULL nghĩa là không trỏ tới đâu; luôn kiểm tra trước khi giải tham chiếu.
+  - id: so_hoc_con_tro
+    name: Số học con trỏ
+    group: nhom_con_tro
+    level: 3
+    prerequisites: [con_tro, mang]
+    description: p + i trỏ tới phần tử thứ i; liên hệ giữa a[i] và *(a + i).
+  - id: con_tro_va_mang
+    name: Con trỏ và mảng
+    group: nhom_con_tro
+    level: 2
+    prerequisites: [con_tro, mang]
+    description: Tên mảng là địa chỉ phần tử đầu; truyền mảng vào hàm là truyền con trỏ.
+  - id: truyen_tham_chieu
+    name: Truyền tham số bằng con trỏ/tham chiếu
+    group: nhom_con_tro
+    level: 2
+    prerequisites: [con_tro, ham]
+    description: Muốn hàm sửa biến của nơi gọi thì truyền địa chỉ (C) hoặc tham chiếu & (C++).
+  - id: con_tro_hai_cap
+    name: Con trỏ hai cấp
+    group: nhom_con_tro
+    level: 3
+    prerequisites: [con_tro, truyen_tham_chieu]
+    description: T **p; dùng cho mảng con trỏ, mảng 2 chiều động, sửa con trỏ trong hàm.
+
+  # ------------------------------------------------------------ Cấu trúc dữ liệu
+  - id: mang
+    name: Mảng một chiều
+    group: nhom_ctdl
+    level: 1
+    prerequisites: [bien, vong_lap]
+    description: Dãy phần tử cùng kiểu liên tiếp; chỉ số từ 0 đến n-1.
+  - id: mang_2_chieu
+    name: Mảng hai chiều
+    group: nhom_ctdl
+    level: 2
+    prerequisites: [mang]
+    description: Ma trận a[hàng][cột]; duyệt bằng hai vòng lặp lồng nhau.
+  - id: chuoi
+    name: Chuỗi ký tự
+    group: nhom_ctdl
+    level: 2
+    prerequisites: [mang, nhap_xuat]
+    description: Mảng char kết thúc bằng '\0'; strlen, strcpy, strcmp; std::string trong C++.
+  - id: struct
+    name: Cấu trúc (struct)
+    group: nhom_ctdl
+    level: 2
+    prerequisites: [kieu_du_lieu]
+    description: Gom nhiều trường thành một kiểu mới; truy cập bằng "." và "->".
+  - id: danh_sach_lien_ket
+    name: Danh sách liên kết
+    group: nhom_ctdl
+    level: 3
+    prerequisites: [struct, con_tro, cap_phat_dong]
+    description: Các nút cấp phát động nối với nhau qua con trỏ next; thêm, xóa, duyệt.
+  - id: ngan_xep
+    name: Ngăn xếp (stack)
+    group: nhom_ctdl
+    level: 3
+    prerequisites: [mang, struct]
+    description: Vào sau ra trước (LIFO); push, pop, top; cài bằng mảng hoặc danh sách liên kết.
+  - id: hang_doi
+    name: Hàng đợi (queue)
+    group: nhom_ctdl
+    level: 3
+    prerequisites: [mang, struct]
+    description: Vào trước ra trước (FIFO); enqueue, dequeue; hàng đợi vòng.
+
+  # ------------------------------------------------------------ Quản lý bộ nhớ
+  - id: bo_nho
+    name: Mô hình bộ nhớ của chương trình
+    group: nhom_bo_nho
+    level: 2
+    prerequisites: [bien]
+    description: Các vùng stack, heap, dữ liệu tĩnh; biến nằm ở đâu và tồn tại bao lâu.
+  - id: stack_heap
+    name: Bộ nhớ stack và heap
+    group: nhom_bo_nho
+    level: 2
+    prerequisites: [bo_nho, pham_vi_bien]
+    description: Stack tự cấp phát/giải phóng theo hàm; heap do lập trình viên quản lý.
+  - id: cap_phat_dong
+    name: Cấp phát động
+    group: nhom_bo_nho
+    level: 2
+    prerequisites: [con_tro, stack_heap]
+    description: malloc/calloc/realloc (C), new/new[] (C++); kiểm tra kết quả NULL.
+  - id: giai_phong_bo_nho
+    name: Giải phóng bộ nhớ
+    group: nhom_bo_nho
+    level: 2
+    prerequisites: [cap_phat_dong]
+    description: free/delete/delete[]; mỗi vùng cấp phát giải phóng đúng một lần.
+  - id: quan_ly_bo_nho
+    name: Quản lý vòng đời vùng nhớ động
+    group: nhom_bo_nho
+    level: 3
+    prerequisites: [giai_phong_bo_nho, ham]
+    description: Ai cấp phát thì ai giải phóng; gán NULL sau khi free; tránh rò rỉ khi return sớm.
+  - id: tran_bo_dem
+    name: Tràn bộ đệm
+    group: nhom_bo_nho
+    level: 3
+    prerequisites: [mang, bo_nho]
+    description: Ghi ra ngoài vùng nhớ đã cấp làm hỏng dữ liệu khác hoặc gây crash.
