@@ -11,6 +11,7 @@ import os
 from dataclasses import dataclass
 
 from ..schemas import LearningPath, LearningStep
+from .loader import LABELS as _LABELS
 
 
 @dataclass
@@ -207,3 +208,30 @@ class KGQueries:
             labels=labels,
         )
         return {"nodes": nodes, "edges": edges}
+
+    def node(self, node_id: str) -> dict | None:
+        """Thuộc tính của một node và các node kề (cho bảng chi tiết trong KG viewer)."""
+        rows = self._run(
+            """
+            MATCH (n {id: $id}) WHERE any(l IN labels(n) WHERE l IN $labels)
+            OPTIONAL MATCH (n)-[r]-(m)
+            WITH n, r, m ORDER BY type(r), m.id
+            RETURN labels(n)[0] AS label, properties(n) AS props,
+                   collect(CASE WHEN r IS NULL THEN NULL ELSE {
+                       type: type(r),
+                       dir: CASE WHEN startNode(r) = n THEN 'out' ELSE 'in' END,
+                       id: m.id, label: labels(m)[0],
+                       name: coalesce(m.name, m.title, m.verdict, m.id)} END) AS links
+            LIMIT 1
+            """,
+            id=node_id,
+            labels=_LABELS,
+        )
+        if not rows:
+            return None
+        row = rows[0]
+        # Neo4j DateTime (created_at của StudentCode) -> chuỗi ISO để trả JSON
+        row["props"] = {
+            k: v.iso_format() if hasattr(v, "iso_format") else v for k, v in row["props"].items()
+        }
+        return row

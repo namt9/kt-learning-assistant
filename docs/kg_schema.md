@@ -53,10 +53,22 @@ python -m backend.app.kg.load --reset    # xoá đồ thị rồi nạp lại
 | `student_weak_concepts(sid)` | `GET /kg/students/{sid}/weak-concepts` | Hồ sơ năng lực (E) |
 | `learning_path(sid, bugs, styles)` | `GET /kg/students/{sid}/learning-path?bugs=MEM_LEAK&styles=visual` | Learning-Path Agent |
 | `graph(include_students)` | `GET /kg/graph` | KG viewer (E) |
+| `node(id)` | `GET /kg/nodes/{id}` | KG viewer: bảng chi tiết |
 
 **Lộ trình học** (`learning_path`): khái niệm gắn với lỗi hiện tại, cộng với các khái niệm
 tiên quyết mà sinh viên từng mắc lỗi liên quan. Các bước sắp theo `depth` (khái niệm nền trước).
 Mỗi khái niệm chọn một hành động theo thứ tự ưu tiên: sửa đúng lỗi hiện tại, khớp phong cách học, dễ hơn.
+
+## KG viewer
+
+Trang `http://localhost:8000/kg-viewer` (Cytoscape.js) cần Neo4j đang chạy và đã nạp đồ thị:
+
+- màu và hình theo loại node; bấm vào mục trong chú thích để ẩn hoặc hiện từng loại;
+- bấm vào node để xem thuộc tính và các node kề, rồi bấm tiếp node kề để đi theo quan hệ;
+- tick **Hiện sinh viên** rồi chọn một sinh viên: đồ thị làm nổi chuỗi
+  Sinh viên → Bài nộp → Mẫu lỗi → Khái niệm/Hành động, viền đỏ các khái niệm yếu;
+- mở thẳng một trạng thái bằng đường dẫn, tiện cho demo:
+  `/kg-viewer#student=sv01`, `/kg-viewer#node=MEM_LEAK`, hoặc ghép cả hai bằng `&`.
 
 ## Truy vấn mẫu trong Neo4j Browser
 

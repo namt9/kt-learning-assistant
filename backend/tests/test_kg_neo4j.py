@@ -156,3 +156,16 @@ def test_graph_export(driver, loaded, kb):
     assert all(e["source"] in ids and e["target"] in ids for e in g["edges"])
     with_students = KGQueries(driver).graph(include_students=True)
     assert len(with_students["nodes"]) > len(g["nodes"])
+
+
+def test_node_detail(driver, loaded):
+    q = KGQueries(driver)
+    bug = q.node("MEM_LEAK")
+    assert bug["label"] == "BugPattern" and bug["props"]["name"]
+    rels = {(link["dir"], link["type"]) for link in bug["links"]}
+    assert ("out", "REMEDIATED_BY") in rels and ("out", "RELATED_TO") in rels
+    code = q.node("s1")
+    assert code["label"] == "StudentCode"
+    assert code["props"]["created_at"].startswith("2026-11-10")  # DateTime -> chuỗi ISO
+    assert ("in", "SUBMITTED") in {(link["dir"], link["type"]) for link in code["links"]}
+    assert q.node("KHONG_TON_TAI") is None

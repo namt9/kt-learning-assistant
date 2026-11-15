@@ -17,7 +17,9 @@ from .rules.catalog import Catalog
 from .schemas import LearningPath, Problem, ProblemSummary, Submission, SubmissionReport
 from .storage import Storage
 
-UI_FILE = Path(__file__).resolve().parents[2] / "frontend" / "v0" / "index.html"
+FRONTEND = Path(__file__).resolve().parents[2] / "frontend"
+UI_FILE = FRONTEND / "v0" / "index.html"
+KG_VIEWER_FILE = FRONTEND / "kg" / "index.html"
 
 
 def build_app(settings=None) -> FastAPI:
@@ -101,9 +103,20 @@ def build_app(settings=None) -> FastAPI:
             app.state.kg = KGQueries(driver)
         return app.state.kg
 
+    @app.get("/kg-viewer", include_in_schema=False)
+    def kg_viewer():
+        return FileResponse(KG_VIEWER_FILE)
+
     @app.get("/kg/graph")
     def kg_graph(include_students: bool = False):
         return kg().graph(include_students)
+
+    @app.get("/kg/nodes/{node_id}")
+    def kg_node(node_id: str):
+        node = kg().node(node_id)
+        if node is None:
+            raise HTTPException(404, f"Không có node {node_id} trong KG")
+        return node
 
     @app.get("/kg/bugs/{code}/remediation")
     def kg_remediation(
