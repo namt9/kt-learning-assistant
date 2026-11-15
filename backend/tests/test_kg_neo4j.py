@@ -132,6 +132,16 @@ def test_learning_path_reviews_weak_prerequisites_first(driver, kb, loaded):
     # thứ tự tôn trọng quan hệ tiên quyết
     depth = kb.depth()
     assert [depth[c] for c in concepts] == sorted(depth[c] for c in concepts)
+    # không lặp hành động giữa các bước
+    action_ids = [s.action_id for s in path.steps]
+    assert len(action_ids) == len(set(action_ids))
+    # khái niệm nền yếu được ôn bằng hành động sửa đúng lỗi sinh viên từng mắc
+    remediates_history = {
+        a.id for a in kb.actions.values() if {"SCANF_MISSING_AMP", "UNINIT_VAR"} & set(a.remediates)
+    }
+    for s in path.steps:
+        if s.reason.startswith("Ôn"):
+            assert s.action_id in remediates_history, s
     # sinh viên chưa có lịch sử: chỉ khái niệm của lỗi hiện tại
     fresh = KGQueries(driver).learning_path("sv_moi", ["MEM_LEAK"], [], max_steps=10)
     assert {s.concept for s in fresh.steps} <= set(kb.bug_patterns["MEM_LEAK"].concepts)

@@ -119,57 +119,68 @@ class KGQueries:
 
         1. Khái niệm mục tiêu = RELATED_TO của các lỗi hiện tại.
         2. Thêm khái niệm tiên quyết (mọi cấp) của mục tiêu nếu sinh viên từng mắc lỗi liên quan.
-        3. Sắp theo độ sâu tiên quyết (nền trước), rồi mỗi khái niệm chọn một hành động TEACHES
-           ưu tiên: sửa đúng lỗi hiện tại > khớp phong cách học > dễ hơn.
+        3. Sắp theo độ sâu tiên quyết (nền trước). Mỗi khái niệm chọn một hành động TEACHES chưa
+           dùng ở bước trước, ưu tiên: sửa lỗi hiện tại > sửa lỗi sinh viên từng mắc ở khái niệm
+           này > khớp phong cách học > dễ hơn.
         """
         rows = self._run(
             """
             MATCH (b:BugPattern)-[:RELATED_TO]->(t:Concept) WHERE b.id IN $codes
             WITH collect(DISTINCT t) AS targets
             OPTIONAL MATCH (:Student {id: $sid})-[:SUBMITTED]->(:StudentCode)-[:EXHIBITS]->
-                           (:BugPattern)-[:RELATED_TO]->(w:Concept)
-            WITH targets, collect(DISTINCT w) AS weak
+                           (hb:BugPattern)-[:RELATED_TO]->(w:Concept)
+            WITH targets, collect(DISTINCT w) AS weak, collect(DISTINCT hb.id) AS history
             UNWIND targets AS t
             OPTIONAL MATCH (pre:Concept)-[:PREREQUISITE_OF*1..]->(t) WHERE pre IN weak
-            WITH targets, collect(DISTINCT pre) AS weak_prereqs
-            WITH [c IN targets | {c: c, reason: 'target'}] +
+            WITH targets, history, collect(DISTINCT pre) AS weak_prereqs
+            WITH history,
+                 [c IN targets | {c: c, reason: 'target'}] +
                  [c IN weak_prereqs WHERE NOT c IN targets | {c: c, reason: 'weak_prerequisite'}]
                  AS items
             UNWIND items AS item
-            WITH item.c AS c, item.reason AS reason
+            WITH history, item.c AS c, item.reason AS reason
             MATCH (a:PedagogicalAction)-[:TEACHES]->(c)
             OPTIONAL MATCH (a)-[:USES_PROBLEM]->(p:Problem)
             WITH c, reason, a, p,
                  CASE WHEN EXISTS { (b:BugPattern)-[:REMEDIATED_BY]->(a) WHERE b.id IN $codes }
-                      THEN 1 ELSE 0 END AS fixes_bug,
+                      THEN 1 ELSE 0 END AS fixes_current,
+                 CASE WHEN EXISTS { (b:BugPattern)-[:REMEDIATED_BY]->(a)
+                                    WHERE b.id IN history AND (b)-[:RELATED_TO]->(c) }
+                      THEN 1 ELSE 0 END AS fixes_history,
                  size([s IN a.styles WHERE s IN $styles]) AS style_match
-            ORDER BY fixes_bug DESC, style_match DESC, a.level ASC, a.id ASC
+            ORDER BY fixes_current DESC, fixes_history DESC, style_match DESC, a.level, a.id
             WITH c, reason, collect({id: a.id, type: a.type, title: a.title,
-                                     problem: p.id})[0] AS best
-            RETURN c.id AS concept, c.name AS concept_name, c.depth AS depth, reason, best
+                                     problem: p.id}) AS candidates
+            RETURN c.id AS concept, c.depth AS depth, reason, candidates
             ORDER BY depth ASC, CASE reason WHEN 'weak_prerequisite' THEN 0 ELSE 1 END, concept
-            LIMIT $max_steps
             """,
             sid=student_id,
             codes=bug_codes,
             styles=styles or [],
-            max_steps=max_steps,
         )
-        steps = [
-            LearningStep(
-                concept=r["concept"],
-                action=r["best"]["title"],
-                action_id=r["best"]["id"],
-                action_type=r["best"]["type"],
-                resource=r["best"]["problem"],
-                reason=(
-                    "Ôn khái niệm nền bạn từng mắc lỗi"
-                    if r["reason"] == "weak_prerequisite"
-                    else "Khái niệm gắn với lỗi vừa gặp"
-                ),
+        steps: list[LearningStep] = []
+        used: set[str] = set()
+        for r in rows:
+            best = next((a for a in r["candidates"] if a["id"] not in used), None)
+            if best is None:  # mọi hành động của khái niệm này đã có ở bước trước
+                continue
+            used.add(best["id"])
+            steps.append(
+                LearningStep(
+                    concept=r["concept"],
+                    action=best["title"],
+                    action_id=best["id"],
+                    action_type=best["type"],
+                    resource=best["problem"],
+                    reason=(
+                        "Ôn khái niệm nền bạn từng mắc lỗi"
+                        if r["reason"] == "weak_prerequisite"
+                        else "Khái niệm gắn với lỗi vừa gặp"
+                    ),
+                )
             )
-            for r in rows
-        ]
+            if len(steps) == max_steps:
+                break
         return LearningPath(student_id=student_id, steps=steps)
 
     # ------------------------------------------------------------ trực quan hoá
