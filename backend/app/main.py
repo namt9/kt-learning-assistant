@@ -14,7 +14,15 @@ from .judge.judge import Judge
 from .judge.runner import DockerRunner, make_runner
 from .problems import ProblemNotFound, ProblemRepository
 from .rules.catalog import Catalog
-from .schemas import LearningPath, Problem, ProblemSummary, Submission, SubmissionReport
+from .schemas import (
+    Diagnosis,
+    DiagnosisMode,
+    LearningPath,
+    Problem,
+    ProblemSummary,
+    Submission,
+    SubmissionReport,
+)
 from .storage import Storage
 
 FRONTEND = Path(__file__).resolve().parents[2] / "frontend"
@@ -34,12 +42,14 @@ def build_app(settings=None) -> FastAPI:
             runner.check()
         app.state.problems = ProblemRepository(settings.problems_dir)
         app.state.storage = Storage(settings.db_path)
+        app.state.catalog = Catalog(settings.bug_patterns_file)
         app.state.judge = Judge(
-            runner, Catalog(settings.bug_patterns_file), settings.work_dir,
+            runner, app.state.catalog, settings.work_dir,
             settings.compile_timeout_s,
         )  # fmt: skip
         app.state.sandbox_mode = settings.sandbox_mode
         app.state.kg = None
+        app.state.llm = "unset"  # tạo khi cần lần đầu
         yield
         if app.state.kg is not None:
             app.state.kg.driver.close()
@@ -102,6 +112,52 @@ def build_app(settings=None) -> FastAPI:
                 raise HTTPException(503, f"Không kết nối được Neo4j: {e}") from None
             app.state.kg = KGQueries(driver)
         return app.state.kg
+
+    # ------------------------------------------------------------ Diagnosis Agent (v1)
+
+    def llm():
+        if app.state.llm == "unset":
+            from .llm import make_llm
+
+            app.state.llm = make_llm()
+        return app.state.llm
+
+    def kg_or_none():
+        try:
+            return kg()
+        except HTTPException:
+            return None
+
+    @app.post("/submissions/{submission_id}/diagnosis", response_model=Diagnosis)
+    def diagnose(
+        submission_id: str,
+        mode: DiagnosisMode = DiagnosisMode.HYBRID,
+        styles: Annotated[list[str] | None, Query()] = None,
+        refresh: bool = False,
+    ):
+        """Chẩn đoán một lần nộp. Kết quả được lưu lại để không gọi LLM lặp lại."""
+        from .agents.diagnosis import DiagnosisAgent
+        from .llm import LLMError
+
+        storage = app.state.storage
+        styles = styles or []
+        report = storage.get(submission_id)
+        if report is None:
+            raise HTTPException(404, "Không tìm thấy lần nộp")
+        if not refresh and (cached := storage.get_diagnosis(submission_id, mode.value, styles)):
+            return cached
+        try:
+            problem = app.state.problems.get(report.problem_id)
+        except ProblemNotFound:
+            problem = None
+        agent = DiagnosisAgent(app.state.catalog, kg_or_none(), llm())
+        try:
+            d = agent.diagnose(report, storage.get_source(submission_id), problem, mode, styles)
+        except LLMError as e:
+            raise HTTPException(503, f"LLM không khả dụng: {e}") from None
+        if d.mode == mode:  # không lưu kết quả đã phải lùi về rule, để lần sau thử LLM lại
+            storage.save_diagnosis(d, mode.value, styles)
+        return d
 
     @app.get("/kg-viewer", include_in_schema=False)
     def kg_viewer():

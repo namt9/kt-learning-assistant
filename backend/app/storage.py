@@ -6,7 +6,7 @@ import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
 
-from .schemas import SubmissionReport
+from .schemas import Diagnosis, SubmissionReport
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS submissions (
@@ -33,6 +33,16 @@ CREATE TABLE IF NOT EXISTS findings (
 );
 CREATE INDEX IF NOT EXISTS idx_find_sub ON findings(submission_id);
 CREATE INDEX IF NOT EXISTS idx_find_pattern ON findings(bug_pattern);
+
+-- Cache chẩn đoán: tránh gọi LLM lại (tốn phí) cho cùng bài nộp, cùng chế độ, cùng phong cách học
+CREATE TABLE IF NOT EXISTS diagnoses (
+    submission_id  TEXT NOT NULL REFERENCES submissions(id),
+    mode           TEXT NOT NULL,
+    styles         TEXT NOT NULL,
+    diagnosis_json TEXT NOT NULL,
+    created_at     TEXT NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (submission_id, mode, styles)
+);
 """
 
 
@@ -91,3 +101,27 @@ class Storage:
                 (student_id, limit),
             ).fetchall()
         return [dict(r) for r in rows]
+
+    def get_source(self, submission_id: str) -> str | None:
+        with self._conn() as c:
+            row = c.execute(
+                "SELECT source_code FROM submissions WHERE id = ?", (submission_id,)
+            ).fetchone()
+        return row["source_code"] if row else None
+
+    def get_diagnosis(self, submission_id: str, mode: str, styles: list[str]) -> Diagnosis | None:
+        with self._conn() as c:
+            row = c.execute(
+                "SELECT diagnosis_json FROM diagnoses "
+                "WHERE submission_id = ? AND mode = ? AND styles = ?",
+                (submission_id, mode, ",".join(sorted(styles))),
+            ).fetchone()
+        return Diagnosis.model_validate_json(row["diagnosis_json"]) if row else None
+
+    def save_diagnosis(self, d: Diagnosis, requested_mode: str, styles: list[str]) -> None:
+        with self._conn() as c:
+            c.execute(
+                "INSERT OR REPLACE INTO diagnoses (submission_id, mode, styles, diagnosis_json) "
+                "VALUES (?,?,?,?)",
+                (d.submission_id, requested_mode, ",".join(sorted(styles)), d.model_dump_json()),
+            )

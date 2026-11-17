@@ -80,7 +80,8 @@ class Finding(BaseModel):
     """Một lỗi do rule engine phát hiện, đã ánh xạ sang mã Bug Pattern trong KG."""
 
     bug_pattern: str  # mã trong knowledge/bug_patterns.yaml, ví dụ "MEM_LEAK"
-    source: str  # "gcc" | "cppcheck" | "asan" | "ubsan" | "custom_rule" | "judge" | "mined_rule"
+    # "gcc" | "cppcheck" | "asan" | "ubsan" | "custom_rule" | "judge" | "mined_rule" | "llm"
+    source: str
     line: int | None = None
     message: str
     confidence: float = Field(default=1.0, ge=0, le=1)
@@ -103,6 +104,23 @@ class SubmissionReport(BaseModel):
 # ---------------------------------------------------------------- v1 (Multi-Agent)
 
 
+class DiagnosisMode(str, Enum):
+    RULE = "rule"  # chỉ luật + KG, không gọi LLM
+    LLM_ONLY = "llm_only"  # LLM tự tìm lỗi từ code (cấu hình đối chứng)
+    HYBRID = "hybrid"  # luật xác định lỗi, KG cấp tri thức, LLM chỉ giải thích
+
+
+class DiagnosisItem(BaseModel):
+    """Giải thích cho một mã lỗi (gộp mọi dòng mắc cùng mã)."""
+
+    bug_pattern: str
+    lines: list[int] = []
+    explanation: str
+    fix_hint: str
+    concepts: list[str] = []  # id concept trong KG
+    actions: list[str] = []  # id PedagogicalAction gợi ý học thêm
+
+
 class Diagnosis(BaseModel):
     """Đầu ra của Diagnosis Agent (hybrid: luật xác định lỗi, LLM giải thích)."""
 
@@ -110,7 +128,12 @@ class Diagnosis(BaseModel):
     findings: list[Finding]
     related_concepts: list[str] = []  # id concept trong KG
     explanation: str  # giải thích bằng ngôn ngữ tự nhiên
-    references: list[str] = []  # nguồn RAG đã dùng
+    references: list[str] = []  # nguồn tri thức đã dùng (node KG, ...)
+    items: list[DiagnosisItem] = []
+    mode: DiagnosisMode = DiagnosisMode.HYBRID
+    llm_provider: str | None = None  # provider đã trả lời; None nếu không dùng LLM
+    rejected: list[str] = []  # mã lỗi LLM đưa ra nhưng luật không phát hiện, đã loại
+    notes: list[str] = []  # cảnh báo vận hành (LLM lỗi, KG tắt, ...)
 
 
 class LearningStep(BaseModel):
