@@ -1,0 +1,315 @@
+# Hành động sư phạm (Pedagogical_Action) dùng để sửa lỗi và dạy lại khái niệm.
+#
+# Trong KG:  (BugPattern)-[:REMEDIATED_BY]->(PedagogicalAction)-[:TEACHES]->(Concept)
+#            (PedagogicalAction)-[:USES_PROBLEM]->(Problem)   (nếu có trường problem)
+#
+# type:   GIAI_THICH (giải thích) | VI_DU (ví dụ mẫu) | TRUC_QUAN (hình minh họa/mô phỏng)
+#         | GO_LOI (bài tập tìm và sửa lỗi) | BAI_TAP (luyện tập) | CAU_HOI (câu hỏi kiểm tra)
+# styles: phong cách học phù hợp, theo Felder–Silverman rút gọn 2 chiều:
+#         visual / verbal  và  active / reflective
+# level:  1 dễ → 3 khó; Learning-Path Agent đi từ dễ tới khó.
+
+actions:
+  # ------------------------------------------------------------ chung
+  - id: PA_DOC_THONG_BAO_LOI
+    type: GIAI_THICH
+    title: Cách đọc thông báo lỗi của trình biên dịch
+    content: Đọc lỗi ĐẦU TIÊN, xem tên file:dòng:cột, đọc phần "error:" rồi nhìn cả dòng đó và dòng phía trên. Các lỗi phía sau thường là hệ quả của lỗi đầu.
+    teaches: [cu_phap]
+    remediates: [SYNTAX_ERROR, UNDECLARED_ID, TYPE_MISMATCH, UNCLASSIFIED]
+    styles: [verbal, reflective]
+    level: 1
+  - id: PA_GO_LOI_CU_PHAP
+    type: GO_LOI
+    title: Sửa 5 lỗi cú pháp trong một chương trình ngắn
+    content: Cho chương trình thiếu ";", thiếu "}", sai tên biến và thiếu #include. Biên dịch, sửa từng lỗi theo thứ tự trình biên dịch báo.
+    teaches: [cu_phap, bien]
+    remediates: [SYNTAX_ERROR, UNDECLARED_ID]
+    styles: [active]
+    level: 1
+
+  # ------------------------------------------------------------ biến, kiểu
+  - id: PA_KHOI_TAO_GIAI_THICH
+    type: GIAI_THICH
+    title: Vì sao biến cục bộ phải được khởi tạo
+    content: Biến cục bộ nằm trên stack và mang "giá trị rác" còn sót lại. Biến cộng dồn (sum, count) phải gán 0 trước vòng lặp; biến tìm max/min gán bằng phần tử đầu tiên.
+    teaches: [khoi_tao, bien]
+    remediates: [UNINIT_VAR]
+    styles: [verbal, reflective]
+    level: 1
+  - id: PA_KHOI_TAO_TRUC_QUAN
+    type: TRUC_QUAN
+    title: Quan sát giá trị rác của biến chưa khởi tạo
+    content: Chạy từng bước bằng debugger (hoặc Python Tutor cho C), theo dõi ô nhớ của sum trước và sau khi gán 0.
+    teaches: [khoi_tao, bo_nho]
+    remediates: [UNINIT_VAR, NULL_DEREF]
+    styles: [visual, active]
+    level: 1
+  - id: PA_BIEN_KHONG_DUNG
+    type: CAU_HOI
+    title: Biến này dùng để làm gì?
+    content: Với mỗi biến khai báo, hãy trả lời nó lưu gì và được đọc ở dòng nào. Biến không được đọc ở đâu thường là dấu hiệu dùng nhầm sang biến khác.
+    teaches: [bien]
+    remediates: [UNUSED_VAR]
+    styles: [reflective, verbal]
+    level: 1
+  - id: PA_CHIA_NGUYEN_VI_DU
+    type: VI_DU
+    title: "5 / 2 bằng 2: chia nguyên và chia thực"
+    content: So sánh printf("%f", 5/2), printf("%f", 5.0/2) và printf("%f", (double)5/2). Kết quả phép chia phụ thuộc kiểu toán hạng, không phụ thuộc kiểu biến nhận.
+    teaches: [ep_kieu, kieu_du_lieu]
+    remediates: [INT_DIVISION]
+    styles: [verbal, reflective]
+    level: 1
+  - id: PA_CHIA_NGUYEN_BAI_TAP
+    type: BAI_TAP
+    title: Luyện tập tính trung bình đúng kiểu
+    content: Làm bài P003, bảo đảm in đúng 2 chữ số thập phân với mọi bộ test.
+    teaches: [ep_kieu, vong_lap]
+    remediates: [INT_DIVISION]
+    styles: [active]
+    level: 2
+    problem: P003
+  - id: PA_TRAN_SO_TRUC_QUAN
+    type: TRUC_QUAN
+    title: Bảng phạm vi giá trị các kiểu số nguyên
+    content: Bảng so sánh int (±2.1×10^9), long long (±9.2×10^18), unsigned. Minh họa INT_MAX + 1 quay vòng thành số âm.
+    teaches: [tran_so, kieu_du_lieu]
+    remediates: [INT_OVERFLOW]
+    styles: [visual, reflective]
+    level: 2
+  - id: PA_TRAN_SO_BAI_TAP
+    type: BAI_TAP
+    title: Tính tổng với số rất lớn
+    content: Làm bài P001 với test 4 số 10^9; chọn kiểu cho biến tổng để không bị tràn.
+    teaches: [tran_so, kieu_du_lieu]
+    remediates: [INT_OVERFLOW]
+    styles: [active]
+    level: 2
+    problem: P001
+  - id: PA_DINH_DANG_BANG
+    type: TRUC_QUAN
+    title: Bảng đặc tả định dạng printf/scanf
+    content: "Bảng tra: int %d, long %ld, long long %lld, unsigned %u, char %c, chuỗi %s, float %f, double %f (printf) / %lf (scanf)."
+    teaches: [nhap_xuat, kieu_du_lieu]
+    remediates: [FORMAT_MISMATCH, SCANF_MISSING_AMP]
+    styles: [visual, reflective]
+    level: 1
+
+  # ------------------------------------------------------------ toán tử, điều khiển
+  - id: PA_GAN_VA_SO_SANH
+    type: VI_DU
+    title: "\"=\" là gán, \"==\" là so sánh"
+    content: if (x = 0) gán 0 cho x rồi kiểm tra 0 nên luôn sai. Mẹo viết hằng ở bên trái (if (0 == x)) để trình biên dịch báo lỗi nếu gõ thiếu một dấu "=".
+    teaches: [toan_tu, cau_lenh_dieu_kien]
+    remediates: [ASSIGN_IN_COND, CONST_CONDITION]
+    styles: [verbal, reflective]
+    level: 1
+  - id: PA_GAN_VA_SO_SANH_GO_LOI
+    type: GO_LOI
+    title: Tìm điều kiện sai trong 4 đoạn code
+    content: Cho 4 đoạn if/while; đoán trước kết quả in ra, chạy thử, rồi sửa các điều kiện viết sai.
+    teaches: [toan_tu, cau_lenh_dieu_kien]
+    remediates: [ASSIGN_IN_COND, CONST_CONDITION]
+    styles: [active]
+    level: 1
+  - id: PA_DIEU_KIEN_BANG_CHAN_TRI
+    type: TRUC_QUAN
+    title: Lập bảng chân trị cho điều kiện
+    content: Liệt kê vài giá trị của biến và kết quả điều kiện. Nếu cột kết quả chỉ có một giá trị thì điều kiện luôn đúng hoặc luôn sai.
+    teaches: [toan_tu, cau_lenh_dieu_kien]
+    remediates: [CONST_CONDITION]
+    styles: [visual, reflective]
+    level: 2
+  - id: PA_KHOI_LENH_TRUC_QUAN
+    type: TRUC_QUAN
+    title: Khối lệnh nào thuộc if/for?
+    content: Tô màu phạm vi của if/for khi có và không có {}, và khi có ";" ngay sau ngoặc. Thụt lề không quyết định phạm vi, chỉ {} mới quyết định.
+    teaches: [cu_phap, vong_lap, cau_lenh_dieu_kien]
+    remediates: [STRAY_SEMICOLON, MISSING_BRACES]
+    styles: [visual, reflective]
+    level: 1
+  - id: PA_KHOI_LENH_GO_LOI
+    type: GO_LOI
+    title: Sửa vòng lặp chỉ chạy một lần
+    content: Cho chương trình có "for (...);" và một if thiếu {}; chạy thử, giải thích kết quả, rồi sửa.
+    teaches: [vong_lap, cu_phap]
+    remediates: [STRAY_SEMICOLON, MISSING_BRACES]
+    styles: [active]
+    level: 1
+  - id: PA_VONG_LAP_DUNG
+    type: GIAI_THICH
+    title: Kiểm tra điều kiện dừng của vòng lặp
+    content: Với mỗi vòng lặp, xác định biến điều khiển, giá trị đầu, bước thay đổi, và chứng minh điều kiện sẽ sai sau hữu hạn bước. Với đệ quy, xác định trường hợp cơ sở.
+    teaches: [vong_lap, de_quy]
+    remediates: [INFINITE_LOOP]
+    styles: [verbal, reflective]
+    level: 2
+  - id: PA_VONG_LAP_TRUC_QUAN
+    type: TRUC_QUAN
+    title: Bảng theo dõi biến qua từng vòng lặp
+    content: Lập bảng giá trị i và điều kiện ở mỗi vòng (trace table) cho 3–4 vòng đầu để thấy biến có tiến về điều kiện dừng không.
+    teaches: [vong_lap]
+    remediates: [INFINITE_LOOP, OFF_BY_ONE]
+    styles: [visual, active]
+    level: 1
+  - id: PA_DO_PHUC_TAP
+    type: GIAI_THICH
+    title: Ước lượng thời gian chạy theo n
+    content: Máy chấm làm khoảng 10^8 phép tính mỗi giây. Với n = 10^5, thuật toán O(n^2) cần 10^10 phép tính nên sẽ quá giờ; hãy tìm cách O(n) hoặc O(n log n).
+    teaches: [do_phuc_tap]
+    remediates: [INFINITE_LOOP]
+    styles: [verbal, reflective]
+    level: 2
+  - id: PA_HAM_TRA_VE
+    type: VI_DU
+    title: Mọi nhánh của hàm đều phải return
+    content: Ví dụ hàm max(a, b) chỉ return trong nhánh if; sửa bằng else hoặc return cuối hàm. Vẽ sơ đồ các đường đi qua hàm để kiểm tra.
+    teaches: [ham, cau_lenh_dieu_kien]
+    remediates: [MISSING_RETURN]
+    styles: [verbal, visual]
+    level: 1
+  - id: PA_CHIA_CHO_0
+    type: VI_DU
+    title: Kiểm tra mẫu số trước khi chia
+    content: Ví dụ tính trung bình khi n có thể bằng 0; thêm if (n == 0) xử lý riêng. Phép % cũng bị lỗi khi chia cho 0.
+    teaches: [toan_tu, cau_lenh_dieu_kien]
+    remediates: [DIV_BY_ZERO]
+    styles: [verbal, active]
+    level: 1
+
+  # ------------------------------------------------------------ nhập xuất, con trỏ
+  - id: PA_SCANF_DIA_CHI
+    type: GIAI_THICH
+    title: Vì sao scanf cần "&"
+    content: C truyền tham số theo giá trị, nên scanf chỉ ghi được vào biến nếu nhận ĐỊA CHỈ của biến. Tên mảng char đã là địa chỉ nên %s không cần "&".
+    teaches: [nhap_xuat, dia_chi, truyen_tham_chieu]
+    remediates: [SCANF_MISSING_AMP]
+    styles: [verbal, reflective]
+    level: 1
+  - id: PA_SCANF_TRUC_QUAN
+    type: TRUC_QUAN
+    title: Hình minh họa ô nhớ và địa chỉ khi gọi scanf
+    content: Vẽ ô nhớ của n với địa chỉ 0x1000; scanf("%d", &n) ghi vào 0x1000, còn scanf("%d", n) lấy giá trị rác của n làm địa chỉ.
+    teaches: [dia_chi, con_tro]
+    remediates: [SCANF_MISSING_AMP]
+    styles: [visual, reflective]
+    level: 1
+  - id: PA_CON_TRO_NULL
+    type: GIAI_THICH
+    title: Kiểm tra con trỏ trước khi dùng
+    content: Khởi tạo con trỏ bằng NULL hoặc địa chỉ hợp lệ; kiểm tra kết quả malloc; kiểm tra p != NULL trước *p hoặc p->next.
+    teaches: [con_tro_null, con_tro]
+    remediates: [NULL_DEREF]
+    styles: [verbal, reflective]
+    level: 2
+  - id: PA_CON_TRO_TRUC_QUAN
+    type: TRUC_QUAN
+    title: Vẽ sơ đồ hộp và mũi tên cho con trỏ
+    content: Mỗi biến là một hộp; con trỏ là mũi tên tới hộp khác; NULL là mũi tên không trỏ tới đâu. Vẽ lại sơ đồ sau mỗi câu lệnh gán con trỏ.
+    teaches: [con_tro, con_tro_null, dia_chi]
+    remediates: [NULL_DEREF, DANGLING_PTR]
+    styles: [visual, active]
+    level: 2
+  - id: PA_CON_TRO_GO_LOI
+    type: GO_LOI
+    title: Sửa lỗi duyệt danh sách liên kết
+    content: Cho hàm duyệt danh sách liên kết truy cập p->next khi p đã là NULL; chạy với AddressSanitizer, đọc báo lỗi và sửa điều kiện vòng lặp.
+    teaches: [con_tro_null, danh_sach_lien_ket]
+    remediates: [NULL_DEREF]
+    styles: [active]
+    level: 3
+  - id: PA_TRA_VE_DIA_CHI_CUC_BO
+    type: VI_DU
+    title: Không trả về địa chỉ biến cục bộ
+    content: Ví dụ hàm trả về &x với x cục bộ; sau khi hàm kết thúc, vùng stack của x bị thu hồi. Sửa bằng cấp phát động hoặc truyền mảng từ nơi gọi.
+    teaches: [pham_vi_bien, stack_heap, con_tro]
+    remediates: [DANGLING_PTR]
+    styles: [verbal, reflective]
+    level: 2
+
+  # ------------------------------------------------------------ mảng
+  - id: PA_CHI_SO_MANG
+    type: TRUC_QUAN
+    title: Chỉ số mảng từ 0 đến n-1
+    content: Vẽ mảng 5 ô có chỉ số 0..4; đánh dấu ô a[5] nằm ngoài mảng. So sánh hai vòng lặp i < n và i <= n.
+    teaches: [mang, vong_lap]
+    remediates: [OFF_BY_ONE, ARRAY_OOB]
+    styles: [visual, reflective]
+    level: 1
+  - id: PA_BIEN_VONG_LAP_GIAI_THICH
+    type: GIAI_THICH
+    title: Quy tắc viết biên vòng lặp duyệt mảng
+    content: "Duyệt xuôi: for (i = 0; i < n; i++). Duyệt ngược: for (i = n - 1; i >= 0; i--). Kiểm tra bằng hai trường hợp biên: phần tử đầu và phần tử cuối."
+    teaches: [mang, vong_lap]
+    remediates: [OFF_BY_ONE]
+    styles: [verbal, reflective]
+    level: 1
+  - id: PA_MANG_BAI_TAP
+    type: BAI_TAP
+    title: Luyện duyệt mảng không vượt biên
+    content: Làm bài P001 rồi P002, chạy thử với n = 1 (trường hợp biên nhỏ nhất).
+    teaches: [mang, vong_lap]
+    remediates: [OFF_BY_ONE, ARRAY_OOB]
+    styles: [active]
+    level: 1
+    problem: P001
+  - id: PA_TRAN_BO_DEM
+    type: GIAI_THICH
+    title: Hậu quả của việc ghi ra ngoài mảng
+    content: C không kiểm tra chỉ số mảng. Ghi ra ngoài có thể đè lên biến khác, làm chương trình chạy sai ngẫu nhiên hoặc crash; chương trình qua hết test vẫn có thể chứa lỗi này.
+    teaches: [tran_bo_dem, mang, bo_nho]
+    remediates: [ARRAY_OOB]
+    styles: [verbal, reflective]
+    level: 2
+  - id: PA_ASAN_GO_LOI
+    type: GO_LOI
+    title: Dùng AddressSanitizer để tìm lỗi bộ nhớ
+    content: Biên dịch với -fsanitize=address -g, chạy lại, đọc dòng "ERROR:" và dòng "#0 ... main.c:N" để biết lỗi xảy ra ở đâu.
+    teaches: [tran_bo_dem, bo_nho]
+    remediates: [ARRAY_OOB, DANGLING_PTR, DOUBLE_FREE, MEM_LEAK]
+    styles: [active]
+    level: 2
+
+  # ------------------------------------------------------------ bộ nhớ động
+  - id: PA_STACK_HEAP_TRUC_QUAN
+    type: TRUC_QUAN
+    title: Sơ đồ bộ nhớ stack và heap
+    content: Vẽ con trỏ a trên stack trỏ tới vùng 5 phần tử trên heap. Khi hàm kết thúc, a biến mất nhưng vùng heap vẫn còn nếu chưa free (rò rỉ).
+    teaches: [stack_heap, cap_phat_dong, bo_nho]
+    remediates: [MEM_LEAK, DANGLING_PTR]
+    styles: [visual, reflective]
+    level: 2
+  - id: PA_MALLOC_FREE_QUY_TAC
+    type: GIAI_THICH
+    title: Quy tắc cặp malloc/free
+    content: Mỗi malloc/calloc có đúng một free tương ứng trên mọi đường thoát của hàm (kể cả return sớm). new đi với delete, new[] đi với delete[].
+    teaches: [giai_phong_bo_nho, quan_ly_bo_nho]
+    remediates: [MEM_LEAK, DOUBLE_FREE]
+    styles: [verbal, reflective]
+    level: 2
+  - id: PA_MALLOC_BAI_TAP
+    type: BAI_TAP
+    title: Luyện tập cấp phát và giải phóng mảng động
+    content: Làm bài P002, chạy với AddressSanitizer để bảo đảm không còn "detected memory leaks".
+    teaches: [cap_phat_dong, giai_phong_bo_nho]
+    remediates: [MEM_LEAK]
+    styles: [active]
+    level: 2
+    problem: P002
+  - id: PA_FREE_GAN_NULL
+    type: VI_DU
+    title: Gán NULL ngay sau khi free
+    content: Ví dụ free(p) hai lần gây crash; sửa bằng free(p); p = NULL; vì free(NULL) là an toàn. Tương tự, không dùng p sau khi free.
+    teaches: [giai_phong_bo_nho, con_tro_null]
+    remediates: [DOUBLE_FREE, DANGLING_PTR]
+    styles: [verbal, active]
+    level: 2
+  - id: PA_SO_HUU_BO_NHO
+    type: CAU_HOI
+    title: Ai chịu trách nhiệm giải phóng vùng nhớ này?
+    content: Với mỗi lần cấp phát trong chương trình, trả lời hàm nào giải phóng và ở dòng nào. Một vùng không có câu trả lời là rò rỉ; một vùng có hai câu trả lời là free hai lần.
+    teaches: [quan_ly_bo_nho]
+    remediates: [MEM_LEAK, DOUBLE_FREE]
+    styles: [reflective]
+    level: 3

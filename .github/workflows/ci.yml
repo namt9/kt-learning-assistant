@@ -17,6 +17,8 @@ jobs:
       - run: pip install -r requirements.txt -r requirements-dev.txt
       - run: ruff check .
       - run: ruff format --check .
+      - name: Kiểm tra tri thức (knowledge/*.yaml)
+        run: python -m backend.app.kg.load --check --quiet
       - run: pytest -q
       - name: Lời giải mẫu qua hết test
         run: |

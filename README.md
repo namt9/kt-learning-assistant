@@ -16,10 +16,10 @@ Hệ thống gồm hai phiên bản:
 | `backend/app/rules/` | Rule engine: ánh xạ cảnh báo công cụ sang Bug Pattern, luật tự viết | B, D |
 | `backend/app/agents/` | Orchestrator, Grading / Diagnosis / Learning-Path Agent | D |
 | `backend/app/rag/` | Pipeline RAG | D |
-| `backend/app/kg/` | Kết nối và truy vấn Neo4j | A |
+| `backend/app/kg/` | Kiểm tra tri thức, nạp và truy vấn Neo4j ([lược đồ](docs/kg_schema.md)) | A |
 | `backend/app/student/` | Hồ sơ năng lực, phong cách học | E |
 | `backend/app/schemas.py` | **Hợp đồng dữ liệu dùng chung** giữa các module (sửa phải qua PR, cả nhóm review) | Cả nhóm |
-| `knowledge/` | Ontology (`.owl`), concept map, danh mục Bug Pattern | A |
+| `knowledge/` | Concept map, Bug Pattern, hành động sư phạm (YAML), ontology (`.owl`) | A |
 | `data/problems/` | Ngân hàng bài tập + test case | C |
 | `data/raw/` | Dataset log tải về (không commit, xem `data/README.md`) | C |
 | `mining/` | Khai phá luật chẩn đoán | C |
@@ -66,6 +66,7 @@ Mở http://localhost:8000 để dùng giao diện, http://localhost:8000/docs �
 ```bash
 pytest                           # test LocalRunner (cần gcc) + test Docker nếu đã build kt-sandbox
 docker compose up -d neo4j       # Neo4j cho phần v1: http://localhost:7474
+python -m backend.app.kg.load    # nạp Knowledge Graph (xem docs/kg_schema.md)
 ```
 
 ## Làm việc nhóm
