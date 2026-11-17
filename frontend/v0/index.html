@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hỗ trợ giải bài tập lập trình (v0)</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #fff; --text: #1d2330; --muted: #667085; --line: #e3e6eb;
+    --accent: #2457c5; --ok: #1a7f37; --bad: #c0362c; --warn: #a15c00;
+    --code-bg: #0f1724; --code-text: #e6edf3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151b; --panel: #1a1f27; --text: #e6e9ef; --muted: #98a2b3; --line: #2b323d;
+      --accent: #7aa2ff; --ok: #4ac26b; --bad: #ff7b72; --warn: #e3b341;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: var(--bg); color: var(--text); }
+  header { display: flex; align-items: center; gap: 16px; padding: 12px 20px;
+           border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+  header h1 { font-size: 16px; margin: 0; flex: 1; min-width: 220px; }
+  header label { color: var(--muted); }
+  input, select, button, textarea { font: inherit; color: inherit; }
+  input, select { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px;
+                  background: var(--bg); }
+  button { padding: 7px 14px; border: 0; border-radius: 6px; background: var(--accent);
+           color: #fff; cursor: pointer; font-weight: 600; }
+  button:disabled { opacity: .6; cursor: progress; }
+  main { display: grid; grid-template-columns: 260px minmax(0, 1fr) minmax(0, 1fr); gap: 16px;
+         padding: 16px 20px; }
+  @media (max-width: 1100px) { main { grid-template-columns: 1fr; } }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+            padding: 14px; min-width: 0; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
+       margin: 0 0 10px; }
+  ul.list { list-style: none; margin: 0; padding: 0; }
+  ul.list li { padding: 8px 10px; border-radius: 6px; cursor: pointer; }
+  ul.list li:hover { background: var(--bg); }
+  ul.list li.active { background: var(--accent); color: #fff; }
+  .statement { white-space: pre-wrap; background: var(--bg); padding: 10px; border-radius: 6px;
+               max-height: 220px; overflow: auto; margin-bottom: 10px; }
+  textarea { width: 100%; min-height: 360px; resize: vertical; padding: 10px;
+             font: 13px/1.45 ui-monospace, "JetBrains Mono", Consolas, monospace;
+             background: var(--code-bg); color: var(--code-text); border-radius: 6px;
+             border: 1px solid var(--line); tab-size: 4; }
+  .row { display: flex; gap: 8px; align-items: center; margin: 8px 0; flex-wrap: wrap; }
+  .verdict { font-size: 22px; font-weight: 700; }
+  .AC { color: var(--ok); } .WA, .RE, .CE, .MLE { color: var(--bad); } .TLE { color: var(--warn); }
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; }
+  th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid var(--line);
+           vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  .finding { border-left: 3px solid var(--warn); padding: 8px 10px; margin: 8px 0;
+             background: var(--bg); border-radius: 0 6px 6px 0; }
+  .finding .code { font-weight: 700; }
+  .finding .meta { color: var(--muted); font-size: 12px; }
+  .finding .hint { margin-top: 4px; }
+  pre { white-space: pre-wrap; background: var(--bg); padding: 8px; border-radius: 6px;
+        overflow: auto; max-height: 220px; font-size: 12px; }
+  .muted { color: var(--muted); }
+  .error { color: var(--bad); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Hệ thống hỗ trợ giải bài tập lập trình <span class="muted">(v0, rule-based)</span></h1>
+  <label for="student">Mã sinh viên</label>
+  <input id="student" placeholder="vd. 23520001" size="12">
+</header>
+<main>
+  <section>
+    <h2>Bài tập</h2>
+    <ul class="list" id="problems"></ul>
+    <h2 style="margin-top:18px">Lịch sử nộp</h2>
+    <ul class="list" id="history"><li class="muted">Nhập mã sinh viên</li></ul>
+  </section>
+
+  <section>
+    <h2 id="ptitle">Chọn một bài</h2>
+    <div class="statement" id="statement"></div>
+    <div class="row">
+      <select id="lang"><option value="c">C (C11)</option><option value="cpp">C++ (C++17)</option></select>
+      <button id="submit">Nộp bài</button>
+      <span id="status" class="muted"></span>
+    </div>
+    <textarea id="code" spellcheck="false">#include &lt;stdio.h&gt;
+
+int main(void) {
+    return 0;
+}
+</textarea>
+  </section>
+
+  <section>
+    <h2>Kết quả</h2>
+    <div id="result" class="muted">Chưa có lần nộp.</div>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let current = null;
+
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g,
+  (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(body.detail ? JSON.stringify(body.detail) : r.statusText);
+  return body;
+}
+
+async function loadProblems() {
+  const list = await api("/problems");
+  $("problems").innerHTML = list.map((p) =>
+    `<li data-id="${esc(p.id)}">${esc(p.id)}. ${esc(p.title)}</li>`).join("");
+  $("problems").querySelectorAll("li").forEach((li) =>
+    li.addEventListener("click", () => selectProblem(li.dataset.id)));
+  if (list.length) selectProblem(list[0].id);
+}
+
+async function selectProblem(id) {
+  const p = await api(`/problems/${encodeURIComponent(id)}`);
+  current = p;
+  $("problems").querySelectorAll("li").forEach((li) =>
+    li.classList.toggle("active", li.dataset.id === id));
+  $("ptitle").textContent = `${p.id}. ${p.title}`;
+  $("statement").textContent = p.statement +
+    `\n\nGiới hạn: ${p.time_limit_s}s, ${p.memory_mb}MB · ${p.test_count} test`;
+}
+
+function renderReport(rep) {
+  const g = rep.grading;
+  let html = `<div class="verdict ${g.verdict}">${g.verdict}</div>
+    <div>Điểm: <b>${g.score}</b> · Đạt ${g.passed}/${g.total} test
+    <span class="muted">· mã nộp ${esc(rep.submission_id)}</span></div>`;
+
+  if (g.tests.length) {
+    html += `<table><tr><th>Test</th><th>Kết quả</th><th>Thời gian</th></tr>` +
+      g.tests.map((t) => `<tr><td>${esc(t.test_id)}</td><td class="${t.verdict}">${t.verdict}</td>
+        <td>${t.time_ms ?? "-"} ms</td></tr>`).join("") + `</table>`;
+    const s = g.tests[0];
+    if (s.verdict !== "AC" && s.expected != null) {
+      html += `<div class="muted">Test mẫu ${esc(s.test_id)}: mong đợi / bạn in ra</div>
+        <pre>${esc(s.expected)}</pre><pre>${esc(s.stdout)}</pre>`;
+    }
+  }
+
+  html += `<h2 style="margin-top:14px">Lỗi phát hiện (${rep.findings.length})</h2>`;
+  html += rep.findings.length ? rep.findings.map((f) => `
+    <div class="finding">
+      <div><span class="code">${esc(f.bug_pattern)}</span>
+        ${f.line ? `· dòng ${f.line}` : ""}</div>
+      <div class="meta">${esc(f.source)} · độ tin cậy ${Math.round(f.confidence * 100)}% · ${esc(f.message)}</div>
+      ${f.hint ? `<div class="hint">💡 ${esc(f.hint)}</div>` : ""}
+    </div>`).join("") : `<div class="muted">Không phát hiện lỗi nào bằng luật.</div>`;
+
+  if (g.compile_output) html += `<h2 style="margin-top:14px">Trình biên dịch</h2><pre>${esc(g.compile_output)}</pre>`;
+  if (rep.tools_unavailable.length)
+    html += `<div class="muted">Không chạy được: ${rep.tools_unavailable.map(esc).join(", ")}</div>`;
+  $("result").innerHTML = html;
+  $("result").classList.remove("muted");
+}
+
+async function loadHistory() {
+  const sid = $("student").value.trim();
+  if (!sid) return;
+  const rows = await api(`/students/${encodeURIComponent(sid)}/submissions`);
+  $("history").innerHTML = rows.length ? rows.map((r) =>
+    `<li data-id="${esc(r.id)}"><span class="${r.verdict}">${r.verdict}</span> ${esc(r.problem_id)}
+      · ${r.score}đ <span class="muted">${new Date(r.created_at).toLocaleTimeString()}</span></li>`).join("")
+    : `<li class="muted">Chưa nộp bài nào</li>`;
+  $("history").querySelectorAll("li[data-id]").forEach((li) =>
+    li.addEventListener("click", async () => renderReport(await api(`/submissions/${li.dataset.id}`))));
+}
+
+$("submit").addEventListener("click", async () => {
+  const sid = $("student").value.trim();
+  if (!sid) { $("status").textContent = "Nhập mã sinh viên trước"; return; }
+  if (!current) return;
+  $("submit").disabled = true;
+  $("status").textContent = "Đang chấm...";
+  try {
+    const rep = await api("/submit", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ student_id: sid, problem_id: current.id,
+        language: $("lang").value, source_code: $("code").value }),
+    });
+    renderReport(rep);
+    $("status").textContent = "";
+    loadHistory();
+  } catch (e) {
+    $("status").innerHTML = `<span class="error">${esc(e.message)}</span>`;
+  } finally {
+    $("submit").disabled = false;
+  }
+});
+
+$("code").addEventListener("keydown", (e) => {
+  if (e.key === "Tab") {
+    e.preventDefault();
+    const t = e.target, s = t.selectionStart;
+    t.value = t.value.slice(0, s) + "    " + t.value.slice(t.selectionEnd);
+    t.selectionStart = t.selectionEnd = s + 4;
+  }
+});
+
+try { $("student").value = localStorage.getItem("student_id") || ""; } catch {}
+$("student").addEventListener("change", () => {
+  try { localStorage.setItem("student_id", $("student").value.trim()); } catch {}
+  loadHistory();
+});
+
+loadProblems().catch((e) => { $("problems").innerHTML = `<li class="error">${esc(e.message)}</li>`; });
+loadHistory();
+</script>
+</body>
+</html>

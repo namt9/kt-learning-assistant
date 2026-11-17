@@ -11,7 +11,9 @@ solution.c       # lời giải mẫu
 tests/1.in, 1.out, ...
 ```
 
-`P001_tong_mang` là bài mẫu để làm theo.
+`P001`–`P003` là bài mẫu để làm theo. Test tự động kiểm tra mọi `solution.c` phải đạt AC và không có lỗi nghiêm trọng.
+
+Log nộp bài của hệ v0 nằm trong SQLite (`DB_PATH`): bảng `submissions` (mã nguồn, verdict, điểm) và `findings` (mã Bug Pattern, nguồn phát hiện, dòng). Đây là đầu vào cho phần khai phá luật.
 
 ## `raw/`: dataset log (KHÔNG commit)
 

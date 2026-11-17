@@ -40,3 +40,6 @@ dist/
 
 # File Office tạm
 ~$*
+
+# Thư mục tạm của sandbox
+.sandbox_work/

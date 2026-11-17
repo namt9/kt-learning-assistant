@@ -16,5 +16,5 @@ Hợp đồng dữ liệu giữa các khối: `backend/app/schemas.py`.
 
 | Phiên bản | Thành phần |
 |---|---|
-| v0 (hệ nền, xây mới) | judge, rule engine, gợi ý template, lưu log, UI nộp bài |
+| v0 (hệ nền, xây mới, **đã xong**) | judge (sandbox Docker/local), rule engine (gcc + cppcheck + ASan/UBSan + 6 luật tự viết, 21 Bug Pattern), gợi ý template, log SQLite, UI nộp bài |
 | v1 (mở rộng) | Ontology/KG, Multi-Agent, RAG + LLM, Hybrid Reasoning, luật khai phá, hồ sơ năng lực, phong cách học |

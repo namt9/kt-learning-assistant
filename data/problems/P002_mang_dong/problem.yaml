@@ -1,0 +1,6 @@
+id: P002
+title: Đảo ngược mảng cấp phát động
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [mang, con_tro, cap_phat_dong, quan_ly_bo_nho]
