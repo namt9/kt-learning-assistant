@@ -61,6 +61,12 @@
   pre { white-space: pre-wrap; background: var(--bg); padding: 8px; border-radius: 6px;
         overflow: auto; max-height: 220px; font-size: 12px; }
   .muted { color: var(--muted); }
+  .diag { border-left: 3px solid var(--accent); padding: 8px 10px; margin: 8px 0;
+          background: var(--bg); border-radius: 0 6px 6px 0; }
+  .diag .fix { margin-top: 4px; }
+  .diag a { color: var(--accent); }
+  .modes { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); }
   .error { color: var(--bad); }
 </style>
 </head>
@@ -163,8 +169,42 @@ function renderReport(rep) {
   if (g.compile_output) html += `<h2 style="margin-top:14px">Trình biên dịch</h2><pre>${esc(g.compile_output)}</pre>`;
   if (rep.tools_unavailable.length)
     html += `<div class="muted">Không chạy được: ${rep.tools_unavailable.map(esc).join(", ")}</div>`;
+  if (rep.findings.length || g.verdict !== "AC") {
+    html += `<div class="modes"><button id="diag-btn">Giải thích chi tiết</button>
+      <select id="diag-mode" title="Chế độ chẩn đoán">
+        <option value="hybrid">Hybrid (luật + KG + LLM)</option>
+        <option value="rule">Chỉ luật + KG</option>
+        <option value="llm_only">Chỉ LLM</option>
+      </select></div><div id="diag"></div>`;
+  }
   $("result").innerHTML = html;
+  $("diag-btn")?.addEventListener("click", () => loadDiagnosis(rep.submission_id));
   $("result").classList.remove("muted");
+}
+
+async function loadDiagnosis(sid) {
+  const btn = $("diag-btn"), mode = $("diag-mode").value;
+  btn.disabled = true;
+  $("diag").innerHTML = `<div class="muted">Đang phân tích…</div>`;
+  try {
+    const d = await api(`/submissions/${encodeURIComponent(sid)}/diagnosis?mode=${mode}`,
+                        { method: "POST" });
+    const via = d.llm_provider ? `giải thích bởi ${esc(d.llm_provider)}` : "giải thích bằng luật";
+    $("diag").innerHTML = `<p>${esc(d.explanation)} <span class="muted">(${via})</span></p>` +
+      d.items.map((it) => `<div class="diag">
+        <div><b>${esc(it.bug_pattern)}</b>${it.lines.length ? ` · dòng ${it.lines.join(", ")}` : ""}</div>
+        <div>${esc(it.explanation)}</div>
+        ${it.fix_hint ? `<div class="fix">🔧 ${esc(it.fix_hint)}</div>` : ""}
+        ${it.actions.length ? `<div class="muted">Học thêm: ${it.actions.map((a) =>
+          `<a href="/kg-viewer#node=${encodeURIComponent(a)}" target="_blank">${esc(a)}</a>`).join(", ")}</div>` : ""}
+      </div>`).join("") +
+      (d.rejected.length ? `<div class="muted">Đã loại mã lỗi LLM tự đoán: ${d.rejected.map(esc).join(", ")}</div>` : "") +
+      d.notes.map((n) => `<div class="muted">⚠ ${esc(n)}</div>`).join("");
+  } catch (e) {
+    $("diag").innerHTML = `<div class="error">${esc(e.message)}</div>`;
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 async function loadHistory() {
