@@ -160,29 +160,52 @@ def load_submissions(session, db_path: Path) -> int:
             "SELECT id, student_id, problem_id, language, verdict, score, created_at "
             "FROM submissions"
         )]  # fmt: skip
+        cols = {r["name"] for r in conn.execute("PRAGMA table_info(findings)")}
+        # cảnh báo hệ quả (đã bị luật khai phá khử) không phải lỗi sinh viên thật sự mắc
+        where = " WHERE suppressed_by IS NULL" if "suppressed_by" in cols else ""
         finds = [dict(r) for r in conn.execute(
             "SELECT submission_id, bug_pattern, source, line, message, confidence FROM findings"
+            + where
         )]  # fmt: skip
     finally:
         conn.close()
-    session.run(
-        """UNWIND $rows AS r
-        MERGE (s:Student {id: r.student_id})
-        MERGE (c:StudentCode {id: r.id})
-        SET c.language = r.language, c.verdict = r.verdict, c.score = r.score,
-            c.created_at = datetime(r.created_at)
-        MERGE (s)-[:SUBMITTED]->(c)
-        WITH c, r MATCH (p:Problem {id: r.problem_id}) MERGE (c)-[:FOR_PROBLEM]->(p)""",
-        rows=subs,
-    ).consume()
-    session.run(
-        """UNWIND $rows AS r
-        MATCH (c:StudentCode {id: r.submission_id}), (b:BugPattern {id: r.bug_pattern})
-        MERGE (c)-[e:EXHIBITS {line: coalesce(r.line, -1), source: r.source}]->(b)
-        SET e.message = r.message, e.confidence = r.confidence""",
-        rows=finds,
-    ).consume()
+    _write_submissions(session, subs, finds)
     return len(subs)
+
+
+_SUBMISSIONS_CYPHER = """UNWIND $rows AS r
+MERGE (s:Student {id: r.student_id})
+MERGE (c:StudentCode {id: r.id})
+SET c.language = r.language, c.verdict = r.verdict, c.score = r.score,
+    c.created_at = datetime(r.created_at)
+MERGE (s)-[:SUBMITTED]->(c)
+WITH c, r MATCH (p:Problem {id: r.problem_id}) MERGE (c)-[:FOR_PROBLEM]->(p)"""
+
+_FINDINGS_CYPHER = """UNWIND $rows AS r
+MATCH (c:StudentCode {id: r.submission_id}), (b:BugPattern {id: r.bug_pattern})
+MERGE (c)-[e:EXHIBITS {line: coalesce(r.line, -1), source: r.source}]->(b)
+SET e.message = r.message, e.confidence = r.confidence"""
+
+
+def _write_submissions(session, subs: list[dict], finds: list[dict]) -> None:
+    session.run(_SUBMISSIONS_CYPHER, rows=subs).consume()
+    session.run(_FINDINGS_CYPHER, rows=finds).consume()
+
+
+def upsert_submission(session, report) -> None:
+    """Đưa ngay một lần nộp vào đồ thị (Orchestrator gọi sau mỗi lần nộp)."""
+    sub = {
+        "id": report.submission_id, "student_id": report.student_id,
+        "problem_id": report.problem_id, "language": report.language.value,
+        "verdict": report.grading.verdict.value, "score": report.grading.score,
+        "created_at": report.created_at.isoformat(),
+    }  # fmt: skip
+    finds = [
+        {"submission_id": report.submission_id, "bug_pattern": f.bug_pattern, "source": f.source,
+         "line": f.line, "message": f.message, "confidence": f.confidence}
+        for f in report.findings if not f.suppressed_by
+    ]  # fmt: skip
+    _write_submissions(session, [sub], finds)
 
 
 def reset(session) -> None:
