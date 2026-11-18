@@ -26,3 +26,18 @@ Tải về máy theo hướng dẫn dưới đây. Thư mục này đã nằm tr
 | Project CodeNet | (điền link) | lọc phần C/C++ |
 
 Kiểm tra license trước khi dùng và ghi lại vào bảng trên.
+
+## `mined/`: log có nhãn để khai phá luật (có commit)
+
+Chưa có log sinh viên thật nên nhóm tự sinh: cài lỗi có chủ đích vào `solution.c` của từng bài
+(`backend/app/mining/mutate.py`), rồi chấm bằng hệ v0. Mỗi dòng của `mutants.jsonl` là một bài
+nộp kèm **nhãn đúng** (lỗi đã cài), verdict và các lỗi tầng luật phát hiện. File này dùng làm
+benchmark có nhãn cho phần đánh giá ở tuần 4.
+
+```bash
+python -m backend.app.mining.generate --pairs 40 --jobs 6   # chấm lại (cần sandbox), vài phút
+python -m backend.app.mining.mine                           # luật + báo cáo, vài giây
+```
+
+Kết quả: `knowledge/mined_rules.yaml` và `docs/mining_report.md`. Thêm bài tập mới vào `problems/`
+thì chạy lại hai lệnh trên.

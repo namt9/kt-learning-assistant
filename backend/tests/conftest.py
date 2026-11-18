@@ -30,7 +30,10 @@ def judge(catalog, tmp_path_factory) -> Judge:
 
 
 @pytest.fixture
-def client(tmp_path) -> TestClient:
+def client(tmp_path, monkeypatch) -> TestClient:
+    # Không bao giờ chạm Neo4j dev hay gọi LLM thật (tốn phí) trong test API
+    monkeypatch.setenv("NEO4J_URI", "bolt://127.0.0.1:1")
+    monkeypatch.setenv("LLM_PROVIDERS", "")
     settings = Settings(
         problems_dir=ROOT / "data" / "problems",
         bug_patterns_file=ROOT / "knowledge" / "bug_patterns.yaml",

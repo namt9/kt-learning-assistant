@@ -36,6 +36,7 @@ def make_llm(spec: str | None = None) -> FallbackLLM | None:
                 OllamaProvider(
                     model=os.getenv("OLLAMA_MODEL", "qwen2.5:7b-instruct"),
                     base_url=os.getenv("OLLAMA_URL", "http://localhost:11434"),
+                    timeout_s=float(os.getenv("OLLAMA_TIMEOUT", "300")),
                 )
             )
         else:
