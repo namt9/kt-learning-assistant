@@ -1,0 +1,640 @@
+# SINH TỰ ĐỘNG bởi backend/app/mining/mine.py, không sửa tay.
+meta:
+  source: data/mined/mutants.jsonl
+  records: 135
+  problems: 3
+  multi_bug: 101
+  min_support: 0.03
+  min_confidence: 0.7
+  max_len: 4
+rules:
+- id: MR001
+  kind: add
+  if:
+  - feat=malloc_no_free
+  then: MEM_LEAK
+  support: 0.0444
+  confidence: 1.0
+  lift: 19.29
+  count: 6
+- id: MR002
+  kind: suppress
+  if:
+  - found=CONST_CONDITION
+  - found=MEM_LEAK
+  then: MEM_LEAK
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR003
+  kind: add
+  if:
+  - found=MEM_LEAK
+  - found=UNCLASSIFIED
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR004
+  kind: add
+  if:
+  - found=CONST_CONDITION
+  - found=NULL_DEREF
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR005
+  kind: suppress
+  if:
+  - found=ASSIGN_IN_COND
+  - found=MEM_LEAK
+  then: MEM_LEAK
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR006
+  kind: add
+  if:
+  - feat=free
+  - found=MEM_LEAK
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR007
+  kind: add
+  if:
+  - found=MEM_LEAK
+  - found=NULL_DEREF
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR008
+  kind: suppress
+  if:
+  - found=MEM_LEAK
+  - found=UNCLASSIFIED
+  then: MEM_LEAK
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR009
+  kind: add
+  if:
+  - feat=array_index
+  - found=UNCLASSIFIED
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR010
+  kind: add
+  if:
+  - found=CONST_CONDITION
+  - found=MEM_LEAK
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR011
+  kind: add
+  if:
+  - found=CONST_CONDITION
+  - found=UNCLASSIFIED
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR012
+  kind: add
+  if:
+  - feat=malloc
+  - found=UNCLASSIFIED
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR013
+  kind: add
+  if:
+  - feat=free
+  - found=UNCLASSIFIED
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR014
+  kind: suppress
+  if:
+  - found=MEM_LEAK
+  - found=NULL_DEREF
+  then: MEM_LEAK
+  support: 0.0593
+  confidence: 1.0
+  lift: 16.88
+  count: 8
+- id: MR015
+  kind: suppress
+  if:
+  - found=MISSING_BRACES
+  - found=STRAY_SEMICOLON
+  then: MISSING_BRACES
+  support: 0.1185
+  confidence: 1.0
+  lift: 8.44
+  count: 16
+- id: MR016
+  kind: add
+  if:
+  - feat=long_long
+  - found=MISSING_BRACES
+  then: STRAY_SEMICOLON
+  support: 0.0519
+  confidence: 1.0
+  lift: 8.44
+  count: 7
+- id: MR017
+  kind: suppress
+  if:
+  - found=ARRAY_OOB
+  - found=UNINIT_VAR
+  then: ARRAY_OOB
+  support: 0.0519
+  confidence: 1.0
+  lift: 8.44
+  count: 7
+- id: MR018
+  kind: suppress
+  if:
+  - found=ARRAY_OOB
+  - found=DANGLING_PTR
+  - verdict=RE
+  then: ARRAY_OOB
+  support: 0.037
+  confidence: 1.0
+  lift: 8.44
+  count: 5
+- id: MR019
+  kind: add
+  if:
+  - verdict=TLE
+  then: INFINITE_LOOP
+  support: 0.1778
+  confidence: 1.0
+  lift: 4.66
+  count: 24
+- id: MR020
+  kind: suppress
+  if:
+  - found=ARRAY_OOB
+  - found=UNINIT_VAR
+  then: UNINIT_VAR
+  support: 0.0519
+  confidence: 1.0
+  lift: 4.22
+  count: 7
+- id: MR021
+  kind: suppress
+  if:
+  - found=MISSING_BRACES
+  - found=SCANF_MISSING_AMP
+  - found=UNINIT_VAR
+  then: UNINIT_VAR
+  support: 0.0444
+  confidence: 1.0
+  lift: 4.22
+  count: 6
+- id: MR022
+  kind: suppress
+  if:
+  - found=MISSING_BRACES
+  - found=NULL_DEREF
+  - found=UNINIT_VAR
+  then: UNINIT_VAR
+  support: 0.0444
+  confidence: 1.0
+  lift: 4.22
+  count: 6
+- id: MR023
+  kind: suppress
+  if:
+  - found=MISSING_BRACES
+  - found=UNINIT_VAR
+  - verdict=RE
+  then: UNINIT_VAR
+  support: 0.0444
+  confidence: 1.0
+  lift: 4.22
+  count: 6
+- id: MR024
+  kind: suppress
+  if:
+  - found=FORMAT_MISMATCH
+  - found=SCANF_MISSING_AMP
+  - found=UNINIT_VAR
+  then: UNINIT_VAR
+  support: 0.0444
+  confidence: 1.0
+  lift: 4.22
+  count: 6
+- id: MR025
+  kind: suppress
+  if:
+  - found=FORMAT_MISMATCH
+  - found=UNINIT_VAR
+  - verdict=RE
+  then: UNINIT_VAR
+  support: 0.0444
+  confidence: 1.0
+  lift: 4.22
+  count: 6
+- id: MR026
+  kind: add
+  if:
+  - found=UNINIT_VAR
+  - verdict=RE
+  then: SCANF_MISSING_AMP
+  support: 0.2667
+  confidence: 1.0
+  lift: 3.07
+  count: 36
+- id: MR027
+  kind: add
+  if:
+  - found=NULL_DEREF
+  - found=UNINIT_VAR
+  then: SCANF_MISSING_AMP
+  support: 0.2148
+  confidence: 1.0
+  lift: 3.07
+  count: 29
+- id: MR028
+  kind: add
+  if:
+  - feat=division
+  - verdict=RE
+  then: SCANF_MISSING_AMP
+  support: 0.1185
+  confidence: 1.0
+  lift: 3.07
+  count: 16
+- id: MR029
+  kind: add
+  if:
+  - feat=double
+  - verdict=RE
+  then: SCANF_MISSING_AMP
+  support: 0.1185
+  confidence: 1.0
+  lift: 3.07
+  count: 16
+- id: MR030
+  kind: add
+  if:
+  - feat=division
+  - found=NULL_DEREF
+  then: SCANF_MISSING_AMP
+  support: 0.1185
+  confidence: 1.0
+  lift: 3.07
+  count: 16
+- id: MR031
+  kind: add
+  if:
+  - feat=double
+  - found=NULL_DEREF
+  then: SCANF_MISSING_AMP
+  support: 0.1185
+  confidence: 1.0
+  lift: 3.07
+  count: 16
+- id: MR032
+  kind: add
+  if:
+  - feat=long_long
+  - verdict=RE
+  then: SCANF_MISSING_AMP
+  support: 0.0889
+  confidence: 1.0
+  lift: 3.07
+  count: 12
+- id: MR033
+  kind: add
+  if:
+  - feat=long_long
+  - found=NULL_DEREF
+  then: SCANF_MISSING_AMP
+  support: 0.0889
+  confidence: 1.0
+  lift: 3.07
+  count: 12
+- id: MR034
+  kind: add
+  if:
+  - found=ARRAY_OOB
+  - found=UNINIT_VAR
+  then: SCANF_MISSING_AMP
+  support: 0.0519
+  confidence: 1.0
+  lift: 3.07
+  count: 7
+- id: MR035
+  kind: add
+  if:
+  - found=MISSING_BRACES
+  - found=NULL_DEREF
+  then: SCANF_MISSING_AMP
+  support: 0.0444
+  confidence: 1.0
+  lift: 3.07
+  count: 6
+- id: MR036
+  kind: add
+  if:
+  - found=MISSING_BRACES
+  - verdict=RE
+  then: SCANF_MISSING_AMP
+  support: 0.0444
+  confidence: 1.0
+  lift: 3.07
+  count: 6
+- id: MR037
+  kind: add
+  if:
+  - found=FORMAT_MISMATCH
+  - verdict=RE
+  then: SCANF_MISSING_AMP
+  support: 0.0444
+  confidence: 1.0
+  lift: 3.07
+  count: 6
+- id: MR038
+  kind: add
+  if:
+  - feat=array_index
+  - found=UNINIT_VAR
+  then: SCANF_MISSING_AMP
+  support: 0.0444
+  confidence: 1.0
+  lift: 3.07
+  count: 6
+- id: MR039
+  kind: add
+  if:
+  - feat=free
+  - found=UNINIT_VAR
+  then: SCANF_MISSING_AMP
+  support: 0.0444
+  confidence: 1.0
+  lift: 3.07
+  count: 6
+- id: MR040
+  kind: add
+  if:
+  - feat=malloc
+  - found=UNINIT_VAR
+  then: SCANF_MISSING_AMP
+  support: 0.0444
+  confidence: 1.0
+  lift: 3.07
+  count: 6
+- id: MR041
+  kind: suppress
+  if:
+  - found=ARRAY_OOB
+  - verdict=RE
+  then: ARRAY_OOB
+  support: 0.1037
+  confidence: 0.9333
+  lift: 7.88
+  count: 14
+- id: MR042
+  kind: add
+  if:
+  - found=ARRAY_OOB
+  - verdict=RE
+  then: SCANF_MISSING_AMP
+  support: 0.1037
+  confidence: 0.9333
+  lift: 2.86
+  count: 14
+- id: MR043
+  kind: suppress
+  if:
+  - found=ARRAY_OOB
+  - found=SCANF_MISSING_AMP
+  then: ARRAY_OOB
+  support: 0.0963
+  confidence: 0.9286
+  lift: 7.83
+  count: 13
+- id: MR044
+  kind: add
+  if:
+  - found=UNCLASSIFIED
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 0.8889
+  lift: 15.0
+  count: 8
+- id: MR045
+  kind: suppress
+  if:
+  - found=MEM_LEAK
+  - verdict=RE
+  then: MEM_LEAK
+  support: 0.0593
+  confidence: 0.8889
+  lift: 15.0
+  count: 8
+- id: MR046
+  kind: add
+  if:
+  - found=MEM_LEAK
+  - verdict=RE
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 0.8889
+  lift: 15.0
+  count: 8
+- id: MR047
+  kind: add
+  if:
+  - feat=free
+  - found=NULL_DEREF
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 0.8889
+  lift: 15.0
+  count: 8
+- id: MR048
+  kind: add
+  if:
+  - found=CONST_CONDITION
+  - verdict=RE
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 0.8889
+  lift: 15.0
+  count: 8
+- id: MR049
+  kind: add
+  if:
+  - feat=malloc
+  - found=NULL_DEREF
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 0.8889
+  lift: 15.0
+  count: 8
+- id: MR050
+  kind: add
+  if:
+  - feat=array_index
+  - found=NULL_DEREF
+  then: ASSIGN_IN_COND
+  support: 0.0593
+  confidence: 0.8889
+  lift: 15.0
+  count: 8
+- id: MR051
+  kind: suppress
+  if:
+  - found=SCANF_MISSING_AMP
+  - found=UNINIT_VAR
+  then: UNINIT_VAR
+  support: 0.237
+  confidence: 0.8889
+  lift: 3.75
+  count: 32
+- id: MR052
+  kind: suppress
+  if:
+  - found=UNINIT_VAR
+  - verdict=RE
+  then: UNINIT_VAR
+  support: 0.237
+  confidence: 0.8889
+  lift: 3.75
+  count: 32
+- id: MR053
+  kind: suppress
+  if:
+  - found=NULL_DEREF
+  - found=UNINIT_VAR
+  then: UNINIT_VAR
+  support: 0.1852
+  confidence: 0.8621
+  lift: 3.64
+  count: 25
+- id: MR054
+  kind: suppress
+  if:
+  - found=ARRAY_OOB
+  - found=DANGLING_PTR
+  then: ARRAY_OOB
+  support: 0.037
+  confidence: 0.8333
+  lift: 7.03
+  count: 5
+- id: MR055
+  kind: add
+  if:
+  - found=NULL_DEREF
+  then: SCANF_MISSING_AMP
+  support: 0.2222
+  confidence: 0.8108
+  lift: 2.49
+  count: 30
+- id: MR056
+  kind: add
+  if:
+  - verdict=RE
+  then: SCANF_MISSING_AMP
+  support: 0.3259
+  confidence: 0.7857
+  lift: 2.41
+  count: 44
+- id: MR057
+  kind: add
+  if:
+  - found=DANGLING_PTR
+  - verdict=RE
+  then: DOUBLE_FREE
+  support: 0.0519
+  confidence: 0.7778
+  lift: 10.5
+  count: 7
+- id: MR058
+  kind: add
+  if:
+  - feat=cast
+  - found=UNINIT_VAR
+  then: SCANF_MISSING_AMP
+  support: 0.1481
+  confidence: 0.7692
+  lift: 2.36
+  count: 20
+- id: MR059
+  kind: add
+  if:
+  - feat=if
+  - found=UNINIT_VAR
+  then: SCANF_MISSING_AMP
+  support: 0.163
+  confidence: 0.7586
+  lift: 2.33
+  count: 22
+- id: MR060
+  kind: add
+  if:
+  - feat=malloc
+  - verdict=WA
+  then: OFF_BY_ONE
+  support: 0.0444
+  confidence: 0.75
+  lift: 2.66
+  count: 6
+- id: MR061
+  kind: add
+  if:
+  - feat=array_index
+  - verdict=WA
+  then: OFF_BY_ONE
+  support: 0.0444
+  confidence: 0.75
+  lift: 2.66
+  count: 6
+- id: MR062
+  kind: add
+  if:
+  - found=UNINIT_VAR
+  then: SCANF_MISSING_AMP
+  support: 0.2667
+  confidence: 0.7347
+  lift: 2.25
+  count: 36
+- id: MR063
+  kind: add
+  if:
+  - feat=free
+  - verdict=WA
+  then: OFF_BY_ONE
+  support: 0.037
+  confidence: 0.7143
+  lift: 2.54
+  count: 5
