@@ -8,6 +8,7 @@ from typing import Annotated
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse
+from pydantic import BaseModel, Field
 
 from .agents.orchestrator import SubmissionNotFound, Tutor
 from .config import load_settings
@@ -29,6 +30,14 @@ from .schemas import (
     TutorResponse,
 )
 from .storage import Storage
+
+
+class ChatMessage(BaseModel):
+    student_id: str = Field(min_length=1, max_length=64)
+    message: str = Field(min_length=1, max_length=2000)
+    submission_id: str | None = None  # bài nộp đang xem (ngữ cảnh), mặc định là bài mới nhất
+    problem_id: str | None = None  # bài tập đang chọn
+
 
 FRONTEND = Path(__file__).resolve().parents[2] / "frontend"
 UI_FILE = FRONTEND / "v0" / "index.html"
@@ -176,6 +185,15 @@ def build_app(settings=None) -> FastAPI:
         if sub.language not in problem.meta.languages:
             raise HTTPException(400, f"Bài {sub.problem_id} không nhận ngôn ngữ {sub.language}")
         return app.state.tutor.submit(sub, mode)
+
+    @app.post("/tutor/chat")
+    def tutor_chat(msg: ChatMessage):
+        """Hội thoại: Chat Agent chọn agent phù hợp (chẩn đoán, lộ trình, khái niệm, hồ sơ)."""
+        from .agents.chat import ChatAgent
+
+        return ChatAgent(app.state.tutor).reply(
+            msg.student_id, msg.message, msg.submission_id, msg.problem_id
+        )
 
     @app.get("/knowledge/concepts")
     def knowledge_concepts():

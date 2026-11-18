@@ -99,6 +99,21 @@
   #tip { position: fixed; pointer-events: none; z-index: 10; padding: 6px 9px; border-radius: 6px;
          background: var(--panel); border: 1px solid var(--line); font-size: 12px;
          box-shadow: 0 4px 16px rgba(0,0,0,.15); display: none; max-width: 260px; }
+  /* hội thoại */
+  #chat-log { display: flex; flex-direction: column; gap: 8px; max-height: 520px; overflow: auto;
+              padding: 2px; }
+  .msg { max-width: 88%; padding: 8px 11px; border-radius: 10px; white-space: pre-wrap;
+         overflow-wrap: anywhere; }
+  .msg.me { align-self: flex-end; background: var(--accent); color: #fff;
+            border-bottom-right-radius: 3px; }
+  .msg.bot { align-self: flex-start; background: var(--bg); border: 1px solid var(--line);
+             border-bottom-left-radius: 3px; }
+  .msg .meta { display: block; font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .msg a { color: var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .chips button { font-size: 12px; padding: 4px 10px; border-radius: 999px; }
+  #chat-form { display: flex; gap: 8px; }
+  #chat-input { flex: 1; }
   dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel);
            color: var(--text); max-width: 560px; width: calc(100% - 32px); padding: 18px; }
   dialog::backdrop { background: rgba(0,0,0,.35); }
@@ -149,9 +164,22 @@ int main(void) {
   <section>
     <div class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-tab="result">Kết quả</button>
+      <button role="tab" aria-selected="false" data-tab="chat">Hỏi trợ lý</button>
       <button role="tab" aria-selected="false" data-tab="profile">Hồ sơ năng lực</button>
     </div>
     <div id="tab-result"><div class="muted">Chưa có lần nộp.</div></div>
+    <div id="tab-chat" hidden>
+      <div id="chat-log" aria-live="polite">
+        <div class="msg bot">Chào bạn! Mình có thể giải thích lỗi trong bài vừa nộp, gợi ý nên học gì
+tiếp, giải thích khái niệm C/C++ hoặc gợi ý hướng làm bài đang chọn.</div>
+      </div>
+      <div class="chips" id="chat-chips"></div>
+      <form id="chat-form">
+        <input id="chat-input" placeholder="Hỏi trợ lý… (vd. con trỏ là gì?)" autocomplete="off"
+               maxlength="2000" aria-label="Câu hỏi cho trợ lý">
+        <button>Gửi</button>
+      </form>
+    </div>
     <div id="tab-profile" hidden><div class="muted">Nhập mã sinh viên để xem hồ sơ.</div></div>
   </section>
 </main>
@@ -299,6 +327,9 @@ function renderResult(res) {
     html += `<details><summary>Thông báo của trình biên dịch</summary><pre>${esc(g.compile_output)}</pre></details>`;
 
   $("tab-result").innerHTML = html;
+  lastSubmission = res.report.submission_id;
+  setChips(g.verdict === "AC" ? ["Mình nên học gì tiếp?", "Mình đang yếu phần nào?"]
+                              : ["Vì sao bài mình sai?", "Mình nên học gì tiếp?"]);
   $("tab-result").querySelectorAll("a[data-problem]").forEach((a) =>
     a.addEventListener("click", (e) => { e.preventDefault(); selectProblem(a.dataset.problem); }));
 }
@@ -393,7 +424,9 @@ function showTab(name) {
   document.querySelectorAll(".tabs button").forEach((b) =>
     b.setAttribute("aria-selected", String(b.dataset.tab === name)));
   $("tab-result").hidden = name !== "result";
+  $("tab-chat").hidden = name !== "chat";
   $("tab-profile").hidden = name !== "profile";
+  if (name === "chat") $("chat-input").focus();
   if (name === "profile") loadProfile().catch((e) =>
     $("tab-profile").innerHTML = `<div class="error">${esc(e.message)}</div>`);
 }
@@ -425,6 +458,72 @@ $("style-dialog").addEventListener("close", async () => {
   renderStyleButton(r.styles);
   if (!$("tab-profile").hidden) loadProfile();
 });
+
+// ------------------------------------------------------------ hội thoại
+
+let lastSubmission = null;
+const AGENT_NAMES = { diagnosis: "Diagnosis Agent", learning_path: "Learning-Path Agent",
+                      knowledge_graph: "Knowledge Graph", profile: "Hồ sơ năng lực", help: "Trợ lý" };
+
+function addMsg(who, text, meta = "", links = []) {
+  const div = document.createElement("div");
+  div.className = `msg ${who}`;
+  div.textContent = text;
+  for (const l of links) {
+    div.append(document.createElement("br"));
+    const a = document.createElement("a");
+    a.href = l.href; a.target = "_blank"; a.textContent = l.label;
+    div.append(a);
+  }
+  if (meta) {
+    const m = document.createElement("span");
+    m.className = "meta"; m.textContent = meta;
+    div.append(m);
+  }
+  $("chat-log").append(div);
+  $("chat-log").scrollTop = $("chat-log").scrollHeight;
+  return div;
+}
+
+function setChips(list) {
+  $("chat-chips").innerHTML = "";
+  for (const q of list) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "ghost"; b.textContent = q;
+    b.addEventListener("click", () => ask(q));
+    $("chat-chips").append(b);
+  }
+}
+
+async function ask(text) {
+  if (!text.trim()) return;
+  if (!sid()) { addMsg("bot", "Bạn nhập mã sinh viên ở góc trên trước nhé."); return; }
+  showTab("chat");
+  addMsg("me", text);
+  const wait = addMsg("bot", "…");
+  try {
+    const r = await api("/tutor/chat", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ student_id: sid(), message: text, submission_id: lastSubmission,
+                             problem_id: current?.id ?? null }),
+    });
+    wait.remove();
+    const meta = AGENT_NAMES[r.agent] + (r.llm_provider ? ` · diễn đạt bởi ${r.llm_provider}` : "");
+    addMsg("bot", r.text, meta, r.links);
+    setChips(r.suggestions);
+  } catch (e) {
+    wait.remove();
+    addMsg("bot", "Có lỗi: " + e.message);
+  }
+}
+
+$("chat-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const text = $("chat-input").value;
+  $("chat-input").value = "";
+  ask(text);
+});
+setChips(["Gợi ý bài này", "Con trỏ là gì?", "Mình đang yếu phần nào?"]);
 
 // ------------------------------------------------------------ khởi động
 
