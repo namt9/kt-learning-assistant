@@ -169,3 +169,44 @@ def test_node_detail(driver, loaded):
     assert code["props"]["created_at"].startswith("2026-11-10")  # DateTime -> chuỗi ISO
     assert ("in", "SUBMITTED") in {(link["dir"], link["type"]) for link in code["links"]}
     assert q.node("KHONG_TON_TAI") is None
+
+
+def test_offline_learning_path_matches_kg(driver, kb, loaded):
+    """Chế độ dự phòng (YAML) phải suy ra đúng lộ trình như truy vấn trên Neo4j."""
+    from backend.app.agents.learning_path import LearningPathAgent
+
+    history = {"SCANF_MISSING_AMP", "UNINIT_VAR"}  # lỗi sv_a từng mắc trong fixture `loaded`
+    for bugs, styles in ((["MEM_LEAK"], ["visual"]), (["OFF_BY_ONE"], ["active"]),
+                         (["DANGLING_PTR", "UNINIT_VAR"], [])):  # fmt: skip
+        on_kg = KGQueries(driver).learning_path("sv_a", bugs, styles, max_steps=10)
+        offline = LearningPathAgent(kb).offline("sv_a", bugs, styles, history, max_steps=10)
+        assert [(s.concept, s.action_id, s.reason) for s in on_kg.steps] == [
+            (s.concept, s.action_id, s.reason) for s in offline.steps
+        ], bugs
+
+
+def test_upsert_submission_skips_suppressed(driver, loaded):
+    from backend.app.kg.loader import upsert_submission
+
+    r = _report("s9", "sv_c", ["SCANF_MISSING_AMP", "NULL_DEREF"], "2026-11-12T08:00:00+00:00")
+    r.findings[1] = r.findings[1].model_copy(update={"suppressed_by": "MR1"})
+    with driver.session() as s:
+        upsert_submission(s, r)
+        upsert_submission(s, r)  # chạy lại không tạo trùng
+    bugs = driver.execute_query(
+        "MATCH (:Student {id:'sv_c'})-[:SUBMITTED]->(:StudentCode {id:'s9'})-[:EXHIBITS]->(b) "
+        "RETURN collect(b.id) AS bugs"
+    ).records[0]["bugs"]
+    assert bugs == ["SCANF_MISSING_AMP"]
+
+
+def test_offline_kg_matches_neo4j(driver, kb, loaded):
+    from backend.app.kg.offline import OfflineKG
+
+    q, off = KGQueries(driver), OfflineKG(kb)
+    for code in ("MEM_LEAK", "UNINIT_VAR", "OFF_BY_ONE", "SCANF_MISSING_AMP"):
+        for styles in ([], ["visual"], ["active", "verbal"]):
+            assert off.remediation(code, styles, 3) == q.remediation(code, styles, 3), code
+    codes = ["DANGLING_PTR", "INT_DIVISION"]
+    assert [r["id"] for r in off.concepts_for_bugs(codes)] == [
+        r["id"] for r in q.concepts_for_bugs(codes)]  # fmt: skip

@@ -65,6 +65,8 @@ def test_operator_examples():
     lines = by_op["early_free"].source.splitlines()
     assert lines.index("    free(a);") < next(i for i, ln in enumerate(lines) if "printf" in ln)
     assert "malloc((n - 1) *" in by_op["short_alloc"].source
+    forgot = by_op["forget_malloc"].source  # quên cấp phát và cũng không kiểm tra NULL
+    assert "int *a = NULL;" in forgot and "== NULL" not in forgot and "malloc" not in forgot
     p001 = (ROOT / "data/problems/P001_tong_mang/solution.c").read_text()
     renamed = next(m for m in single_mutants(p001) if m.ops[0].startswith("rename_use"))
     assert 'printf("%lld\\n", Sum);' in renamed.source  # không đổi nhầm "\n" trong chuỗi
