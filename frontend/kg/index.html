@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge Graph C/C++</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"></script>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #fff; --text: #1d2330; --muted: #667085; --line: #e3e6eb;
+    --accent: #2457c5; --bad: #c0362c; --edge: #b4bcc8;
+    /* màu theo loại node */
+    --c-group: #6b7280; --c-concept: #2f6fdb; --c-bug: #d1453b; --c-action: #1f9d55;
+    --c-problem: #b7791f; --c-student: #8b5cf6; --c-code: #c084fc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151b; --panel: #1a1f27; --text: #e6e9ef; --muted: #98a2b3; --line: #2b323d;
+      --accent: #7aa2ff; --bad: #ff7b72; --edge: #465061;
+      --c-group: #9ca3af; --c-concept: #6b9cff; --c-bug: #ff7b72; --c-action: #4ac26b;
+      --c-problem: #e3b341; --c-student: #b69cff; --c-code: #d8b4fe;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: var(--bg); color: var(--text); display: flex; flex-direction: column; }
+  header { display: flex; align-items: center; gap: 12px; padding: 10px 16px; flex-wrap: wrap;
+           border-bottom: 1px solid var(--line); background: var(--panel); }
+  header h1 { font-size: 16px; margin: 0; flex: 1; min-width: 200px; }
+  header a { color: var(--accent); text-decoration: none; }
+  input, select, button { font: inherit; color: inherit; }
+  input[type=search], select { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px;
+                               background: var(--bg); }
+  button { padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px;
+           background: var(--bg); cursor: pointer; }
+  label.check { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+  main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 0; }
+  #cy { min-height: 0; }
+  aside { border-left: 1px solid var(--line); background: var(--panel); overflow: auto;
+          padding: 14px; }
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; grid-template-rows: 65vh auto; }
+    aside { border-left: 0; border-top: 1px solid var(--line); }
+  }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted);
+       margin: 0 0 8px; }
+  section + section { margin-top: 18px; }
+  .legend { list-style: none; margin: 0; padding: 0; }
+  .legend li { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+  .legend .dot { width: 12px; height: 12px; border-radius: 50%; flex: none; }
+  .legend .count { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .kind { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 8px;
+          border-radius: 999px; color: #fff; }
+  .title { font-size: 16px; font-weight: 600; margin: 6px 0 2px; overflow-wrap: anywhere; }
+  .muted { color: var(--muted); }
+  .error { color: var(--bad); }
+  dl { margin: 8px 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 10px; }
+  dt { color: var(--muted); }
+  dd { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+  .links { list-style: none; margin: 4px 0 10px; padding: 0; }
+  .links li { padding: 3px 6px; border-radius: 6px; cursor: pointer; }
+  .links li:hover { background: var(--bg); }
+  .rel { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 8px; }
+  .weak li { display: flex; justify-content: space-between; gap: 8px; }
+  #msg { position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+         padding: 24px; text-align: center; }
+  #msg pre { text-align: left; background: var(--panel); border: 1px solid var(--line);
+             padding: 10px 14px; border-radius: 8px; display: inline-block; }
+  .wrap { position: relative; min-height: 0; display: grid; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Knowledge Graph lỗi lập trình C/C++</h1>
+  <input type="search" id="search" placeholder="Tìm node (Enter)…" size="18">
+  <label class="check"><input type="checkbox" id="students"> Hiện sinh viên</label>
+  <select id="student" hidden><option value="">— Chọn sinh viên —</option></select>
+  <button id="relayout">Sắp xếp lại</button>
+  <a href="/">← Trợ lý học tập</a>
+</header>
+<main>
+  <div class="wrap">
+    <div id="cy"></div>
+    <div id="msg"></div>
+  </div>
+  <aside>
+    <section>
+      <h2>Loại node <span class="muted" style="text-transform:none">(bấm để ẩn/hiện)</span></h2>
+      <ul class="legend" id="legend"></ul>
+    </section>
+    <section id="student-panel" hidden>
+      <h2>Khái niệm yếu của sinh viên</h2>
+      <ul class="links weak" id="weak"></ul>
+    </section>
+    <section>
+      <h2>Chi tiết</h2>
+      <div id="detail" class="muted">Bấm vào một node để xem thuộc tính và các node kề.</div>
+    </section>
+  </aside>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g,
+  (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+const KINDS = {
+  ConceptGroup:      { name: "Nhóm khái niệm",    var: "--c-group",   shape: "round-rectangle", size: 46, font: 15 },
+  Concept:           { name: "Khái niệm",         var: "--c-concept", shape: "ellipse",         size: 30, font: 12 },
+  BugPattern:        { name: "Mẫu lỗi",           var: "--c-bug",     shape: "diamond",         size: 34, font: 12 },
+  PedagogicalAction: { name: "Hành động sư phạm", var: "--c-action",  shape: "round-rectangle", size: 22, font: 9 },
+  Problem:           { name: "Bài tập",           var: "--c-problem", shape: "rectangle",       size: 28, font: 12 },
+  Student:           { name: "Sinh viên",         var: "--c-student", shape: "star",            size: 42, font: 14 },
+  StudentCode:       { name: "Bài nộp",           var: "--c-code",    shape: "ellipse",         size: 16, font: 9 },
+};
+const RELS = {
+  PART_OF: "thuộc nhóm", PREREQUISITE_OF: "tiên quyết của", RELATED_TO: "liên quan khái niệm",
+  REMEDIATED_BY: "khắc phục bằng", TEACHES: "dạy", PRACTICES: "luyện", USES_PROBLEM: "dùng bài",
+  SUBMITTED: "đã nộp", FOR_PROBLEM: "cho bài", EXHIBITS: "mắc lỗi",
+};
+const hidden = new Set();
+let cy = null;
+
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+async function api(path) {
+  const r = await fetch(path);
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) throw Object.assign(new Error(body.detail || r.statusText), { status: r.status });
+  return body;
+}
+
+function style() {
+  const text = css("--text"), edge = css("--edge"), accent = css("--accent"), bg = css("--bg");
+  const s = [
+    { selector: "node", style: {
+        label: "data(name)", color: text, "min-zoomed-font-size": 11, "text-valign": "bottom",
+        "text-margin-y": 3, "text-wrap": "ellipsis", "text-max-width": 110,
+        "text-outline-color": bg, "text-outline-width": 2, "border-width": 0 } },
+    { selector: "edge", style: {
+        width: 1.2, "line-color": edge, "line-opacity": 0.7, "target-arrow-color": edge,
+        "target-arrow-shape": "triangle", "arrow-scale": 0.8, "curve-style": "bezier" } },
+    { selector: "edge[type = 'PREREQUISITE_OF']", style: { width: 2.2 } },
+    { selector: "edge[type = 'EXHIBITS']", style: {
+        "line-color": css("--c-bug"), "target-arrow-color": css("--c-bug") } },
+    { selector: "edge.show-label, edge:selected", style: {
+        label: "data(rel)", "font-size": 9, color: css("--muted"), "text-rotation": "autorotate",
+        "text-outline-color": bg, "text-outline-width": 2 } },
+    { selector: ".faded", style: { opacity: 0.12 } },
+    { selector: "node.weak", style: { "border-width": 4, "border-color": css("--c-bug") } },
+    { selector: "node:selected, node.focus", style: { "min-zoomed-font-size": 0, "z-index": 10 } },
+    { selector: "node:selected", style: { "border-width": 4, "border-color": accent } },
+    { selector: ".hidden", style: { display: "none" } },
+  ];
+  for (const [k, v] of Object.entries(KINDS)) {
+    s.push({ selector: `node[label = '${k}']`, style: {
+      "background-color": css(v.var), shape: v.shape, width: v.size, height: v.size,
+      "font-size": v.font } });
+  }
+  s.push({ selector: "node[label = 'StudentCode']", style: { label: "" } });
+  return s;
+}
+
+function layout() {
+  cy.layout({ name: "cose", animate: false, nodeRepulsion: () => 40000, idealEdgeLength: () => 110,
+              nodeOverlap: 40, gravity: 0.25, numIter: 2500, padding: 30 }).run();
+}
+
+function showMessage(html) {
+  $("msg").innerHTML = html;
+  $("msg").style.display = html ? "flex" : "none";
+}
+
+async function load() {
+  const withStudents = $("students").checked;
+  let g;
+  try {
+    g = await api(`/kg/graph?include_students=${withStudents}`);
+  } catch (e) {
+    showMessage(e.status === 503
+      ? `<div><p class="error">Chưa kết nối được Neo4j.</p><p>Bật Neo4j và nạp đồ thị rồi tải lại trang:</p>
+         <pre>docker compose up -d neo4j\npython -m backend.app.kg.load</pre></div>`
+      : `<p class="error">${esc(e.message)}</p>`);
+    return;
+  }
+  showMessage(g.nodes.length ? "" :
+    `<div><p>Đồ thị đang trống. Nạp dữ liệu:</p><pre>python -m backend.app.kg.load</pre></div>`);
+
+  const elements = [
+    ...g.nodes.map((n) => ({ group: "nodes", data: { ...n, name: displayName(n) } })),
+    ...g.edges.map((e, i) => ({ group: "edges",
+      data: { id: `e${i}`, source: e.source, target: e.target, type: e.type, rel: RELS[e.type] || e.type } })),
+  ];
+  if (!cy) {
+    cy = cytoscape({ container: $("cy"), elements, style: style(), wheelSensitivity: 0.3,
+                     minZoom: 0.1, maxZoom: 3 });
+    cy.on("tap", "node", (ev) => focusNode(ev.target.id()));
+    cy.on("tap", (ev) => { if (ev.target === cy) clearFocus(); });
+    cy.on("mouseover", "edge", (ev) => ev.target.addClass("show-label"));
+    cy.on("mouseout", "edge", (ev) => ev.target.removeClass("show-label"));
+  } else {
+    cy.elements().remove();
+    cy.add(elements);
+  }
+  applyHidden();
+  layout();
+  renderLegend();
+
+  const students = g.nodes.filter((n) => n.label === "Student").map((n) => n.id).sort();
+  const sel = $("student");
+  sel.hidden = !withStudents;
+  sel.innerHTML = `<option value="">— Chọn sinh viên (${students.length}) —</option>` +
+    students.map((s) => `<option>${esc(s)}</option>`).join("");
+  $("student-panel").hidden = true;
+}
+
+// Bài nộp không có tên: hiện kết quả chấm thay vì chỉ "AC"/"WA"
+const displayName = (n) => n.label === "StudentCode" ? `Bài nộp (${n.name})` : n.name;
+
+function renderLegend() {
+  const counts = {};
+  cy.nodes().forEach((n) => { counts[n.data("label")] = (counts[n.data("label")] || 0) + 1; });
+  $("legend").innerHTML = Object.entries(KINDS).filter(([k]) => counts[k]).map(([k, v]) => `
+    <li><label class="check" style="width:100%">
+      <input type="checkbox" data-kind="${k}" ${hidden.has(k) ? "" : "checked"}>
+      <span class="dot" style="background:${css(v.var)}"></span>${v.name}
+      <span class="count">${counts[k]}</span></label></li>`).join("");
+  $("legend").querySelectorAll("input").forEach((cb) => cb.addEventListener("change", () => {
+    cb.checked ? hidden.delete(cb.dataset.kind) : hidden.add(cb.dataset.kind);
+    applyHidden();
+  }));
+}
+
+function applyHidden() {
+  cy.nodes().forEach((n) => n.toggleClass("hidden", hidden.has(n.data("label"))));
+}
+
+function clearFocus() {
+  cy.elements().removeClass("faded focus");
+  cy.$(":selected").unselect();
+}
+
+function fade(keep) {
+  cy.elements().addClass("faded").removeClass("focus");
+  keep.removeClass("faded").addClass("focus");
+}
+
+async function focusNode(id) {
+  const node = cy.getElementById(id);
+  if (node.nonempty()) {
+    cy.$(":selected").unselect();
+    node.select();
+    const around = node.closedNeighborhood();
+    fade(around);
+    cy.animate({ fit: { eles: around, padding: 60 }, duration: 300 });
+  }
+  $("detail").classList.remove("muted");
+  $("detail").textContent = "Đang tải…";
+  try {
+    renderDetail(await api(`/kg/nodes/${encodeURIComponent(id)}`));
+  } catch (e) {
+    $("detail").innerHTML = `<span class="error">${esc(e.message)}</span>`;
+  }
+}
+
+const PROP_NAMES = {
+  name: "Tên", title: "Tiêu đề", description: "Mô tả", hint: "Gợi ý", content: "Nội dung",
+  level: "Mức độ", depth: "Độ sâu tiên quyết", type: "Loại", styles: "Phong cách học",
+  detected_by: "Phát hiện bởi", verdict: "Kết quả", score: "Điểm", language: "Ngôn ngữ",
+  created_at: "Thời điểm nộp",
+};
+
+function renderDetail(d) {
+  const kind = KINDS[d.label] || { name: d.label, var: "--muted" };
+  const p = d.props;
+  const order = Object.keys(PROP_NAMES).filter((k) => k in p && !(k === "name" || k === "title"));
+  let html = `<span class="kind" style="background:${css(kind.var)}">${esc(kind.name)}</span>
+    <div class="title">${esc(p.name || p.title || p.id)}</div>
+    <div class="muted">${esc(p.id)}</div><dl>`;
+  for (const k of order) {
+    const v = Array.isArray(p[k]) ? p[k].join(", ") : p[k];
+    html += `<dt>${PROP_NAMES[k]}</dt><dd>${esc(v)}</dd>`;
+  }
+  html += `</dl>`;
+
+  const groups = {};
+  for (const l of d.links) (groups[`${l.dir}:${l.type}`] ||= []).push(l);
+  for (const [key, links] of Object.entries(groups)) {
+    const [dir, type] = key.split(":");
+    const rel = RELS[type] || type;
+    const head = dir === "out" ? `→ ${rel}` : `← được “${rel}” bởi`;
+    html += `<div class="rel">${esc(head)} (${links.length})</div><ul class="links">` +
+      links.map((l) => `<li data-id="${esc(l.id)}"><span class="dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${css((KINDS[l.label] || {}).var || "--muted")}"></span>
+        ${esc(displayName(l))}</li>`).join("") + `</ul>`;
+  }
+  $("detail").innerHTML = html;
+  $("detail").querySelectorAll("li[data-id]").forEach((li) =>
+    li.addEventListener("click", () => focusNode(li.dataset.id)));
+}
+
+async function focusStudent(sid) {
+  cy.nodes().removeClass("weak");
+  if (!sid) { $("student-panel").hidden = true; clearFocus(); return; }
+  // Sinh viên -> bài nộp -> lỗi mắc phải -> khái niệm liên quan + hành động khắc phục
+  const s = cy.getElementById(sid);
+  const codes = s.outgoers("edge[type = 'SUBMITTED']").targets();
+  const bugs = codes.outgoers("edge[type = 'EXHIBITS']").targets();
+  const next = bugs.outgoers("edge[type = 'REMEDIATED_BY'], edge[type = 'RELATED_TO']");
+  const keep = s.union(codes).union(bugs).union(next.targets());
+  fade(keep.union(keep.edgesWith(keep)));
+  cy.animate({ fit: { eles: keep, padding: 40 }, duration: 300 });
+
+  $("student-panel").hidden = false;
+  $("weak").innerHTML = `<li class="muted">Đang tải…</li>`;
+  try {
+    const weak = await api(`/kg/students/${encodeURIComponent(sid)}/weak-concepts`);
+    weak.forEach((w) => cy.getElementById(w.id).addClass("weak"));
+    $("weak").innerHTML = weak.length ? weak.map((w) =>
+      `<li data-id="${esc(w.id)}"><span>${esc(w.name)}</span>
+        <span class="muted" title="${esc(w.bugs.join(", "))}">${w.weight} lần</span></li>`).join("")
+      : `<li class="muted">Chưa mắc lỗi nào</li>`;
+    $("weak").querySelectorAll("li[data-id]").forEach((li) =>
+      li.addEventListener("click", () => focusNode(li.dataset.id)));
+  } catch (e) {
+    $("weak").innerHTML = `<li class="error">${esc(e.message)}</li>`;
+  }
+}
+
+function hashParams() {
+  return new URLSearchParams(location.hash.slice(1));
+}
+
+async function start() {
+  const h = hashParams();
+  if (h.has("student")) $("students").checked = true;
+  await load();
+  if (!cy) return;
+  if (h.get("student")) {
+    $("student").value = h.get("student");
+    await focusStudent(h.get("student"));
+  }
+  if (h.get("node")) await focusNode(h.get("node"));
+}
+
+$("search").addEventListener("keydown", (e) => {
+  if (e.key !== "Enter" || !cy) return;
+  const q = e.target.value.trim().toLowerCase();
+  if (!q) return clearFocus();
+  const hit = cy.nodes(":visible").filter((n) =>
+    n.id().toLowerCase().includes(q) || String(n.data("name")).toLowerCase().includes(q));
+  if (hit.empty()) { e.target.setCustomValidity("Không tìm thấy"); e.target.reportValidity(); return; }
+  e.target.setCustomValidity("");
+  if (hit.length === 1) return focusNode(hit.id());
+  fade(hit);
+  cy.animate({ fit: { eles: hit, padding: 60 }, duration: 300 });
+});
+$("search").addEventListener("input", (e) => e.target.setCustomValidity(""));
+$("students").addEventListener("change", load);
+$("student").addEventListener("change", (e) => focusStudent(e.target.value));
+$("relayout").addEventListener("click", () => cy && layout());
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  if (cy) { cy.style(style()); renderLegend(); }
+});
+
+start();
+</script>
+</body>
+</html>

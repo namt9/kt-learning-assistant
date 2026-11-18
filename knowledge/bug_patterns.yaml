@@ -51,7 +51,7 @@ bug_patterns:
     hint: Không có {} thì if/for/while chỉ áp dụng cho MỘT câu lệnh ngay sau nó; các dòng thụt lề phía dưới vẫn chạy bên ngoài. Hãy bọc khối lệnh trong {} (và kiểm tra dấu ";" thừa).
   - code: SCANF_MISSING_AMP
     name: Thiếu "&" khi đọc biến bằng scanf
-    concepts: [con_tro, nhap_xuat]
+    concepts: [nhap_xuat, dia_chi, truyen_tham_chieu]
     detected_by: [gcc, cppcheck, custom_rule]
     hint: scanf cần địa chỉ của biến để ghi giá trị vào, hãy viết scanf("%d", &x). Riêng mảng ký tự đọc bằng %s thì không cần "&".
   - code: FORMAT_MISMATCH
@@ -66,7 +66,7 @@ bug_patterns:
     hint: Chia hai số nguyên trong C cho kết quả nguyên (5/2 = 2). Muốn ra số thực, hãy ép kiểu một toán hạng, ví dụ (double)a / b.
   - code: INT_OVERFLOW
     name: Tràn số nguyên
-    concepts: [kieu_du_lieu]
+    concepts: [kieu_du_lieu, tran_so]
     detected_by: [ubsan]
     hint: Kết quả vượt quá phạm vi của kiểu int (khoảng ±2.1 tỉ). Hãy dùng long long cho tổng hoặc tích lớn.
   - code: DIV_BY_ZERO
@@ -87,33 +87,33 @@ bug_patterns:
     hint: Mảng n phần tử có chỉ số từ 0 đến n-1. Vòng lặp bắt đầu từ 0 thì điều kiện thường là i < n, không phải i <= n.
   - code: ARRAY_OOB
     name: Truy cập mảng ngoài phạm vi
-    concepts: [mang, bo_nho]
+    concepts: [mang, tran_bo_dem, bo_nho]
     detected_by: [gcc, cppcheck, asan, ubsan]
     hint: Chương trình đọc hoặc ghi ra ngoài vùng nhớ của mảng. Hãy kiểm tra chỉ số lớn nhất và kích thước khai báo của mảng.
   - code: NULL_DEREF
     name: Giải tham chiếu con trỏ NULL
-    concepts: [con_tro]
+    concepts: [con_tro, con_tro_null]
     detected_by: [cppcheck, asan, ubsan]
     hint: Con trỏ đang là NULL (hoặc chưa trỏ tới vùng nhớ hợp lệ) mà vẫn được dùng. Hãy kiểm tra kết quả malloc và khởi tạo con trỏ trước khi dùng.
   - code: MEM_LEAK
     name: Rò rỉ bộ nhớ (malloc/new không giải phóng)
-    concepts: [cap_phat_dong, quan_ly_bo_nho]
+    concepts: [cap_phat_dong, giai_phong_bo_nho, quan_ly_bo_nho]
     detected_by: [cppcheck, asan, custom_rule]
     hint: Vùng nhớ cấp phát bằng malloc/calloc/new phải được giải phóng bằng free/delete khi không dùng nữa.
   - code: DOUBLE_FREE
     name: Giải phóng bộ nhớ hai lần
-    concepts: [cap_phat_dong, quan_ly_bo_nho]
+    concepts: [giai_phong_bo_nho, quan_ly_bo_nho]
     detected_by: [cppcheck, asan]
     hint: Một vùng nhớ chỉ được free một lần. Sau khi free hãy gán con trỏ = NULL để tránh free lại.
   - code: DANGLING_PTR
     name: Dùng con trỏ sau khi đã free / trỏ tới biến cục bộ đã hết phạm vi
-    concepts: [con_tro, quan_ly_bo_nho]
+    concepts: [con_tro, pham_vi_bien, stack_heap, giai_phong_bo_nho]
     detected_by: [gcc, cppcheck, asan]
     hint: Con trỏ đang trỏ tới vùng nhớ đã bị giải phóng hoặc đã hết phạm vi. Không trả về địa chỉ biến cục bộ, và không dùng con trỏ sau khi free.
   # ---- Theo kết quả chấm ----
   - code: INFINITE_LOOP
     name: Vòng lặp không dừng / thuật toán quá chậm
-    concepts: [vong_lap, do_phuc_tap]
+    concepts: [vong_lap, de_quy, do_phuc_tap]
     detected_by: [judge]
     hint: Chương trình chạy quá thời gian cho phép. Hãy kiểm tra điều kiện dừng và biến đếm của vòng lặp, hoặc giảm độ phức tạp thuật toán.
   - code: UNCLASSIFIED

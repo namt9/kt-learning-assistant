@@ -9,5 +9,16 @@ services:
     volumes:
       - neo4j_data:/data
 
+  # LLM local dự phòng, chỉ chạy khi gọi: docker compose --profile ollama up -d
+  # Tải model lần đầu: docker compose exec ollama ollama pull qwen2.5:7b-instruct
+  ollama:
+    image: ollama/ollama:0.12.6
+    profiles: ["ollama"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
 volumes:
   neo4j_data:
+  ollama_data:

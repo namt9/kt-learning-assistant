@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trợ lý học tập C/C++</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #fff; --text: #1d2330; --muted: #667085; --line: #e3e6eb;
+    --accent: #2457c5; --ok: #1a7f37; --bad: #c0362c; --warn: #a15c00;
+    --code-bg: #0f1724; --code-text: #e6edf3;
+    /* thanh đo mức thành thạo: một màu xanh (thang tuần tự), rãnh là bậc nhạt hơn cùng màu */
+    --meter-fill: #2a78d6; --meter-track: #cde2fb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12151b; --panel: #1a1f27; --text: #e6e9ef; --muted: #98a2b3; --line: #2b323d;
+      --accent: #7aa2ff; --ok: #4ac26b; --bad: #ff7b72; --warn: #e3b341;
+      --meter-fill: #3987e5; --meter-track: #184f95;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: var(--bg); color: var(--text); }
+  header { display: flex; align-items: center; gap: 12px; padding: 10px 20px; flex-wrap: wrap;
+           border-bottom: 1px solid var(--line); background: var(--panel); }
+  header h1 { font-size: 16px; margin: 0; flex: 1; min-width: 200px; }
+  header a { color: var(--accent); text-decoration: none; }
+  input, select, button, textarea { font: inherit; color: inherit; }
+  input, select { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px;
+                  background: var(--bg); }
+  button { padding: 7px 14px; border: 0; border-radius: 6px; background: var(--accent);
+           color: #fff; cursor: pointer; font-weight: 600; }
+  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line);
+                 font-weight: 500; }
+  button:disabled { opacity: .6; cursor: progress; }
+  main { display: grid; grid-template-columns: 240px minmax(0, 1fr) minmax(0, 1.15fr); gap: 16px;
+         padding: 16px 20px; }
+  @media (max-width: 1100px) { main { grid-template-columns: 1fr; } }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+            padding: 14px; min-width: 0; }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted);
+       margin: 0 0 10px; }
+  h3 { font-size: 14px; margin: 18px 0 8px; }
+  ul.list { list-style: none; margin: 0; padding: 0; }
+  ul.list li { padding: 7px 10px; border-radius: 6px; cursor: pointer; }
+  ul.list li:hover { background: var(--bg); }
+  ul.list li.active { background: var(--accent); color: #fff; }
+  .statement { white-space: pre-wrap; background: var(--bg); padding: 10px; border-radius: 6px;
+               max-height: 200px; overflow: auto; margin-bottom: 10px; }
+  textarea { width: 100%; min-height: 340px; resize: vertical; padding: 10px;
+             font: 13px/1.45 ui-monospace, "JetBrains Mono", Consolas, monospace;
+             background: var(--code-bg); color: var(--code-text); border-radius: 6px;
+             border: 1px solid var(--line); tab-size: 4; }
+  .row { display: flex; gap: 8px; align-items: center; margin: 8px 0; flex-wrap: wrap; }
+  .muted { color: var(--muted); }
+  .error { color: var(--bad); }
+  .chip { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 12px;
+          border: 1px solid var(--line); background: var(--bg); }
+  .tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin: -4px 0 12px; }
+  .tabs button { background: none; color: var(--muted); border-radius: 0; padding: 8px 12px;
+                 border-bottom: 2px solid transparent; font-weight: 600; }
+  .tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
+  .verdict { font-size: 22px; font-weight: 700; }
+  .AC { color: var(--ok); } .WA, .RE, .CE, .MLE { color: var(--bad); } .TLE { color: var(--warn); }
+  /* luồng agent */
+  .trace { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 10px 0 4px; }
+  .trace .step { display: inline-flex; gap: 5px; align-items: center; padding: 3px 9px;
+                 border-radius: 6px; border: 1px solid var(--line); font-size: 12px; }
+  .trace .arrow { color: var(--muted); }
+  .st-ok { color: var(--ok); } .st-fallback { color: var(--warn); }
+  .st-error { color: var(--bad); } .st-skipped { color: var(--muted); }
+  .card { border-left: 3px solid var(--accent); padding: 8px 10px; margin: 8px 0;
+          background: var(--bg); border-radius: 0 6px 6px 0; }
+  .card.bug { border-left-color: var(--bad); }
+  .card .fix { margin-top: 4px; }
+  .card a { color: var(--accent); }
+  ol.path { padding-left: 22px; margin: 6px 0; }
+  ol.path li { margin: 8px 0; }
+  .type { font-size: 11px; font-weight: 600; padding: 0 7px; border-radius: 999px;
+          border: 1px solid var(--line); color: var(--muted); }
+  details summary { cursor: pointer; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0; }
+  th, td { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; }
+  /* thanh đo mức thành thạo */
+  .meters { display: grid; grid-template-columns: minmax(110px, 38%) 1fr 64px; gap: 8px 10px;
+            align-items: center; }
+  .meters .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .meters .track { height: 10px; border-radius: 5px; background: var(--meter-track);
+                   overflow: hidden; outline-offset: 3px; }
+  .meters .track.empty { background: none; border: 1px dashed var(--line); }
+  .meters .fill { height: 100%; background: var(--meter-fill); border-radius: 0 5px 5px 0; }
+  .meters .value { text-align: right; font-variant-numeric: tabular-nums; }
+  @media (max-width: 520px) {
+    .meters { grid-template-columns: 1fr 56px; }
+    .meters .track { grid-column: 1 / -1; order: 1; }
+  }
+  #tip { position: fixed; pointer-events: none; z-index: 10; padding: 6px 9px; border-radius: 6px;
+         background: var(--panel); border: 1px solid var(--line); font-size: 12px;
+         box-shadow: 0 4px 16px rgba(0,0,0,.15); display: none; max-width: 260px; }
+  /* hội thoại */
+  #chat-log { display: flex; flex-direction: column; gap: 8px; max-height: 520px; overflow: auto;
+              padding: 2px; }
+  .msg { max-width: 88%; padding: 8px 11px; border-radius: 10px; white-space: pre-wrap;
+         overflow-wrap: anywhere; }
+  .msg.me { align-self: flex-end; background: var(--accent); color: #fff;
+            border-bottom-right-radius: 3px; }
+  .msg.bot { align-self: flex-start; background: var(--bg); border: 1px solid var(--line);
+             border-bottom-left-radius: 3px; }
+  .msg .meta { display: block; font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .msg a { color: var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .chips button { font-size: 12px; padding: 4px 10px; border-radius: 999px; }
+  #chat-form { display: flex; gap: 8px; }
+  #chat-input { flex: 1; }
+  dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel);
+           color: var(--text); max-width: 560px; width: calc(100% - 32px); padding: 18px; }
+  dialog::backdrop { background: rgba(0,0,0,.35); }
+  dialog fieldset { border: 0; padding: 0; margin: 0 0 12px; }
+  dialog legend { font-weight: 600; margin-bottom: 4px; }
+  dialog label { display: block; padding: 3px 0; cursor: pointer; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Trợ lý học tập C/C++ <span class="muted">(v1: Multi-Agent + KG)</span></h1>
+  <label for="student" class="muted">Mã sinh viên</label>
+  <input id="student" placeholder="vd. 23520001" size="12">
+  <button class="ghost" id="style-btn" title="Bảng hỏi phong cách học">Phong cách học</button>
+  <a href="/kg-viewer" id="kg-link" data-event="open_kg">Knowledge Graph</a>
+  <a href="/v0" class="muted">Bản v0</a>
+</header>
+
+<main>
+  <section>
+    <h2>Bài tập</h2>
+    <ul class="list" id="problems"></ul>
+    <h2 style="margin-top:18px">Lịch sử nộp</h2>
+    <ul class="list" id="history"><li class="muted">Nhập mã sinh viên</li></ul>
+  </section>
+
+  <section>
+    <h2 id="ptitle">Chọn một bài</h2>
+    <div class="statement" id="statement"></div>
+    <div class="row">
+      <select id="lang"><option value="c">C (C11)</option><option value="cpp">C++ (C++17)</option></select>
+      <select id="mode" title="Cách chẩn đoán lỗi">
+        <option value="hybrid">Hybrid: luật + KG + LLM</option>
+        <option value="rule">Chỉ luật + KG</option>
+        <option value="llm_only">Chỉ LLM</option>
+      </select>
+      <button id="submit">Nộp bài</button>
+      <span id="status" class="muted"></span>
+    </div>
+    <textarea id="code" spellcheck="false">#include &lt;stdio.h&gt;
+
+int main(void) {
+    return 0;
+}
+</textarea>
+  </section>
+
+  <section>
+    <div class="tabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="result">Kết quả</button>
+      <button role="tab" aria-selected="false" data-tab="chat">Hỏi trợ lý</button>
+      <button role="tab" aria-selected="false" data-tab="profile">Hồ sơ năng lực</button>
+    </div>
+    <div id="tab-result"><div class="muted">Chưa có lần nộp.</div></div>
+    <div id="tab-chat" hidden>
+      <div id="chat-log" aria-live="polite">
+        <div class="msg bot">Chào bạn! Mình có thể giải thích lỗi trong bài vừa nộp, gợi ý nên học gì
+tiếp, giải thích khái niệm C/C++ hoặc gợi ý hướng làm bài đang chọn.</div>
+      </div>
+      <div class="chips" id="chat-chips"></div>
+      <form id="chat-form">
+        <input id="chat-input" placeholder="Hỏi trợ lý… (vd. con trỏ là gì?)" autocomplete="off"
+               maxlength="2000" aria-label="Câu hỏi cho trợ lý">
+        <button>Gửi</button>
+      </form>
+    </div>
+    <div id="tab-profile" hidden><div class="muted">Nhập mã sinh viên để xem hồ sơ.</div></div>
+  </section>
+</main>
+
+<div id="tip" role="tooltip"></div>
+
+<dialog id="style-dialog">
+  <form method="dialog" id="style-form">
+    <h3 style="margin-top:0">Bạn học theo cách nào?</h3>
+    <p class="muted">6 câu, không có đúng sai. Trợ lý dùng kết quả để chọn cách giải thích hợp với bạn.</p>
+    <div id="style-questions"></div>
+    <div class="row" style="justify-content:flex-end">
+      <button class="ghost" value="cancel" formnovalidate>Để sau</button>
+      <button value="ok">Lưu</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g,
+  (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+let current = null, names = { concepts: {}, groups: {} };
+
+const AGENTS = { grading: "Chấm bài", mined_rules: "Khử nhiễu", knowledge_graph: "Cập nhật KG",
+                 diagnosis: "Chẩn đoán", learning_path: "Lộ trình" };
+const STATUS = { ok: ["✓", "xong"], fallback: ["↺", "dự phòng"], skipped: ["–", "bỏ qua"],
+                 error: ["✕", "lỗi"] };
+const TYPES = { GIAI_THICH: "Giải thích", VI_DU: "Ví dụ", TRUC_QUAN: "Trực quan", GO_LOI: "Gỡ lỗi",
+                BAI_TAP: "Bài tập", CAU_HOI: "Câu hỏi" };
+const STYLE_NAMES = { visual: "hình ảnh", verbal: "lời giải thích", active: "thực hành",
+                      reflective: "suy ngẫm" };
+const conceptName = (id) => names.concepts[id]?.name || id;
+const sid = () => $("student").value.trim();
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(body.detail ? JSON.stringify(body.detail) : r.statusText);
+  return body;
+}
+
+// ------------------------------------------------------------ bài tập & lịch sử
+
+async function loadProblems() {
+  const list = await api("/problems");
+  $("problems").innerHTML = list.map((p) =>
+    `<li data-id="${esc(p.id)}">${esc(p.id)}. ${esc(p.title)}</li>`).join("");
+  $("problems").querySelectorAll("li").forEach((li) =>
+    li.addEventListener("click", () => selectProblem(li.dataset.id)));
+  if (list.length) selectProblem(list[0].id);
+}
+
+async function selectProblem(id) {
+  const p = await api(`/problems/${encodeURIComponent(id)}`);
+  current = p;
+  $("problems").querySelectorAll("li").forEach((li) =>
+    li.classList.toggle("active", li.dataset.id === id));
+  $("ptitle").textContent = `${p.id}. ${p.title}`;
+  $("statement").textContent = p.statement +
+    `\n\nGiới hạn: ${p.time_limit_s}s, ${p.memory_mb}MB · ${p.test_count} test`;
+}
+
+async function loadHistory() {
+  if (!sid()) return;
+  const rows = await api(`/students/${encodeURIComponent(sid())}/submissions`);
+  $("history").innerHTML = rows.length ? rows.map((r) =>
+    `<li data-id="${esc(r.id)}"><span class="${r.verdict}">${r.verdict}</span> ${esc(r.problem_id)}
+      <span class="muted">${new Date(r.created_at).toLocaleTimeString()}</span></li>`).join("")
+    : `<li class="muted">Chưa nộp bài nào</li>`;
+  $("history").querySelectorAll("li[data-id]").forEach((li) =>
+    li.addEventListener("click", () => showSaved(li.dataset.id)));
+}
+
+async function showSaved(id) {
+  showTab("result");
+  $("tab-result").innerHTML = `<div class="muted">Đang tải…</div>`;
+  const report = await api(`/submissions/${encodeURIComponent(id)}`);
+  let diagnosis = null;
+  try {
+    diagnosis = await api(`/submissions/${encodeURIComponent(id)}/diagnosis?mode=${$("mode").value}`,
+                          { method: "POST" });
+  } catch {}
+  renderResult({ report, diagnosis, learning_path: null, trace: [] });
+}
+
+// ------------------------------------------------------------ kết quả một lượt
+
+function renderResult(res) {
+  const g = res.report.grading, d = res.diagnosis;
+  let html = `<div class="verdict ${g.verdict}">${g.verdict}</div>
+    <div>Điểm <b>${g.score}</b> · đạt ${g.passed}/${g.total} test
+      <span class="muted">· mã nộp ${esc(res.report.submission_id)}</span></div>`;
+
+  if (res.trace.length) {
+    html += `<div class="trace" aria-label="Các agent đã chạy">` + res.trace.map((s, i) => {
+      const [icon, label] = STATUS[s.status] || ["?", s.status];
+      return `${i ? `<span class="arrow" aria-hidden="true">→</span>` : ""}
+        <span class="step" title="${esc(s.detail)}">
+          <span class="st-${s.status}" aria-label="${label}">${icon}</span>
+          ${esc(AGENTS[s.agent] || s.agent)} <span class="muted">${s.ms} ms</span></span>`;
+    }).join("") + `</div>`;
+    const warn = res.trace.filter((s) => s.status === "fallback" || s.status === "error");
+    if (warn.length) html += `<details><summary>${warn.length} bước chạy chế độ dự phòng</summary>` +
+      warn.map((s) => `<div class="muted">${esc(AGENTS[s.agent])}: ${esc(s.detail)}</div>`).join("") +
+      `</details>`;
+  }
+
+  if (d) {
+    html += `<h3>Chẩn đoán</h3><p>${esc(d.explanation)}
+      <span class="muted">(${d.llm_provider ? "giải thích bởi " + esc(d.llm_provider) : "giải thích bằng luật"})</span></p>`;
+    html += d.items.map((it) => `<div class="card bug">
+        <b>${esc(it.bug_pattern)}</b>${it.lines.length ? ` · dòng ${it.lines.join(", ")}` : ""}
+        <div>${esc(it.explanation)}</div>
+        ${it.fix_hint ? `<div class="fix">🔧 ${esc(it.fix_hint)}</div>` : ""}
+        ${it.concepts.length ? `<div class="muted">Khái niệm: ${it.concepts.map((c) =>
+          `<a href="/kg-viewer#node=${encodeURIComponent(c)}" target="_blank" data-event="open_kg" data-ref="${esc(c)}">${esc(conceptName(c))}</a>`).join(", ")}</div>` : ""}
+      </div>`).join("");
+    const hidden = res.report.findings.filter((f) => f.suppressed_by);
+    if (hidden.length) html += `<details><summary>Đã lọc ${hidden.length} cảnh báo hệ quả</summary>` +
+      hidden.map((f) => `<div class="muted">${esc(f.bug_pattern)} (dòng ${f.line ?? "?"}) — luật ${esc(f.suppressed_by)}</div>`).join("") +
+      `</details>`;
+    if (d.rejected.length) html += `<div class="muted">Đã loại mã lỗi LLM tự đoán: ${d.rejected.map(esc).join(", ")}</div>`;
+  }
+
+  const path = res.learning_path;
+  if (path && path.steps.length) {
+    html += `<h3>Lộ trình gợi ý <span class="muted" style="font-weight:400">
+      (${path.source === "kg" ? "suy luận trên Knowledge Graph" : "tri thức dự phòng"})</span></h3><ol class="path">` +
+      path.steps.map((s) => `<li>
+        <b>${esc(conceptName(s.concept))}</b> <span class="type">${esc(TYPES[s.action_type] || s.action_type)}</span><br>
+        ${esc(s.action)}
+        ${s.resource ? ` · <a href="#" data-problem="${esc(s.resource)}">làm bài ${esc(s.resource)}</a>` : ""}
+        <div class="muted">${esc(s.reason)} ·
+          <a href="/kg-viewer#node=${encodeURIComponent(s.action_id)}" target="_blank"
+             data-event="open_action" data-ref="${esc(s.action_id)}">xem trên KG</a></div>
+      </li>`).join("") + `</ol>`;
+  }
+
+  const t = g.tests[0];
+  if (t && t.verdict !== "AC" && t.expected != null)
+    html += `<details><summary>Test mẫu: mong đợi / bạn in ra</summary>
+      <table><tr><th>Mong đợi</th><th>Bạn in ra</th></tr>
+      <tr><td><pre>${esc(t.expected)}</pre></td><td><pre>${esc(t.stdout)}</pre></td></tr></table></details>`;
+  if (g.compile_output)
+    html += `<details><summary>Thông báo của trình biên dịch</summary><pre>${esc(g.compile_output)}</pre></details>`;
+
+  $("tab-result").innerHTML = html;
+  lastSubmission = res.report.submission_id;
+  setChips(g.verdict === "AC" ? ["Mình nên học gì tiếp?", "Mình đang yếu phần nào?"]
+                              : ["Vì sao bài mình sai?", "Mình nên học gì tiếp?"]);
+  $("tab-result").querySelectorAll("a[data-problem]").forEach((a) =>
+    a.addEventListener("click", (e) => { e.preventDefault(); selectProblem(a.dataset.problem); }));
+}
+
+$("submit").addEventListener("click", async () => {
+  if (!sid()) { $("status").textContent = "Nhập mã sinh viên trước"; return; }
+  if (!current) return;
+  $("submit").disabled = true;
+  $("status").textContent = "Các agent đang xử lý…";
+  showTab("result");
+  try {
+    const res = await api(`/tutor/submit?mode=${$("mode").value}`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ student_id: sid(), problem_id: current.id,
+        language: $("lang").value, source_code: $("code").value }),
+    });
+    renderResult(res);
+    $("status").textContent = "";
+    loadHistory();
+  } catch (e) {
+    $("status").innerHTML = `<span class="error">${esc(e.message)}</span>`;
+  } finally {
+    $("submit").disabled = false;
+  }
+});
+
+// ------------------------------------------------------------ hồ sơ năng lực
+
+function meters(rows) {
+  // rows: [{name, value (0..1 | null), tip}]
+  return `<div class="meters">` + rows.map((r) => {
+    const pct = r.value == null ? null : Math.round(r.value * 100);
+    const label = pct == null ? "chưa có dữ liệu" : `${pct}%`;
+    return `<span class="name" title="${esc(r.name)}">${esc(r.name)}</span>
+      <div class="track ${pct == null ? "empty" : ""}" tabindex="0" role="img"
+           aria-label="${esc(r.name)}: ${label}" data-tip="${esc(r.tip)}">
+        ${pct == null ? "" : `<div class="fill" style="width:${pct}%"></div>`}</div>
+      <span class="value ${pct == null ? "muted" : ""}">${pct == null ? "–" : label}</span>`;
+  }).join("") + `</div>`;
+}
+
+async function loadProfile() {
+  if (!sid()) return;
+  const p = await api(`/students/${encodeURIComponent(sid())}/profile`);
+  renderStyleButton(p.styles);
+  let html = `<div class="row"><span class="chip">${p.submissions} lần nộp</span>
+    <span class="chip">${p.accepted} lần AC</span>
+    <span class="chip">${p.styles ? "Học tốt qua " + p.styles.map((s) => STYLE_NAMES[s]).join(" và ") :
+      "Chưa làm bảng hỏi phong cách học"}</span></div>`;
+  if (!p.submissions) {
+    $("tab-profile").innerHTML = html + styleDetail(p.style_detail) +
+      `<p class="muted">Nộp bài để hệ thống bắt đầu ước lượng năng lực.</p>`;
+    return;
+  }
+  html += styleDetail(p.style_detail);
+  html += `<h3>Theo nhóm khái niệm</h3>` + meters(p.groups.map((g) => ({
+    name: g.name, value: g.mastery,
+    tip: g.mastery == null ? "Chưa có bài nộp nào liên quan" : `${g.concepts} khái niệm có dữ liệu`,
+  })));
+  const weak = p.concepts.slice(0, 8);
+  html += `<h3>Khái niệm cần cải thiện</h3>` + meters(weak.map((c) => ({
+    name: c.name, value: c.mastery,
+    tip: `Thành công ${c.successes.toFixed(1)} · mắc lỗi ${c.errors.toFixed(1)} (lần gần đây tính nặng hơn)`,
+  })));
+  if (p.top_bugs.length) html += `<h3>Lỗi hay gặp</h3><table><tr><th>Lỗi</th><th>Số lần</th></tr>` +
+    p.top_bugs.map((b) => `<tr><td>${esc(b.name)} <span class="muted">${esc(b.bug)}</span></td>
+      <td>${b.times}</td></tr>`).join("") + `</table>`;
+  html += `<p class="muted">Mức thành thạo ước lượng từ lịch sử nộp bài: bài đạt kéo lên, lỗi gốc kéo xuống;
+    50% nghĩa là chưa đủ dữ liệu để kết luận.</p>`;
+  $("tab-profile").innerHTML = html;
+}
+
+const DIM_NAMES = { visual_verbal: ["Hình ảnh", "Lời giải thích"],
+                    active_reflective: ["Thực hành", "Suy ngẫm"] };
+const fmtScore = (x) => x == null ? "chưa có" : (x > 0 ? "+" : "") + x.toFixed(2);
+
+function styleDetail(detail) {
+  if (!detail?.length) return "";
+  return `<h3>Phong cách học</h3><table><tr><th>Chiều</th><th>Bảng hỏi</th><th>Hành vi</th>
+      <th>Kết luận</th></tr>` + detail.map((d) => {
+    const [pos, neg] = DIM_NAMES[d.dimension];
+    const pick = d.style ? STYLE_NAMES[d.style] : "chưa rõ";
+    const ev = d.evidence.length ? `<details><summary>${d.events} bằng chứng</summary>` +
+      d.evidence.map((e) => `<div class="muted">${esc(e)}</div>`).join("") + `</details>` : "";
+    return `<tr><td>${pos} (+) / ${neg} (−)</td><td>${fmtScore(d.questionnaire)}</td>
+      <td>${fmtScore(d.behaviour)}${ev}</td><td><b>${esc(pick)}</b></td></tr>`;
+  }).join("") + `</table><p class="muted">Hành vi càng nhiều thì càng có trọng số; sau khoảng 10
+    lần tương tác nhất quán, hành vi có thể điều chỉnh kết quả bảng hỏi.</p>`;
+}
+
+// ghi lại sự kiện giao diện làm bằng chứng phong cách học
+document.addEventListener("click", (e) => {
+  const a = e.target.closest?.("[data-event]");
+  if (!a || !sid()) return;
+  fetch(`/students/${encodeURIComponent(sid())}/events`, {
+    method: "POST", keepalive: true, headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ kind: a.dataset.event, ref: a.dataset.ref || null }),
+  }).catch(() => {});
+});
+
+// tooltip cho thanh đo (chuột và bàn phím)
+function showTip(el, x, y) {
+  const tip = $("tip");
+  tip.textContent = el.getAttribute("aria-label") + " — " + el.dataset.tip;
+  tip.style.display = "block";
+  tip.style.left = Math.min(x + 12, innerWidth - tip.offsetWidth - 8) + "px";
+  tip.style.top = (y + 14) + "px";
+}
+document.addEventListener("mousemove", (e) => {
+  const el = e.target.closest?.("[data-tip]");
+  el ? showTip(el, e.clientX, e.clientY) : ($("tip").style.display = "none");
+});
+document.addEventListener("focusin", (e) => {
+  const el = e.target.closest?.("[data-tip]");
+  if (el) { const r = el.getBoundingClientRect(); showTip(el, r.left, r.bottom); }
+});
+document.addEventListener("focusout", () => { $("tip").style.display = "none"; });
+
+// ------------------------------------------------------------ tab & phong cách học
+
+function showTab(name) {
+  document.querySelectorAll(".tabs button").forEach((b) =>
+    b.setAttribute("aria-selected", String(b.dataset.tab === name)));
+  $("tab-result").hidden = name !== "result";
+  $("tab-chat").hidden = name !== "chat";
+  $("tab-profile").hidden = name !== "profile";
+  if (name === "chat") $("chat-input").focus();
+  if (name === "profile") loadProfile().catch((e) =>
+    $("tab-profile").innerHTML = `<div class="error">${esc(e.message)}</div>`);
+}
+document.querySelectorAll(".tabs button").forEach((b) =>
+  b.addEventListener("click", () => showTab(b.dataset.tab)));
+
+function renderStyleButton(styles) {
+  $("style-btn").textContent = styles
+    ? "Phong cách: " + styles.map((s) => STYLE_NAMES[s]).join(", ") : "Phong cách học";
+}
+
+$("style-btn").addEventListener("click", async () => {
+  if (!sid()) { $("status").textContent = "Nhập mã sinh viên trước"; return; }
+  const qs = await api("/learning-style/questionnaire");
+  $("style-questions").innerHTML = qs.map((q, i) => `<fieldset>
+      <legend>${i + 1}. ${esc(q.text)}</legend>
+      <label><input type="radio" name="${q.id}" value="a" required> ${esc(q.a)}</label>
+      <label><input type="radio" name="${q.id}" value="b"> ${esc(q.b)}</label>
+    </fieldset>`).join("");
+  $("style-dialog").showModal();
+});
+
+$("style-dialog").addEventListener("close", async () => {
+  if ($("style-dialog").returnValue !== "ok") return;
+  const answers = Object.fromEntries(new FormData($("style-form")));
+  const r = await api(`/students/${encodeURIComponent(sid())}/learning-style`, {
+    method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(answers),
+  });
+  renderStyleButton(r.styles);
+  if (!$("tab-profile").hidden) loadProfile();
+});
+
+// ------------------------------------------------------------ hội thoại
+
+let lastSubmission = null;
+const AGENT_NAMES = { diagnosis: "Diagnosis Agent", learning_path: "Learning-Path Agent",
+                      knowledge_graph: "Knowledge Graph", profile: "Hồ sơ năng lực", help: "Trợ lý" };
+
+function addMsg(who, text, meta = "", links = []) {
+  const div = document.createElement("div");
+  div.className = `msg ${who}`;
+  div.textContent = text;
+  for (const l of links) {
+    div.append(document.createElement("br"));
+    const a = document.createElement("a");
+    a.href = l.href; a.target = "_blank"; a.textContent = l.label;
+    a.dataset.event = "open_kg"; a.dataset.ref = l.href.split("=").pop();
+    div.append(a);
+  }
+  if (meta) {
+    const m = document.createElement("span");
+    m.className = "meta"; m.textContent = meta;
+    div.append(m);
+  }
+  $("chat-log").append(div);
+  $("chat-log").scrollTop = $("chat-log").scrollHeight;
+  return div;
+}
+
+function setChips(list) {
+  $("chat-chips").innerHTML = "";
+  for (const q of list) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "ghost"; b.textContent = q;
+    b.addEventListener("click", () => ask(q));
+    $("chat-chips").append(b);
+  }
+}
+
+async function ask(text) {
+  if (!text.trim()) return;
+  if (!sid()) { addMsg("bot", "Bạn nhập mã sinh viên ở góc trên trước nhé."); return; }
+  showTab("chat");
+  addMsg("me", text);
+  const wait = addMsg("bot", "…");
+  try {
+    const r = await api("/tutor/chat", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ student_id: sid(), message: text, submission_id: lastSubmission,
+                             problem_id: current?.id ?? null }),
+    });
+    wait.remove();
+    const meta = AGENT_NAMES[r.agent] + (r.llm_provider ? ` · diễn đạt bởi ${r.llm_provider}` : "");
+    addMsg("bot", r.text, meta, r.links);
+    setChips(r.suggestions);
+  } catch (e) {
+    wait.remove();
+    addMsg("bot", "Có lỗi: " + e.message);
+  }
+}
+
+$("chat-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const text = $("chat-input").value;
+  $("chat-input").value = "";
+  ask(text);
+});
+setChips(["Gợi ý bài này", "Con trỏ là gì?", "Mình đang yếu phần nào?"]);
+
+// ------------------------------------------------------------ khởi động
+
+$("code").addEventListener("keydown", (e) => {
+  if (e.key === "Tab") {
+    e.preventDefault();
+    const t = e.target, s = t.selectionStart;
+    t.value = t.value.slice(0, s) + "    " + t.value.slice(t.selectionEnd);
+    t.selectionStart = t.selectionEnd = s + 4;
+  }
+});
+
+function onStudentChange() {
+  try { localStorage.setItem("student_id", sid()); } catch {}
+  $("kg-link").href = sid() ? `/kg-viewer#student=${encodeURIComponent(sid())}` : "/kg-viewer";
+  loadHistory();
+  if (!$("tab-profile").hidden) loadProfile();
+  if (sid()) api(`/students/${encodeURIComponent(sid())}/profile`)
+    .then((p) => renderStyleButton(p.styles)).catch(() => {});
+}
+try { $("student").value = localStorage.getItem("student_id") || ""; } catch {}
+$("student").addEventListener("change", onStudentChange);
+
+api("/knowledge/concepts").then((n) => { names = n; }).catch(() => {});
+loadProblems().catch((e) => { $("problems").innerHTML = `<li class="error">${esc(e.message)}</li>`; });
+onStudentChange();
+</script>
+</body>
+</html>

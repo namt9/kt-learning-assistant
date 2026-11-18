@@ -33,4 +33,13 @@ def test_submit_validation(client):
 
 def test_ui_served(client):
     r = client.get("/")
-    assert r.status_code == 200 and "Nộp bài" in r.text
+    assert r.status_code == 200 and "Nộp bài" in r.text and "/tutor/submit" in r.text
+    v0 = client.get("/v0")
+    assert v0.status_code == 200 and "Nộp bài" in v0.text and "/tutor/submit" not in v0.text
+    names = client.get("/knowledge/concepts").json()
+    assert names["concepts"]["con_tro"]["name"] and len(names["groups"]) == 5
+
+
+def test_kg_viewer_served(client):
+    r = client.get("/kg-viewer")
+    assert r.status_code == 200 and "cytoscape" in r.text and "/kg/nodes/" in r.text
