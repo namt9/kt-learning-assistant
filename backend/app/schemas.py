@@ -80,11 +80,14 @@ class Finding(BaseModel):
     """Một lỗi do rule engine phát hiện, đã ánh xạ sang mã Bug Pattern trong KG."""
 
     bug_pattern: str  # mã trong knowledge/bug_patterns.yaml, ví dụ "MEM_LEAK"
-    source: str  # "gcc" | "cppcheck" | "asan" | "ubsan" | "custom_rule" | "judge" | "mined_rule"
+    # "gcc" | "cppcheck" | "asan" | "ubsan" | "custom_rule" | "judge" | "mined_rule" | "llm"
+    source: str
     line: int | None = None
     message: str
     confidence: float = Field(default=1.0, ge=0, le=1)
     hint: str | None = None  # gợi ý cố định (v0); v1 thay bằng giải thích của Diagnosis Agent
+    # v1: id luật khai phá cho biết cảnh báo chỉ là hệ quả của lỗi gốc khác (giữ lại để truy vết)
+    suppressed_by: str | None = None
 
 
 class SubmissionReport(BaseModel):
@@ -103,6 +106,23 @@ class SubmissionReport(BaseModel):
 # ---------------------------------------------------------------- v1 (Multi-Agent)
 
 
+class DiagnosisMode(str, Enum):
+    RULE = "rule"  # chỉ luật + KG, không gọi LLM
+    LLM_ONLY = "llm_only"  # LLM tự tìm lỗi từ code (cấu hình đối chứng)
+    HYBRID = "hybrid"  # luật xác định lỗi, KG cấp tri thức, LLM chỉ giải thích
+
+
+class DiagnosisItem(BaseModel):
+    """Giải thích cho một mã lỗi (gộp mọi dòng mắc cùng mã)."""
+
+    bug_pattern: str
+    lines: list[int] = []
+    explanation: str
+    fix_hint: str
+    concepts: list[str] = []  # id concept trong KG
+    actions: list[str] = []  # id PedagogicalAction gợi ý học thêm
+
+
 class Diagnosis(BaseModel):
     """Đầu ra của Diagnosis Agent (hybrid: luật xác định lỗi, LLM giải thích)."""
 
@@ -110,7 +130,12 @@ class Diagnosis(BaseModel):
     findings: list[Finding]
     related_concepts: list[str] = []  # id concept trong KG
     explanation: str  # giải thích bằng ngôn ngữ tự nhiên
-    references: list[str] = []  # nguồn RAG đã dùng
+    references: list[str] = []  # nguồn tri thức đã dùng (node KG, ...)
+    items: list[DiagnosisItem] = []
+    mode: DiagnosisMode = DiagnosisMode.HYBRID
+    llm_provider: str | None = None  # provider đã trả lời; None nếu không dùng LLM
+    rejected: list[str] = []  # mã lỗi LLM đưa ra nhưng luật không phát hiện, đã loại
+    notes: list[str] = []  # cảnh báo vận hành (LLM lỗi, KG tắt, ...)
 
 
 class LearningStep(BaseModel):
@@ -127,3 +152,66 @@ class LearningPath(BaseModel):
 
     student_id: str
     steps: list[LearningStep]
+    source: str = "kg"  # "kg": suy luận trên Neo4j | "offline": cùng thuật toán trên tri thức YAML
+
+
+# ---------------------------------------------------------------- Hồ sơ sinh viên (v1)
+
+
+class ConceptMastery(BaseModel):
+    concept: str
+    name: str
+    group: str
+    mastery: float = Field(ge=0, le=1)  # ước lượng mức thành thạo, 0.5 = chưa đủ dữ liệu
+    evidence: float  # tổng trọng số bằng chứng (lần nộp gần đây nặng hơn)
+    successes: float
+    errors: float
+
+
+class GroupMastery(BaseModel):
+    group: str
+    name: str
+    mastery: float | None  # None: chưa có bằng chứng nào trong nhóm
+    concepts: int
+
+
+class StyleDimension(BaseModel):
+    """Một chiều Felder–Silverman: điểm trong [-1, 1], dương nghiêng về cực thứ nhất."""
+
+    dimension: str  # visual_verbal | active_reflective
+    questionnaire: float | None  # từ bảng hỏi; None nếu chưa làm
+    behaviour: float | None  # từ hành vi tương tác; None nếu chưa có bằng chứng
+    events: float  # số bằng chứng hành vi (có trọng số)
+    combined: float | None
+    style: str | None  # cực được chọn; None nếu chưa đủ thông tin hoặc cân bằng
+    evidence: list[str] = []  # tóm tắt bằng chứng để giải thích cho sinh viên
+
+
+class StudentProfile(BaseModel):
+    student_id: str
+    styles: list[str] | None  # phong cách hiệu lực (bảng hỏi + hành vi); None: chưa có thông tin
+    style_detail: list[StyleDimension] = []
+    submissions: int
+    accepted: int
+    concepts: list[ConceptMastery]
+    groups: list[GroupMastery]
+    top_bugs: list[dict]  # [{"bug": mã, "name": tên, "times": số lần}]
+
+
+# ---------------------------------------------------------------- Orchestrator (v1)
+
+
+class AgentStep(BaseModel):
+    """Một bước trong luồng của Orchestrator, để giao diện và báo cáo thấy agent nào đã chạy."""
+
+    agent: str  # grading | mined_rules | diagnosis | learning_path | profile
+    status: str  # ok | fallback | skipped | error
+    ms: int
+    detail: str = ""
+
+
+class TutorResponse(BaseModel):
+    report: SubmissionReport
+    diagnosis: Diagnosis | None = None
+    learning_path: LearningPath | None = None
+    trace: list[AgentStep] = []

@@ -8,17 +8,45 @@ from typing import Annotated
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse
+from pydantic import BaseModel, Field
 
+from .agents.orchestrator import SubmissionNotFound, Tutor
 from .config import load_settings
 from .judge.judge import Judge
 from .judge.runner import DockerRunner, make_runner
+from .kg.model import KnowledgeBase
 from .problems import ProblemNotFound, ProblemRepository
 from .rules.catalog import Catalog
-from .schemas import LearningPath, Problem, ProblemSummary, Submission, SubmissionReport
+from .rules.mined import MinedRules
+from .schemas import (
+    Diagnosis,
+    DiagnosisMode,
+    LearningPath,
+    Problem,
+    ProblemSummary,
+    StudentProfile,
+    Submission,
+    SubmissionReport,
+    TutorResponse,
+)
 from .storage import Storage
+
+
+class UIEvent(BaseModel):
+    kind: str  # open_action | open_kg
+    ref: str | None = Field(default=None, max_length=128)  # id hành động / node đã mở
+
+
+class ChatMessage(BaseModel):
+    student_id: str = Field(min_length=1, max_length=64)
+    message: str = Field(min_length=1, max_length=2000)
+    submission_id: str | None = None  # bài nộp đang xem (ngữ cảnh), mặc định là bài mới nhất
+    problem_id: str | None = None  # bài tập đang chọn
+
 
 FRONTEND = Path(__file__).resolve().parents[2] / "frontend"
 UI_FILE = FRONTEND / "v0" / "index.html"
+TUTOR_FILE = FRONTEND / "tutor" / "index.html"
 KG_VIEWER_FILE = FRONTEND / "kg" / "index.html"
 
 
@@ -34,12 +62,22 @@ def build_app(settings=None) -> FastAPI:
             runner.check()
         app.state.problems = ProblemRepository(settings.problems_dir)
         app.state.storage = Storage(settings.db_path)
+        app.state.catalog = Catalog(settings.bug_patterns_file)
         app.state.judge = Judge(
-            runner, Catalog(settings.bug_patterns_file), settings.work_dir,
+            runner, app.state.catalog, settings.work_dir,
             settings.compile_timeout_s,
         )  # fmt: skip
         app.state.sandbox_mode = settings.sandbox_mode
         app.state.kg = None
+        app.state.llm = "unset"  # tạo khi cần lần đầu
+        knowledge_dir = settings.bug_patterns_file.parent
+        app.state.kb = KnowledgeBase.load(knowledge_dir, settings.problems_dir)
+        app.state.tutor = Tutor(
+            judge=app.state.judge, problems=app.state.problems, storage=app.state.storage,
+            catalog=app.state.catalog, kb=app.state.kb,
+            mined=MinedRules.load(knowledge_dir / "mined_rules.yaml"),
+            kg=kg_or_none, llm=llm,
+        )  # fmt: skip
         yield
         if app.state.kg is not None:
             app.state.kg.driver.close()
@@ -51,7 +89,12 @@ def build_app(settings=None) -> FastAPI:
         return {"status": "ok", "sandbox": app.state.sandbox_mode}
 
     @app.get("/", include_in_schema=False)
+    def tutor_ui():
+        return FileResponse(TUTOR_FILE)
+
+    @app.get("/v0", include_in_schema=False)
     def ui():
+        """Giao diện hệ nền v0 (chỉ luật), giữ lại để so sánh với v1."""
         return FileResponse(UI_FILE)
 
     @app.get("/problems", response_model=list[ProblemSummary])
@@ -102,6 +145,108 @@ def build_app(settings=None) -> FastAPI:
                 raise HTTPException(503, f"Không kết nối được Neo4j: {e}") from None
             app.state.kg = KGQueries(driver)
         return app.state.kg
+
+    # ------------------------------------------------------------ Diagnosis Agent (v1)
+
+    def llm():
+        if app.state.llm == "unset":
+            from .llm import make_llm
+
+            app.state.llm = make_llm()
+        return app.state.llm
+
+    def kg_or_none():
+        try:
+            return kg()
+        except HTTPException:
+            return None
+
+    @app.post("/submissions/{submission_id}/diagnosis", response_model=Diagnosis)
+    def diagnose(
+        submission_id: str,
+        mode: DiagnosisMode = DiagnosisMode.HYBRID,
+        styles: Annotated[list[str] | None, Query()] = None,
+        refresh: bool = False,
+    ):
+        """Chẩn đoán một lần nộp. Không truyền styles thì dùng phong cách học đã lưu."""
+        from .llm import LLMError
+
+        try:
+            return app.state.tutor.diagnose(submission_id, mode, styles, refresh)
+        except SubmissionNotFound:
+            raise HTTPException(404, "Không tìm thấy lần nộp") from None
+        except LLMError as e:
+            raise HTTPException(503, f"LLM không khả dụng: {e}") from None
+
+    # ------------------------------------------------------------ Orchestrator & hồ sơ (v1)
+
+    @app.post("/tutor/submit", response_model=TutorResponse)
+    def tutor_submit(sub: Submission, mode: DiagnosisMode = DiagnosisMode.HYBRID):
+        """Luồng v1 đầy đủ: chấm -> khử nhiễu -> chẩn đoán -> lộ trình học."""
+        try:
+            problem = app.state.problems.get(sub.problem_id)
+        except ProblemNotFound:
+            raise HTTPException(404, f"Không có bài {sub.problem_id}") from None
+        if sub.language not in problem.meta.languages:
+            raise HTTPException(400, f"Bài {sub.problem_id} không nhận ngôn ngữ {sub.language}")
+        return app.state.tutor.submit(sub, mode)
+
+    @app.post("/tutor/chat")
+    def tutor_chat(msg: ChatMessage):
+        """Hội thoại: Chat Agent chọn agent phù hợp (chẩn đoán, lộ trình, khái niệm, hồ sơ)."""
+        from .agents.chat import ChatAgent
+
+        return ChatAgent(app.state.tutor).reply(
+            msg.student_id, msg.message, msg.submission_id, msg.problem_id
+        )
+
+    @app.get("/knowledge/concepts")
+    def knowledge_concepts():
+        """Tên khái niệm, nhóm và tên hành động sư phạm (đọc từ YAML, không cần Neo4j)."""
+        kb = app.state.kb
+        return {
+            "concepts": {c.id: {"name": c.name, "group": c.group} for c in kb.concepts.values()},
+            "groups": {g.id: g.name for g in kb.groups.values()},
+        }
+
+    @app.get("/students/{student_id}/profile", response_model=StudentProfile)
+    def student_profile(student_id: str):
+        return app.state.tutor.profile(student_id)
+
+    @app.get("/learning-style/questionnaire")
+    def questionnaire():
+        from .student.profile import QUESTIONNAIRE
+
+        return [
+            {"id": q["id"], "dimension": q["dimension"], "text": q["text"],
+             "a": q["a"][1], "b": q["b"][1]}
+            for q in QUESTIONNAIRE
+        ]  # fmt: skip
+
+    @app.put("/students/{student_id}/learning-style")
+    def set_learning_style(student_id: str, answers: dict[str, str]):
+        from .student.profile import score_questionnaire
+
+        try:
+            styles = score_questionnaire(answers)
+        except ValueError as e:
+            raise HTTPException(422, str(e)) from None
+        app.state.storage.set_styles(student_id, styles, answers)
+        app.state.storage.log_interaction(student_id, "learning_style", {"styles": styles})
+        return {"student_id": student_id, "styles": styles}
+
+    @app.post("/students/{student_id}/events", status_code=204)
+    def student_event(student_id: str, event: UIEvent):
+        """Sự kiện giao diện (mở hành động sư phạm, mở KG) làm bằng chứng phong cách học."""
+        from .student.learning_style import EVENT_KINDS
+
+        if event.kind not in EVENT_KINDS:
+            raise HTTPException(422, f"kind phải thuộc {sorted(EVENT_KINDS)}")
+        app.state.storage.log_interaction(student_id, event.kind, {"ref": event.ref})
+
+    @app.get("/students/{student_id}/interactions")
+    def student_interactions(student_id: str, limit: int = 100):
+        return app.state.storage.interactions(student_id, limit)
 
     @app.get("/kg-viewer", include_in_schema=False)
     def kg_viewer():
