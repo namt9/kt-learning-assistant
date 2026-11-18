@@ -86,6 +86,8 @@ class Finding(BaseModel):
     message: str
     confidence: float = Field(default=1.0, ge=0, le=1)
     hint: str | None = None  # gợi ý cố định (v0); v1 thay bằng giải thích của Diagnosis Agent
+    # v1: id luật khai phá cho biết cảnh báo chỉ là hệ quả của lỗi gốc khác (giữ lại để truy vết)
+    suppressed_by: str | None = None
 
 
 class SubmissionReport(BaseModel):
@@ -150,3 +152,53 @@ class LearningPath(BaseModel):
 
     student_id: str
     steps: list[LearningStep]
+    source: str = "kg"  # "kg": suy luận trên Neo4j | "offline": cùng thuật toán trên tri thức YAML
+
+
+# ---------------------------------------------------------------- Hồ sơ sinh viên (v1)
+
+
+class ConceptMastery(BaseModel):
+    concept: str
+    name: str
+    group: str
+    mastery: float = Field(ge=0, le=1)  # ước lượng mức thành thạo, 0.5 = chưa đủ dữ liệu
+    evidence: float  # tổng trọng số bằng chứng (lần nộp gần đây nặng hơn)
+    successes: float
+    errors: float
+
+
+class GroupMastery(BaseModel):
+    group: str
+    name: str
+    mastery: float | None  # None: chưa có bằng chứng nào trong nhóm
+    concepts: int
+
+
+class StudentProfile(BaseModel):
+    student_id: str
+    styles: list[str] | None  # None: chưa làm bảng hỏi phong cách học
+    submissions: int
+    accepted: int
+    concepts: list[ConceptMastery]
+    groups: list[GroupMastery]
+    top_bugs: list[dict]  # [{"bug": mã, "name": tên, "times": số lần}]
+
+
+# ---------------------------------------------------------------- Orchestrator (v1)
+
+
+class AgentStep(BaseModel):
+    """Một bước trong luồng của Orchestrator, để giao diện và báo cáo thấy agent nào đã chạy."""
+
+    agent: str  # grading | mined_rules | diagnosis | learning_path | profile
+    status: str  # ok | fallback | skipped | error
+    ms: int
+    detail: str = ""
+
+
+class TutorResponse(BaseModel):
+    report: SubmissionReport
+    diagnosis: Diagnosis | None = None
+    learning_path: LearningPath | None = None
+    trace: list[AgentStep] = []

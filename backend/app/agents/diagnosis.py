@@ -135,7 +135,11 @@ class DiagnosisAgent:
             notes.append("Chưa cấu hình LLM: trả về giải thích bằng luật.")
             mode = DiagnosisMode.RULE
 
-        groups = _group(report.findings)
+        groups = _group([f for f in report.findings if not f.suppressed_by])
+        for code, rule in dict.fromkeys(
+            (f.bug_pattern, f.suppressed_by) for f in report.findings if f.suppressed_by
+        ):
+            notes.append(f"Bỏ qua cảnh báo {code}: là hệ quả của lỗi gốc khác (luật {rule}).")
         kn = self._knowledge(list(groups), styles, notes)
         if not groups:
             return self._no_findings(report, mode, notes)
