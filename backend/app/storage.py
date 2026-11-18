@@ -201,3 +201,24 @@ class Storage:
              "created_at": r["created_at"]}
             for r in rows
         ]  # fmt: skip
+
+    def get_style_answers(self, student_id: str) -> dict | None:
+        with self._conn() as c:
+            row = c.execute(
+                "SELECT answers_json FROM learning_styles WHERE student_id = ?", (student_id,)
+            ).fetchone()
+        return json.loads(row["answers_json"]) if row else None
+
+    def timeline(self, student_id: str) -> list[dict]:
+        """Toàn bộ tương tác của sinh viên theo thứ tự thời gian (cũ trước)."""
+        with self._conn() as c:
+            rows = c.execute(
+                "SELECT kind, payload_json, created_at FROM interactions "
+                "WHERE student_id = ? ORDER BY id",
+                (student_id,),
+            ).fetchall()
+        return [
+            {"kind": r["kind"], "payload": json.loads(r["payload_json"]),
+             "created_at": r["created_at"]}
+            for r in rows
+        ]  # fmt: skip

@@ -54,3 +54,21 @@ POST /submissions/{id}/diagnosis?mode=hybrid&styles=visual[&refresh=true]
 
 Kết quả được lưu trong bảng `diagnoses` (SQLite) theo (bài nộp, chế độ, phong cách học), nên gọi lại
 không tốn phí LLM. Kết quả đã phải lùi về luật thì không lưu, để lần sau thử LLM lại.
+
+## Cá nhân hoá theo phong cách học
+
+Phong cách học hiệu lực (`backend/app/student/learning_style.py`) kết hợp bảng hỏi 6 câu với hành
+vi tương tác:
+- mở hành động sư phạm loại nào (theo `styles` của hành động trong KG);
+- có mở KG viewer không;
+- sau khi nộp sai thì nộp lại ngay hay xem chẩn đoán, hỏi trợ lý trước.
+
+Hành vi càng nhiều càng nặng, tối đa gấp đôi bảng hỏi. Tab Hồ sơ năng lực hiện điểm từng chiều
+kèm bằng chứng.
+
+Phong cách hiệu lực được dùng ở ba chỗ:
+- **Diagnosis Agent (hybrid):** thêm hướng dẫn trình bày vào prompt. Hình ảnh: sơ đồ ô nhớ hoặc
+  bảng giá trị. Lời giải thích: giải thích tuần tự. Thực hành: một thử nghiệm cụ thể để tự kiểm
+  chứng. Suy ngẫm: câu hỏi gợi mở.
+- **Learning-Path Agent:** ưu tiên hành động sư phạm khớp phong cách.
+- **Chat Agent:** chọn hành động minh hoạ khi giải thích khái niệm.

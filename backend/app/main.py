@@ -32,6 +32,11 @@ from .schemas import (
 from .storage import Storage
 
 
+class UIEvent(BaseModel):
+    kind: str  # open_action | open_kg
+    ref: str | None = Field(default=None, max_length=128)  # id hành động / node đã mở
+
+
 class ChatMessage(BaseModel):
     student_id: str = Field(min_length=1, max_length=64)
     message: str = Field(min_length=1, max_length=2000)
@@ -229,6 +234,15 @@ def build_app(settings=None) -> FastAPI:
         app.state.storage.set_styles(student_id, styles, answers)
         app.state.storage.log_interaction(student_id, "learning_style", {"styles": styles})
         return {"student_id": student_id, "styles": styles}
+
+    @app.post("/students/{student_id}/events", status_code=204)
+    def student_event(student_id: str, event: UIEvent):
+        """Sự kiện giao diện (mở hành động sư phạm, mở KG) làm bằng chứng phong cách học."""
+        from .student.learning_style import EVENT_KINDS
+
+        if event.kind not in EVENT_KINDS:
+            raise HTTPException(422, f"kind phải thuộc {sorted(EVENT_KINDS)}")
+        app.state.storage.log_interaction(student_id, event.kind, {"ref": event.ref})
 
     @app.get("/students/{student_id}/interactions")
     def student_interactions(student_id: str, limit: int = 100):

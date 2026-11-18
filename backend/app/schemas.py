@@ -175,9 +175,22 @@ class GroupMastery(BaseModel):
     concepts: int
 
 
+class StyleDimension(BaseModel):
+    """Một chiều Felder–Silverman: điểm trong [-1, 1], dương nghiêng về cực thứ nhất."""
+
+    dimension: str  # visual_verbal | active_reflective
+    questionnaire: float | None  # từ bảng hỏi; None nếu chưa làm
+    behaviour: float | None  # từ hành vi tương tác; None nếu chưa có bằng chứng
+    events: float  # số bằng chứng hành vi (có trọng số)
+    combined: float | None
+    style: str | None  # cực được chọn; None nếu chưa đủ thông tin hoặc cân bằng
+    evidence: list[str] = []  # tóm tắt bằng chứng để giải thích cho sinh viên
+
+
 class StudentProfile(BaseModel):
     student_id: str
-    styles: list[str] | None  # None: chưa làm bảng hỏi phong cách học
+    styles: list[str] | None  # phong cách hiệu lực (bảng hỏi + hành vi); None: chưa có thông tin
+    style_detail: list[StyleDimension] = []
     submissions: int
     accepted: int
     concepts: list[ConceptMastery]

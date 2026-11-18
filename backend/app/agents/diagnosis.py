@@ -51,6 +51,18 @@ HYBRID_TASK = """Hệ thống luật đã xác định CHÍNH XÁC các lỗi d�
 Chỉ giải thích những lỗi này, đúng mã lỗi đã cho, không thêm lỗi khác \
 (lỗi do luật phát hiện đã được kiểm chứng bằng công cụ, còn lỗi bạn tự đoán thì chưa)."""
 
+# Cách trình bày theo phong cách học (Felder–Silverman rút gọn)
+STYLE_GUIDE = {
+    "visual": "Sinh viên học tốt qua hình ảnh: mô tả trạng thái bộ nhớ/biến bằng sơ đồ chữ ngắn "
+    "(ví dụ: n = ? (rác) ← scanf ghi vào đâu?) hoặc bảng giá trị qua từng bước.",
+    "verbal": "Sinh viên học tốt qua lời giải thích: giải thích tuần tự, rõ ràng bằng câu chữ, "
+    "nêu quy tắc chung đứng sau lỗi.",
+    "active": "Sinh viên học qua thực hành: gợi ý một thử nghiệm cụ thể để tự kiểm chứng "
+    "(thêm printf in giá trị, chạy với input nhỏ) thay vì giảng dài.",
+    "reflective": "Sinh viên học qua suy ngẫm: đặt một câu hỏi gợi mở để sinh viên tự tìm ra "
+    "nguyên nhân trước khi nêu hướng sửa.",
+}
+
 LLM_ONLY_TASK = """Hãy tự tìm các lỗi trong bài làm. Với mỗi lỗi, chọn mã gần nhất trong danh mục \
 mã lỗi bên dưới và ghi số dòng (0 nếu không xác định được)."""
 
@@ -146,7 +158,7 @@ class DiagnosisAgent:
 
         if mode == DiagnosisMode.HYBRID:
             try:
-                return self._hybrid(report, source, problem, groups, kn, notes)
+                return self._hybrid(report, source, problem, groups, kn, notes, styles)
             except LLMError as e:
                 notes.append(f"LLM không trả lời được ({e}): trả về giải thích bằng luật.")
         return self._rule(report, groups, kn, notes)
@@ -201,7 +213,7 @@ class DiagnosisAgent:
         summary = f"Phát hiện {len(items)} loại lỗi: {names}."
         return self._finish(report, items, kn, DiagnosisMode.RULE, notes, summary)
 
-    def _hybrid(self, report, source, problem, groups, kn, notes) -> Diagnosis:
+    def _hybrid(self, report, source, problem, groups, kn, notes, styles=()) -> Diagnosis:
         base = self._items_base(groups, kn)
         lines = []
         for code, fs in groups.items():
@@ -215,8 +227,11 @@ class DiagnosisAgent:
                 f"  khái niệm liên quan: {concepts}\n  gợi ý chuẩn: {p.hint}\n"
                 f"  hành động sư phạm trong KG: {acts or '(chưa có)'}"
             )
+        guide = "\n".join(f"- {STYLE_GUIDE[s]}" for s in styles if s in STYLE_GUIDE)
         user = (
-            f"{self._context(report, source, problem)}\n\n## Lỗi đã xác định\n{HYBRID_TASK}\n"
+            f"{self._context(report, source, problem)}\n\n"
+            + (f"## Cách trình bày phù hợp với sinh viên này\n{guide}\n\n" if guide else "")
+            + f"## Lỗi đã xác định\n{HYBRID_TASK}\n"
             + "\n".join(lines)
         )
         schema = _schema(list(groups), with_line=False)

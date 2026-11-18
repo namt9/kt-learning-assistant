@@ -185,3 +185,12 @@ def test_suppressed_findings_are_not_explained(catalog):
     d = agent(catalog).diagnose(report(findings), SOURCE, mode=DiagnosisMode.RULE)
     assert [it.bug_pattern for it in d.items] == ["SCANF_MISSING_AMP"]
     assert any("NULL_DEREF" in n and "MR009" in n for n in d.notes)
+
+
+def test_hybrid_prompt_adapts_to_learning_style(catalog):
+    reply = {"summary": "s", "items": []}
+    visual, plain = FakeLLM(reply=reply), FakeLLM(reply=reply)
+    agent(catalog, visual).diagnose(report(UNINIT), SOURCE, styles=["visual", "reflective"])
+    agent(catalog, plain).diagnose(report(UNINIT), SOURCE, styles=[])
+    assert "sơ đồ" in visual.calls[0]["user"] and "câu hỏi gợi mở" in visual.calls[0]["user"]
+    assert "Cách trình bày" not in plain.calls[0]["user"]

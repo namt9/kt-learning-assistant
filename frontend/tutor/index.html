@@ -128,7 +128,7 @@
   <label for="student" class="muted">Mã sinh viên</label>
   <input id="student" placeholder="vd. 23520001" size="12">
   <button class="ghost" id="style-btn" title="Bảng hỏi phong cách học">Phong cách học</button>
-  <a href="/kg-viewer" id="kg-link">Knowledge Graph</a>
+  <a href="/kg-viewer" id="kg-link" data-event="open_kg">Knowledge Graph</a>
   <a href="/v0" class="muted">Bản v0</a>
 </header>
 
@@ -296,7 +296,7 @@ function renderResult(res) {
         <div>${esc(it.explanation)}</div>
         ${it.fix_hint ? `<div class="fix">🔧 ${esc(it.fix_hint)}</div>` : ""}
         ${it.concepts.length ? `<div class="muted">Khái niệm: ${it.concepts.map((c) =>
-          `<a href="/kg-viewer#node=${encodeURIComponent(c)}" target="_blank">${esc(conceptName(c))}</a>`).join(", ")}</div>` : ""}
+          `<a href="/kg-viewer#node=${encodeURIComponent(c)}" target="_blank" data-event="open_kg" data-ref="${esc(c)}">${esc(conceptName(c))}</a>`).join(", ")}</div>` : ""}
       </div>`).join("");
     const hidden = res.report.findings.filter((f) => f.suppressed_by);
     if (hidden.length) html += `<details><summary>Đã lọc ${hidden.length} cảnh báo hệ quả</summary>` +
@@ -314,7 +314,8 @@ function renderResult(res) {
         ${esc(s.action)}
         ${s.resource ? ` · <a href="#" data-problem="${esc(s.resource)}">làm bài ${esc(s.resource)}</a>` : ""}
         <div class="muted">${esc(s.reason)} ·
-          <a href="/kg-viewer#node=${encodeURIComponent(s.action_id)}" target="_blank">xem trên KG</a></div>
+          <a href="/kg-viewer#node=${encodeURIComponent(s.action_id)}" target="_blank"
+             data-event="open_action" data-ref="${esc(s.action_id)}">xem trên KG</a></div>
       </li>`).join("") + `</ol>`;
   }
 
@@ -380,9 +381,11 @@ async function loadProfile() {
     <span class="chip">${p.styles ? "Học tốt qua " + p.styles.map((s) => STYLE_NAMES[s]).join(" và ") :
       "Chưa làm bảng hỏi phong cách học"}</span></div>`;
   if (!p.submissions) {
-    $("tab-profile").innerHTML = html + `<p class="muted">Nộp bài để hệ thống bắt đầu ước lượng năng lực.</p>`;
+    $("tab-profile").innerHTML = html + styleDetail(p.style_detail) +
+      `<p class="muted">Nộp bài để hệ thống bắt đầu ước lượng năng lực.</p>`;
     return;
   }
+  html += styleDetail(p.style_detail);
   html += `<h3>Theo nhóm khái niệm</h3>` + meters(p.groups.map((g) => ({
     name: g.name, value: g.mastery,
     tip: g.mastery == null ? "Chưa có bài nộp nào liên quan" : `${g.concepts} khái niệm có dữ liệu`,
@@ -399,6 +402,34 @@ async function loadProfile() {
     50% nghĩa là chưa đủ dữ liệu để kết luận.</p>`;
   $("tab-profile").innerHTML = html;
 }
+
+const DIM_NAMES = { visual_verbal: ["Hình ảnh", "Lời giải thích"],
+                    active_reflective: ["Thực hành", "Suy ngẫm"] };
+const fmtScore = (x) => x == null ? "chưa có" : (x > 0 ? "+" : "") + x.toFixed(2);
+
+function styleDetail(detail) {
+  if (!detail?.length) return "";
+  return `<h3>Phong cách học</h3><table><tr><th>Chiều</th><th>Bảng hỏi</th><th>Hành vi</th>
+      <th>Kết luận</th></tr>` + detail.map((d) => {
+    const [pos, neg] = DIM_NAMES[d.dimension];
+    const pick = d.style ? STYLE_NAMES[d.style] : "chưa rõ";
+    const ev = d.evidence.length ? `<details><summary>${d.events} bằng chứng</summary>` +
+      d.evidence.map((e) => `<div class="muted">${esc(e)}</div>`).join("") + `</details>` : "";
+    return `<tr><td>${pos} (+) / ${neg} (−)</td><td>${fmtScore(d.questionnaire)}</td>
+      <td>${fmtScore(d.behaviour)}${ev}</td><td><b>${esc(pick)}</b></td></tr>`;
+  }).join("") + `</table><p class="muted">Hành vi càng nhiều thì càng có trọng số; sau khoảng 10
+    lần tương tác nhất quán, hành vi có thể điều chỉnh kết quả bảng hỏi.</p>`;
+}
+
+// ghi lại sự kiện giao diện làm bằng chứng phong cách học
+document.addEventListener("click", (e) => {
+  const a = e.target.closest?.("[data-event]");
+  if (!a || !sid()) return;
+  fetch(`/students/${encodeURIComponent(sid())}/events`, {
+    method: "POST", keepalive: true, headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ kind: a.dataset.event, ref: a.dataset.ref || null }),
+  }).catch(() => {});
+});
 
 // tooltip cho thanh đo (chuột và bàn phím)
 function showTip(el, x, y) {
@@ -473,6 +504,7 @@ function addMsg(who, text, meta = "", links = []) {
     div.append(document.createElement("br"));
     const a = document.createElement("a");
     a.href = l.href; a.target = "_blank"; a.textContent = l.label;
+    a.dataset.event = "open_kg"; a.dataset.ref = l.href.split("=").pop();
     div.append(a);
   }
   if (meta) {

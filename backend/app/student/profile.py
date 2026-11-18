@@ -13,7 +13,14 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 
 from ..kg.model import KnowledgeBase
-from ..schemas import ConceptMastery, GroupMastery, StudentProfile, SubmissionReport, Verdict
+from ..schemas import (
+    ConceptMastery,
+    GroupMastery,
+    StudentProfile,
+    StyleDimension,
+    SubmissionReport,
+    Verdict,
+)
 
 DECAY = 0.85
 
@@ -63,6 +70,7 @@ def build_profile(
     reports: list[SubmissionReport],
     kb: KnowledgeBase,
     styles: list[str] | None,
+    style_detail: list[StyleDimension] | None = None,
 ) -> StudentProfile:
     success: dict[str, float] = defaultdict(float)
     error: dict[str, float] = defaultdict(float)
@@ -103,6 +111,7 @@ def build_profile(
     return StudentProfile(
         student_id=student_id,
         styles=styles,
+        style_detail=style_detail or [],
         submissions=n,
         accepted=sum(r.grading.verdict == Verdict.AC for r in reports),
         concepts=concepts,

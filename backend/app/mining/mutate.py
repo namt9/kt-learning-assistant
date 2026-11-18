@@ -131,6 +131,19 @@ def _rename_use(src: str):
             return
 
 
+def _forget_malloc(src: str):
+    """int *a = malloc(...) -> int *a = NULL, rồi vẫn ghi vào a[i].
+
+    Sinh viên quên cấp phát thì cũng không viết dòng kiểm tra NULL, nên bỏ luôn dòng
+    `if (a == NULL) ...;` nếu có; giữ lại thì chương trình chỉ thoát chứ không giải tham chiếu.
+    """
+    for m in re.finditer(r"\*\s*(\w+)\s*=\s*(?:malloc|calloc)\s*\([^;]*\)", src):
+        var = m.group(1)
+        new = src[: m.start()] + f"*{var} = NULL" + src[m.end() :]
+        new = re.sub(rf"\n[ \t]*if\s*\(\s*{var}\s*==\s*NULL\s*\)[^\n]*;", "", new)
+        yield new, _line_of(src, m.start())
+
+
 OPERATORS: list[Operator] = [
     Operator("drop_amp", "SCANF_MISSING_AMP", _drop_amp),
     Operator(
@@ -167,7 +180,8 @@ OPERATORS: list[Operator] = [
         "short_alloc",
         "ARRAY_OOB",
         _replace_each(r"malloc\s*\(\s*n\s*\*", lambda m: "malloc((n - 1) *"),
-    ),  # fmt: skip
+    ),
+    Operator("forget_malloc", "NULL_DEREF", _forget_malloc),
     Operator("drop_cast", "INT_DIVISION", _replace_each(r"\((?:double|float)\)\s*", lambda m: "")),
     Operator(
         "eq_to_assign",

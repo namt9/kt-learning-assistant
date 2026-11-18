@@ -75,8 +75,17 @@ class Tutor:
             rec.ms = int((time.perf_counter() - t) * 1000)
             trace.append(rec)
 
+    def style_detail(self, student_id: str):
+        """Phong cách học từng chiều: bảng hỏi kết hợp hành vi tương tác."""
+        from ..student.learning_style import estimate
+
+        return estimate(self.storage.get_style_answers(student_id),
+                        self.storage.timeline(student_id), self.kb)  # fmt: skip
+
     def styles(self, student_id: str) -> list[str]:
-        return self.storage.get_styles(student_id) or []
+        from ..student.learning_style import effective_styles
+
+        return effective_styles(self.style_detail(student_id)) or []
 
     def _history_bugs(self, student_id: str, exclude: str | None = None) -> set[str]:
         return {
@@ -186,5 +195,8 @@ class Tutor:
     # ------------------------------------------------------------ hồ sơ
 
     def profile(self, student_id: str) -> StudentProfile:
+        from ..student.learning_style import effective_styles
+
+        detail = self.style_detail(student_id)
         return build_profile(student_id, self.storage.reports(student_id), self.kb,
-                             self.storage.get_styles(student_id))  # fmt: skip
+                             effective_styles(detail), detail)  # fmt: skip
