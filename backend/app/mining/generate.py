@@ -43,6 +43,9 @@ def _record(judge: Judge, problem, m: Mutant) -> dict:
         ],
         "tools_unavailable": rep.tools_unavailable,
         "source": m.source,
+        # báo cáo chấm đầy đủ (test mẫu, thông báo biên dịch) để script đánh giá đưa cùng một
+        # ngữ cảnh cho mọi cấu hình chẩn đoán
+        "report": rep.model_dump(mode="json"),
     }
 
 

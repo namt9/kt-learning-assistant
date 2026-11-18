@@ -38,18 +38,18 @@ Recall thấp: công cụ bỏ sót hoặc gọi sai tên lỗi. Precision thấ
 
 | # | Luật | Support | Confidence | Lift |
 |---|---|---|---|---|
-| MR001 | `{found=MEM_LEAK, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
-| MR003 | `{found=CONST_CONDITION, found=MEM_LEAK} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
-| MR005 | `{found=CONST_CONDITION, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
-| MR006 | `{feat=free, found=MEM_LEAK} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
-| MR007 | `{feat=free, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
-| MR008 | `{feat=malloc, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
-| MR009 | `{feat=array_index, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
-| MR011 | `{found=MEM_LEAK, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
-| MR013 | `{feat=malloc, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
-| MR014 | `{found=CONST_CONDITION, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
-| MR015 | `{feat=cast, feat=free, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
-| MR016 | `{feat=array_index, feat=cast, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
+| MR001 | `{feat=free, found=MEM_LEAK} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
+| MR002 | `{feat=malloc, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
+| MR003 | `{found=CONST_CONDITION, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
+| MR005 | `{feat=free, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
+| MR008 | `{feat=array_index, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
+| MR009 | `{found=MEM_LEAK, found=UNCLASSIFIED} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
+| MR010 | `{found=CONST_CONDITION, found=MEM_LEAK} → lỗi thật ASSIGN_IN_COND` | 0.051 | 1.00 | 19.4 |
+| MR011 | `{found=CONST_CONDITION, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
+| MR012 | `{found=MEM_LEAK, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
+| MR014 | `{feat=malloc, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
+| MR015 | `{feat=array_index, feat=cast, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
+| MR016 | `{feat=cast, feat=free, found=NULL_DEREF} → lỗi thật ASSIGN_IN_COND` | 0.044 | 1.00 | 19.4 |
 | MR017 | `{feat=malloc_no_free} → lỗi thật MEM_LEAK` | 0.051 | 1.00 | 15.1 |
 | MR019 | `{feat=long_long, found=MISSING_BRACES} → lỗi thật STRAY_SEMICOLON` | 0.051 | 1.00 | 8.5 |
 | MR021 | `{verdict=TLE} → lỗi thật INFINITE_LOOP` | 0.162 | 1.00 | 4.7 |
@@ -58,18 +58,18 @@ Recall thấp: công cụ bỏ sót hoặc gọi sai tên lỗi. Precision thấ
 
 | # | Luật | Support | Confidence | Lift |
 |---|---|---|---|---|
-| MR002 | `{found=ASSIGN_IN_COND, found=MEM_LEAK} → bỏ MEM_LEAK` | 0.051 | 1.00 | 19.4 |
-| MR004 | `{found=MEM_LEAK, found=UNCLASSIFIED} → bỏ MEM_LEAK` | 0.051 | 1.00 | 19.4 |
-| MR010 | `{found=CONST_CONDITION, found=MEM_LEAK} → bỏ MEM_LEAK` | 0.051 | 1.00 | 19.4 |
-| MR012 | `{found=MEM_LEAK, found=NULL_DEREF} → bỏ MEM_LEAK` | 0.044 | 1.00 | 19.4 |
+| MR004 | `{found=ASSIGN_IN_COND, found=MEM_LEAK} → bỏ MEM_LEAK` | 0.051 | 1.00 | 19.4 |
+| MR006 | `{found=MEM_LEAK, found=UNCLASSIFIED} → bỏ MEM_LEAK` | 0.051 | 1.00 | 19.4 |
+| MR007 | `{found=CONST_CONDITION, found=MEM_LEAK} → bỏ MEM_LEAK` | 0.051 | 1.00 | 19.4 |
+| MR013 | `{found=MEM_LEAK, found=NULL_DEREF} → bỏ MEM_LEAK` | 0.044 | 1.00 | 19.4 |
 | MR018 | `{found=MISSING_BRACES, found=STRAY_SEMICOLON} → bỏ MISSING_BRACES` | 0.118 | 1.00 | 8.5 |
 | MR020 | `{found=ARRAY_OOB, found=UNINIT_VAR} → bỏ ARRAY_OOB` | 0.059 | 1.00 | 8.0 |
 | MR022 | `{found=ARRAY_OOB, found=UNINIT_VAR} → bỏ UNINIT_VAR` | 0.059 | 1.00 | 4.2 |
 | MR023 | `{found=FORMAT_MISMATCH, found=UNINIT_VAR, verdict=RE} → bỏ UNINIT_VAR` | 0.044 | 1.00 | 4.2 |
 | MR024 | `{found=FORMAT_MISMATCH, found=SCANF_MISSING_AMP, found=UNINIT_VAR} → bỏ UNINIT_VAR` | 0.044 | 1.00 | 4.2 |
-| MR025 | `{found=MISSING_BRACES, found=UNINIT_VAR, verdict=RE} → bỏ UNINIT_VAR` | 0.044 | 1.00 | 4.2 |
-| MR026 | `{found=MISSING_BRACES, found=SCANF_MISSING_AMP, found=UNINIT_VAR} → bỏ UNINIT_VAR` | 0.044 | 1.00 | 4.2 |
-| MR027 | `{found=MISSING_BRACES, found=NULL_DEREF, found=UNINIT_VAR} → bỏ UNINIT_VAR` | 0.044 | 1.00 | 4.2 |
+| MR025 | `{found=MISSING_BRACES, found=SCANF_MISSING_AMP, found=UNINIT_VAR} → bỏ UNINIT_VAR` | 0.044 | 1.00 | 4.2 |
+| MR026 | `{found=MISSING_BRACES, found=NULL_DEREF, found=UNINIT_VAR} → bỏ UNINIT_VAR` | 0.044 | 1.00 | 4.2 |
+| MR027 | `{found=MISSING_BRACES, found=UNINIT_VAR, verdict=RE} → bỏ UNINIT_VAR` | 0.044 | 1.00 | 4.2 |
 | MR028 | `{found=FORMAT_MISMATCH, found=NULL_DEREF, found=UNINIT_VAR} → bỏ UNINIT_VAR` | 0.037 | 1.00 | 4.2 |
 | MR029 | `{found=NULL_DEREF, found=UNINIT_VAR} → bỏ NULL_DEREF` | 0.213 | 1.00 | 3.9 |
 | MR030 | `{found=NULL_DEREF, found=UNCLASSIFIED} → bỏ NULL_DEREF` | 0.051 | 1.00 | 3.9 |

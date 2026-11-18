@@ -118,7 +118,10 @@ class Tutor:
             problem = self.problems.get(report.problem_id)
         except KeyError:
             problem = None
-        agent = DiagnosisAgent(self.catalog, self._kg(), self._llm())
+        from ..kg.offline import OfflineKG
+
+        # Neo4j tắt thì dùng tri thức YAML: vẫn có khái niệm và hành động sư phạm để giải thích
+        agent = DiagnosisAgent(self.catalog, self._kg() or OfflineKG(self.kb), self._llm())
         d = agent.diagnose(report, self.storage.get_source(submission_id), problem, mode, styles)
         if d.mode == mode:  # kết quả đã phải lùi về luật thì không lưu, để lần sau thử LLM lại
             self.storage.save_diagnosis(d, mode.value, styles)

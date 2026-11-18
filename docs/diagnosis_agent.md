@@ -72,3 +72,19 @@ Phong cách hiệu lực được dùng ở ba chỗ:
   chứng. Suy ngẫm: câu hỏi gợi mở.
 - **Learning-Path Agent:** ưu tiên hành động sư phạm khớp phong cách.
 - **Chat Agent:** chọn hành động minh hoạ khi giải thích khái niệm.
+
+## Đánh giá 3 cấu hình (tuần 3–4)
+
+```bash
+LLM_PROVIDERS= python -m backend.app.evaluation.compare --configs v0,rule   # không cần LLM, vài giây
+LLM_PROVIDERS=ollama python -m backend.app.evaluation.compare --limit 30    # Ollama CPU: ~2-3 phút/lượt
+LLM_PROVIDERS=claude python -m backend.app.evaluation.compare               # đủ 136 bài, cần API key
+```
+
+- **Đầu vào:** `data/mined/mutants.jsonl`, 136 bài có nhãn đúng, đã gồm báo cáo chấm đầy đủ. Mọi cấu hình nhận cùng đề bài, code và kết quả chấm.
+- **Chạy tiếp được:** kết quả ghi dần vào `data/eval/results.jsonl`. Dừng giữa chừng rồi chạy lại thì chỉ chạy các lượt (bài, cấu hình, LLM) còn thiếu.
+- **Báo cáo** `docs/eval_report.md` gồm:
+  - P/R/F1 xác định lỗi, tỉ lệ đúng hoàn toàn, chỉ đúng dòng;
+  - số mã LLM bịa bị chặn, tỉ lệ lùi về luật, nghi lộ lời giải, thời gian;
+  - recall theo từng loại lỗi.
+- **Chưa tự động hoá:** chất lượng lời giải thích (đúng, dễ hiểu, không lộ lời giải). Phần này cần chấm theo rubric ở tuần 4: LLM-as-judge kết hợp người chấm. Trường `explanations` trong `results.jsonl` đã lưu sẵn lời giải thích của từng cấu hình để chấm.

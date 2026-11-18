@@ -198,3 +198,15 @@ def test_upsert_submission_skips_suppressed(driver, loaded):
         "RETURN collect(b.id) AS bugs"
     ).records[0]["bugs"]
     assert bugs == ["SCANF_MISSING_AMP"]
+
+
+def test_offline_kg_matches_neo4j(driver, kb, loaded):
+    from backend.app.kg.offline import OfflineKG
+
+    q, off = KGQueries(driver), OfflineKG(kb)
+    for code in ("MEM_LEAK", "UNINIT_VAR", "OFF_BY_ONE", "SCANF_MISSING_AMP"):
+        for styles in ([], ["visual"], ["active", "verbal"]):
+            assert off.remediation(code, styles, 3) == q.remediation(code, styles, 3), code
+    codes = ["DANGLING_PTR", "INT_DIVISION"]
+    assert [r["id"] for r in off.concepts_for_bugs(codes)] == [
+        r["id"] for r in q.concepts_for_bugs(codes)]  # fmt: skip

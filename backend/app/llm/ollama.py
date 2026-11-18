@@ -11,11 +11,16 @@ from .base import LLMError
 
 class OllamaProvider:
     def __init__(
-        self, model: str, base_url: str = "http://localhost:11434", timeout_s: float = 180
+        self,
+        model: str,
+        base_url: str = "http://localhost:11434",
+        timeout_s: float = 300,
+        max_tokens: int = 800,
     ):
         self.model = model
         self.base_url = base_url.rstrip("/")
         self.timeout_s = timeout_s
+        self.max_tokens = max_tokens
         self.name = f"ollama:{model}"
 
     def generate_json(self, system: str, user: str, schema: dict) -> dict:
@@ -23,7 +28,8 @@ class OllamaProvider:
             "model": self.model,
             "stream": False,
             "format": schema,  # Ollama ràng buộc đầu ra theo JSON schema
-            "options": {"temperature": 0.2},
+            # num_predict: chặn câu trả lời quá dài (chạy CPU rất chậm); 800 token đủ cho chẩn đoán
+            "options": {"temperature": 0.2, "num_predict": self.max_tokens, "num_ctx": 8192},
             "messages": [
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
