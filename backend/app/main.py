@@ -32,6 +32,7 @@ from .storage import Storage
 
 FRONTEND = Path(__file__).resolve().parents[2] / "frontend"
 UI_FILE = FRONTEND / "v0" / "index.html"
+TUTOR_FILE = FRONTEND / "tutor" / "index.html"
 KG_VIEWER_FILE = FRONTEND / "kg" / "index.html"
 
 
@@ -74,7 +75,12 @@ def build_app(settings=None) -> FastAPI:
         return {"status": "ok", "sandbox": app.state.sandbox_mode}
 
     @app.get("/", include_in_schema=False)
+    def tutor_ui():
+        return FileResponse(TUTOR_FILE)
+
+    @app.get("/v0", include_in_schema=False)
     def ui():
+        """Giao diện hệ nền v0 (chỉ luật), giữ lại để so sánh với v1."""
         return FileResponse(UI_FILE)
 
     @app.get("/problems", response_model=list[ProblemSummary])
@@ -170,6 +176,15 @@ def build_app(settings=None) -> FastAPI:
         if sub.language not in problem.meta.languages:
             raise HTTPException(400, f"Bài {sub.problem_id} không nhận ngôn ngữ {sub.language}")
         return app.state.tutor.submit(sub, mode)
+
+    @app.get("/knowledge/concepts")
+    def knowledge_concepts():
+        """Tên khái niệm, nhóm và tên hành động sư phạm (đọc từ YAML, không cần Neo4j)."""
+        kb = app.state.kb
+        return {
+            "concepts": {c.id: {"name": c.name, "group": c.group} for c in kb.concepts.values()},
+            "groups": {g.id: g.name for g in kb.groups.values()},
+        }
 
     @app.get("/students/{student_id}/profile", response_model=StudentProfile)
     def student_profile(student_id: str):
