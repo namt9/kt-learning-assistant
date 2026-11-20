@@ -78,9 +78,13 @@ def test_required_chain_and_inverse_data(kb, mined):
     _, links = ind["MEM_LEAK"]
     remedies = {t for p, t in links if p == "remediatedBy"}
     assert remedies == {a.id for a in kb.actions.values() if "MEM_LEAK" in a.remediates}
-    _, links = ind["MR029"]  # {NULL_DEREF, UNINIT_VAR} -> bỏ NULL_DEREF
-    assert ind["MR029"][0] == "SuppressRule"
-    assert ("concludes", "NULL_DEREF") in links and ("ifFound", "UNINIT_VAR") in links
+    # mỗi luật khai phá: lớp đúng loại, liên kết tới đúng mẫu lỗi ở điều kiện và kết luận
+    for r in mined:
+        cls, links = ind[r["id"]]
+        assert cls == ("SuppressRule" if r["kind"] == "suppress" else "AddRule")
+        assert ("concludes", r["then"]) in links
+        found = {x.removeprefix("found=") for x in r["if"] if x.startswith("found=")}
+        assert {t for p, t in links if p == "ifFound"} == found
 
 
 def test_logs_give_student_code_exhibits_chain(kb, mined, tmp_path):

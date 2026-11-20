@@ -1,0 +1,6 @@
+id: P005
+title: Đảo ngược chuỗi
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [chuoi, mang, vong_lap]

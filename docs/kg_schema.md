@@ -87,7 +87,7 @@ python -m backend.app.kg.owl --with-logs --out /tmp/c_tutor_logs.owl   # kèm lo
 | Lớp | `Concept`, `ConceptGroup`, `BugPattern`, `PedagogicalAction` (6 lớp con theo `type`: `Explanation`, `WorkedExample`, `Visualization`, `DebuggingExercise`, `Exercise`, `Quiz`), `Problem`, `Student`, `StudentCode`, `LearningStyle`, `DetectionTool`, `MinedRule` (`AddRule`, `SuppressRule`). Các lớp gốc đôi một rời nhau |
 | Thuộc tính đối tượng | Cùng tên quan hệ trong Neo4j ở dạng camelCase: `exhibits`, `remediatedBy`, `relatedTo`, `teaches`, `practices`, `prerequisiteOf` (bắc cầu), `partOf`... kèm nghịch đảo `remediates`, `hasPrerequisite`, `taughtBy`... Thêm `suitsStyle`, `detectedBy`, `ifFound` / `concludes` cho luật khai phá |
 | Lớp định nghĩa | Reasoner tự xếp cá thể vào: `MemoryBug` (lỗi liên quan khái niệm thuộc cụm Quản lý bộ nhớ), `PointerBug`, `RemediableBug` (có ít nhất một cách khắc phục), `BeginnerConcept` (level 1), `VisualAction` / `VerbalAction` / `ActiveAction` / `ReflectiveAction` |
-| Cá thể | 35 khái niệm, 23 mẫu lỗi, 36 hành động, bài tập, 73 luật khai phá, 4 phong cách, 6 công cụ |
+| Cá thể | 35 khái niệm, 23 mẫu lỗi, 36 hành động, 10 bài tập, 68 luật khai phá, 4 phong cách, 6 công cụ |
 
 Mở trong Protégé: *File → Open*, rồi *Reasoner → HermiT → Start reasoner*. Tab *Individuals* lúc
 đó hiện các suy luận, ví dụ `MEM_LEAK` thuộc `MemoryBug`; `danh_sach_lien_ket` có `hasPrerequisite`

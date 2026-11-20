@@ -1,0 +1,6 @@
+id: P006
+title: Tổng từng hàng của ma trận
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [mang_2_chieu, vong_lap]

@@ -842,6 +842,62 @@
     <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ep_kieu" />
     <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
   </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#P004">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Problem" />
+    <rdfs:label xml:lang="vi">Giá trị lớn nhất trong mảng</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P004</ct:identifier>
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#cau_lenh_dieu_kien" />
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#P005">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Problem" />
+    <rdfs:label xml:lang="vi">Đảo ngược chuỗi</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P005</ct:identifier>
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chuoi" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#P006">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Problem" />
+    <rdfs:label xml:lang="vi">Tổng từng hàng của ma trận</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P006</ct:identifier>
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang_2_chieu" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#P007">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Problem" />
+    <rdfs:label xml:lang="vi">Sinh viên điểm cao nhất (struct)</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P007</ct:identifier>
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#struct" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chuoi" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#nhap_xuat" />
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#P008">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Problem" />
+    <rdfs:label xml:lang="vi">Kiểm tra dấu ngoặc cân bằng (ngăn xếp)</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P008</ct:identifier>
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ngan_xep" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chuoi" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#cap_phat_dong" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#giai_phong_bo_nho" />
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#P009">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Problem" />
+    <rdfs:label xml:lang="vi">Hoán đổi qua con trỏ</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P009</ct:identifier>
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#truyen_tham_chieu" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ham" />
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#P010">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Problem" />
+    <rdfs:label xml:lang="vi">Giai thừa bằng đệ quy</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">P010</ct:identifier>
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#de_quy" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tran_so" />
+    <ct:practices rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ham" />
+  </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_DOC_THONG_BAO_LOI">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Explanation" />
     <rdfs:label xml:lang="vi">Cách đọc thông báo lỗi của trình biên dịch</rdfs:label>
@@ -1524,222 +1580,225 @@
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR001">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=free ∧ found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
+    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
     <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR001</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=free</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR002">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=ASSIGN_IN_COND ∧ found=MEM_LEAK → bỏ qua MEM_LEAK</rdfs:label>
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=MEM_LEAK → thêm ASSIGN_IN_COND</rdfs:label>
     <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR002</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR003">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=MEM_LEAK → bỏ qua MEM_LEAK</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR003</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR003">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=NULL_DEREF → thêm ASSIGN_IN_COND</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR003</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR004">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
+    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
     <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR004</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR005">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR005</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR006">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=free ∧ found=MEM_LEAK → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR006</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=free</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR007">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=MEM_LEAK → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR007</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR008">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=malloc ∧ found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR008</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=malloc</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR009">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">feat=array_index ∧ found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR009</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR005</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=array_index</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR010">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=UNCLASSIFIED → bỏ qua MEM_LEAK</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR010</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR006">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">feat=malloc ∧ found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR006</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR011">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=NULL_DEREF → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR011</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR012">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=NULL_DEREF → bỏ qua MEM_LEAK</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR012</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR013">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=malloc ∧ found=NULL_DEREF → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR013</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=malloc</ct:condition>
     <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR014">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR007">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=NULL_DEREF → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR014</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
+    <rdfs:label xml:lang="vi">feat=free ∧ found=MEM_LEAK → thêm ASSIGN_IN_COND</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR007</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=free</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR008">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">feat=free ∧ found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR008</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=free</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR009">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=NULL_DEREF → thêm ASSIGN_IN_COND</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR009</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR015">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR010">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=array_index ∧ feat=cast ∧ found=NULL_DEREF → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR015</ct:identifier>
+    <rdfs:label xml:lang="vi">feat=malloc ∧ found=NULL_DEREF → thêm ASSIGN_IN_COND</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR010</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=array_index, feat=cast</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=malloc</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR016">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=cast ∧ feat=free ∧ found=NULL_DEREF → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR016</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=cast, feat=free</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR017">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR011">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">feat=malloc_no_free → thêm MEM_LEAK</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR017</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR011</ct:identifier>
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=malloc_no_free</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.88</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20.77</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR018">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR012">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
     <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=STRAY_SEMICOLON → bỏ qua MISSING_BRACES</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR018</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR012</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#STRAY_SEMICOLON" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1185</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0815</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">8.44</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.27</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR019">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=long_long ∧ found=MISSING_BRACES → thêm STRAY_SEMICOLON</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR019</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#STRAY_SEMICOLON" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=long_long</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">8.44</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR020">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR013">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
     <rdfs:label xml:lang="vi">found=ARRAY_OOB ∧ found=UNINIT_VAR → bỏ qua ARRAY_OOB</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR020</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR013</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0593</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0852</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">7.94</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">7.71</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR014">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=ARRAY_OOB ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR014</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0852</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR015">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=UNINIT_VAR ∧ verdict=RE → bỏ qua UNINIT_VAR</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR015</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR016">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=SCANF_MISSING_AMP ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR016</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR017">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=UNINIT_VAR → bỏ qua NULL_DEREF</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR017</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2111</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.18</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR018">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=UNCLASSIFIED → bỏ qua NULL_DEREF</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR018</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.18</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR019">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=NULL_DEREF → bỏ qua NULL_DEREF</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR019</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.18</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR020">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=OFF_BY_ONE ∧ found=SCANF_MISSING_AMP → bỏ qua NULL_DEREF</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR020</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#OFF_BY_ONE" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.18</ct:lift>
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR021">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
@@ -1747,574 +1806,510 @@
     <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR021</ct:identifier>
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#INFINITE_LOOP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=TLE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.163</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2185</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.66</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.0</ct:lift>
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR022">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=ARRAY_OOB ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR022</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0593</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.22</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR023">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=FORMAT_MISMATCH ∧ found=UNINIT_VAR ∧ verdict=RE → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR023</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#FORMAT_MISMATCH" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.22</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR024">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=FORMAT_MISMATCH ∧ found=SCANF_MISSING_AMP ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR024</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#FORMAT_MISMATCH" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.22</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR025">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=UNINIT_VAR ∧ verdict=RE → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR025</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.22</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR026">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=SCANF_MISSING_AMP ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR026</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.22</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR027">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=NULL_DEREF ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR027</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.22</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR028">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=FORMAT_MISMATCH ∧ found=NULL_DEREF ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR028</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#FORMAT_MISMATCH" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.037</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">4.22</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR029">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=UNINIT_VAR → bỏ qua NULL_DEREF</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR029</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2148</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR030">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=UNCLASSIFIED → bỏ qua NULL_DEREF</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR030</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR031">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=NULL_DEREF → bỏ qua NULL_DEREF</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR031</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR032">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=NULL_DEREF → bỏ qua NULL_DEREF</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR032</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR033">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=NULL_DEREF → bỏ qua NULL_DEREF</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR033</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR034">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=ASSIGN_IN_COND ∧ found=NULL_DEREF → bỏ qua NULL_DEREF</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR034</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR035">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=FORMAT_MISMATCH ∧ found=NULL_DEREF → bỏ qua NULL_DEREF</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR035</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#FORMAT_MISMATCH" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.037</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.86</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR036">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">found=UNINIT_VAR ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR036</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR022</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2667</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2852</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR037">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR023">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR037</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR023</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2148</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2111</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR038">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR024">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">found=ARRAY_OOB ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR038</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR024</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1185</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1148</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR039">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR025">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">feat=double ∧ found=NULL_DEREF → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR039</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR025</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=double</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1185</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1037</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR040">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR026">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">feat=double ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR026</ct:identifier>
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=double, verdict=RE</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1037</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR027">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=ARRAY_OOB ∧ found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR027</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0852</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR028">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">feat=division ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR028</ct:identifier>
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=division, verdict=RE</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0593</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR029">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">feat=division ∧ found=NULL_DEREF → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR040</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR029</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=division</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1185</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0593</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR041">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=division ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR041</ct:identifier>
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=division, verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1185</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR042">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=double ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR042</ct:identifier>
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=double, verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1185</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR043">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR030">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">feat=long_long ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR043</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR030</ct:identifier>
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=long_long, verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0889</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR044">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR031">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">feat=long_long ∧ found=NULL_DEREF → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR044</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR031</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=long_long</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0889</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR045">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=ARRAY_OOB ∧ found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR045</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0593</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR046">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR032">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">found=FORMAT_MISMATCH ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR046</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR032</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#FORMAT_MISMATCH" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR047">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR033">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR047</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR033</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
     <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.6</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR048">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=NULL_DEREF → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR048</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR049">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=malloc ∧ found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR049</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=malloc</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR050">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=array_index ∧ found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR050</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=array_index</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR051">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=FORMAT_MISMATCH ∧ found=NULL_DEREF → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR051</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#FORMAT_MISMATCH" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.037</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR052">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=free ∧ found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR052</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=free</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.037</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">1.0</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.93</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR053">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR034">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
     <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=SCANF_MISSING_AMP → bỏ qua NULL_DEREF</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR053</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR034</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2222</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9677</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.73</ct:lift>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2778</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9868</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.13</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR054">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR035">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
     <rdfs:label xml:lang="vi">found=ARRAY_OOB ∧ verdict=RE → bỏ qua ARRAY_OOB</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR054</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR035</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
     <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1111</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9375</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">7.44</ct:lift>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9677</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">7.47</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR055">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR036">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
     <rdfs:label xml:lang="vi">found=ARRAY_OOB ∧ found=SCANF_MISSING_AMP → bỏ qua ARRAY_OOB</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR055</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR036</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
     <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1111</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9375</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">7.44</ct:lift>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9677</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">7.47</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR056">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR037">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR037</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9231</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.17</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR038">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=SCANF_MISSING_AMP ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR056</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.237</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8889</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.75</ct:lift>
+    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=MEM_LEAK → bỏ qua MEM_LEAK</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR038</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9167</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">22.5</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR057">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR039">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=UNCLASSIFIED → bỏ qua MEM_LEAK</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR039</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9167</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">22.5</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR040">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=ASSIGN_IN_COND ∧ found=MEM_LEAK → bỏ qua MEM_LEAK</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR040</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9167</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">22.5</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR041">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=ASSIGN_IN_COND ∧ found=NULL_DEREF → bỏ qua NULL_DEREF</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR041</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9167</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.91</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR042">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ found=NULL_DEREF → bỏ qua NULL_DEREF</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR042</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9167</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.91</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR043">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ found=NULL_DEREF → bỏ qua MEM_LEAK</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR043</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.037</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9091</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">22.31</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR044">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
     <rdfs:label xml:lang="vi">found=UNINIT_VAR ∧ verdict=RE → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR057</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR044</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.237</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8889</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.75</ct:lift>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2593</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9091</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.51</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR058">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR045">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=SCANF_MISSING_AMP ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR045</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2593</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9091</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.51</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR046">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=OFF_BY_ONE → bỏ qua NULL_DEREF</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR046</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#OFF_BY_ONE" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.86</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR047">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=UNCLASSIFIED → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR058</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNCLASSIFIED" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.875</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">16.88</ct:lift>
+    <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=OFF_BY_ONE → thêm SCANF_MISSING_AMP</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR047</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#OFF_BY_ONE" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.9</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.34</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR059">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR048">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
     <rdfs:label xml:lang="vi">found=NULL_DEREF ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR059</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR048</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1852</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8621</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.64</ct:lift>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8772</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.38</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR060">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR049">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
     <rdfs:label xml:lang="vi">found=NULL_DEREF → bỏ qua NULL_DEREF</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR060</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR049</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2593</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8537</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.29</ct:lift>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.3148</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8763</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.78</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR061">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=array_index ∧ verdict=WA → thêm OFF_BY_ONE</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR061</ct:identifier>
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#OFF_BY_ONE" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=array_index, verdict=WA</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.037</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8333</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.04</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR062">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=malloc ∧ verdict=WA → thêm OFF_BY_ONE</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR062</ct:identifier>
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#OFF_BY_ONE" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=malloc, verdict=WA</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.037</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8333</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">3.04</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR063">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR050">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ verdict=RE → bỏ qua MEM_LEAK</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR063</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7778</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">15.0</ct:lift>
+    <rdfs:label xml:lang="vi">found=ARRAY_OOB → bỏ qua ARRAY_OOB</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR050</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1296</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.875</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">6.75</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR064">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ verdict=RE → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR064</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7778</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">15.0</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR065">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR051">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">found=CONST_CONDITION ∧ verdict=RE → thêm ASSIGN_IN_COND</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR065</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR051</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0519</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7778</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">15.0</ct:lift>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0481</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8667</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">18.0</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR066">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
-    <rdfs:label xml:lang="vi">found=ARRAY_OOB → bỏ qua ARRAY_OOB</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR066</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1259</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7727</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">6.14</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR067">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR052">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">feat=cast ∧ found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR067</ct:identifier>
+    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ verdict=RE → thêm ASSIGN_IN_COND</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR052</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8571</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">17.8</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR053">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=OFF_BY_ONE ∧ verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR053</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#OFF_BY_ONE" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8571</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.23</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR054">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">feat=array_index ∧ found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR054</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=cast</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1481</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7692</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.26</ct:lift>
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=array_index</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1222</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.825</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.14</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR068">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR055">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">feat=if ∧ found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR068</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR055</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
     <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=if</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.163</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7586</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.23</ct:lift>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2333</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.8182</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.12</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR069">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=NULL_DEREF → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR069</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2296</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7561</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.22</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR070">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR070</ct:identifier>
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.3407</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7541</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.21</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR071">
-    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
-    <rdfs:label xml:lang="vi">found=DANGLING_PTR ∧ verdict=RE → thêm DOUBLE_FREE</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR071</ct:identifier>
-    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#DANGLING_PTR" />
-    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#DOUBLE_FREE" />
-    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0444</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.75</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">12.66</ct:lift>
-  </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR072">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR056">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">found=UNINIT_VAR → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR072</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR056</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2667</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7347</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.16</ct:lift>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2852</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7938</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.06</ct:lift>
   </owl:NamedIndividual>
-  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR073">
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR057">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=MEM_LEAK ∧ verdict=RE → bỏ qua MEM_LEAK</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR057</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MEM_LEAK" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7857</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">19.29</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR058">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">feat=array_index ∧ verdict=WA → thêm OFF_BY_ONE</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR058</ct:identifier>
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#OFF_BY_ONE" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">feat=array_index, verdict=WA</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0407</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7857</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.56</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR059">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=NULL_DEREF → thêm SCANF_MISSING_AMP</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR059</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#NULL_DEREF" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2815</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7835</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.03</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR060">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
     <rdfs:label xml:lang="vi">found=ARRAY_OOB → thêm SCANF_MISSING_AMP</rdfs:label>
-    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR073</ct:identifier>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR060</ct:identifier>
     <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ARRAY_OOB" />
     <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
-    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1185</ct:support>
-    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7273</ct:confidence>
-    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.13</ct:lift>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.1148</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.775</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.01</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR061">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">verdict=RE → thêm SCANF_MISSING_AMP</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR061</ct:identifier>
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SCANF_MISSING_AMP" />
+    <ct:condition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">verdict=RE</ct:condition>
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.3852</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7704</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.0</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR062">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=CONST_CONDITION → thêm ASSIGN_IN_COND</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR062</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#CONST_CONDITION" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ASSIGN_IN_COND" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0481</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7647</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">15.88</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR063">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=UNINIT_VAR → bỏ qua MISSING_BRACES</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR063</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.75</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">9.2</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR064">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=UNINIT_VAR → thêm STRAY_SEMICOLON</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR064</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#STRAY_SEMICOLON" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.75</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">9.2</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR065">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=MISSING_BRACES ∧ found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR065</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0333</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.75</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.89</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR066">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=MISSING_BRACES → bỏ qua MISSING_BRACES</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR066</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0815</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7333</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">9.0</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR067">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#AddRule" />
+    <rdfs:label xml:lang="vi">found=MISSING_BRACES → thêm STRAY_SEMICOLON</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR067</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_BRACES" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#STRAY_SEMICOLON" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.0815</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7333</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">9.0</ct:lift>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MR068">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#SuppressRule" />
+    <rdfs:label xml:lang="vi">found=UNINIT_VAR → bỏ qua UNINIT_VAR</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MR068</ct:identifier>
+    <ct:ifFound rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:concludes rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#UNINIT_VAR" />
+    <ct:support rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.2593</ct:support>
+    <ct:confidence rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">0.7216</ct:confidence>
+    <ct:lift rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">2.78</ct:lift>
   </owl:NamedIndividual>
 </rdf:RDF>

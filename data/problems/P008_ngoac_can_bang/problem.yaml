@@ -1,0 +1,6 @@
+id: P008
+title: Kiểm tra dấu ngoặc cân bằng (ngăn xếp)
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [ngan_xep, chuoi, cap_phat_dong, giai_phong_bo_nho]
