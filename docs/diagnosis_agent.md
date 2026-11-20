@@ -78,13 +78,38 @@ Phong cách hiệu lực được dùng ở ba chỗ:
 ```bash
 LLM_PROVIDERS= python -m backend.app.evaluation.compare --configs v0,rule   # không cần LLM, vài giây
 LLM_PROVIDERS=ollama python -m backend.app.evaluation.compare --limit 30    # Ollama CPU: ~2-3 phút/lượt
-LLM_PROVIDERS=claude python -m backend.app.evaluation.compare               # đủ 135 bài, cần API key
+LLM_PROVIDERS=claude python -m backend.app.evaluation.compare               # đủ 270 bài, cần API key
 ```
 
-- **Đầu vào:** `data/mined/mutants.jsonl`, 135 bài có nhãn đúng (đã loại biến thể trùng mã nguồn), đã gồm báo cáo chấm đầy đủ. Mọi cấu hình nhận cùng đề bài, code và kết quả chấm.
+- **Đầu vào:** `data/mined/mutants.jsonl`, 270 bài có nhãn đúng từ 10 bài tập (đã loại biến thể trùng mã nguồn), đã gồm báo cáo chấm đầy đủ. Mọi cấu hình nhận cùng đề bài, code và kết quả chấm.
 - **Chạy tiếp được:** kết quả ghi dần vào `data/eval/results.jsonl`. Dừng giữa chừng rồi chạy lại thì chỉ chạy các lượt (bài, cấu hình, LLM) còn thiếu.
 - **Báo cáo** `docs/eval_report.md` gồm:
   - P/R/F1 xác định lỗi, tỉ lệ đúng hoàn toàn, chỉ đúng dòng;
   - số mã LLM bịa bị chặn, tỉ lệ lùi về luật, nghi lộ lời giải, thời gian;
   - recall theo từng loại lỗi.
-- **Chưa tự động hoá:** chất lượng lời giải thích (đúng, dễ hiểu, không lộ lời giải). Phần này cần chấm theo rubric ở tuần 4: LLM-as-judge kết hợp người chấm. Trường `explanations` trong `results.jsonl` đã lưu sẵn lời giải thích của từng cấu hình để chấm.
+
+## Chấm lời giải thích theo rubric
+
+Bảng P/R/F1 chỉ đo việc xác định lỗi. Chất lượng lời giải thích được chấm bằng
+`backend/app/evaluation/rubric.py`, dựa trên lời giải thích đã lưu trong `results.jsonl` nên
+không cần chạy lại chẩn đoán.
+
+```bash
+LLM_PROVIDERS=claude python -m backend.app.evaluation.rubric       # LLM-as-judge
+python -m backend.app.evaluation.rubric --export-human 12          # phiếu chấm cho người
+python -m backend.app.evaluation.rubric --report-only              # gộp điểm người + LLM
+```
+
+- **5 tiêu chí, thang 1–5:**
+  - Đúng: đúng bản chất lỗi thật;
+  - Cụ thể: chỉ ra dòng, biến của chính code này;
+  - Dễ hiểu: hợp với sinh viên năm nhất;
+  - Hướng dẫn: cho bước sửa nhưng không đưa sẵn lời giải;
+  - Không bịa: không nêu lỗi không có.
+- **Giám khảo được biết lỗi thật đã cài** (đáp án), nhưng **không biết** lời giải thích đến từ cấu hình nào.
+- **Người chấm** nhận `data/eval/human_rubric.csv`: 3 cấu hình của mỗi bài trộn lẫn, đánh mã `H001`... Khoá giải mã nằm riêng trong `human_key.json`, người chấm không mở file này. Điền điểm, lưu lại CSV, rồi chạy `--report-only`.
+- **Báo cáo** `docs/rubric_report.md` gồm:
+  - điểm trung bình từng tiêu chí;
+  - số bài Hybrid hơn / hoà / kém từng cấu hình còn lại;
+  - độ khớp giữa LLM và người (tương quan Pearson, độ lệch trung bình).
+- **Nên dùng giám khảo khác model sinh lời giải thích** (ví dụ Claude chấm lời giải thích của Ollama), vì LLM có xu hướng ưu ái văn phong của chính mình. Đối chiếu với người chấm là cách kiểm tra lại.
