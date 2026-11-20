@@ -78,10 +78,10 @@ Phong cách hiệu lực được dùng ở ba chỗ:
 ```bash
 LLM_PROVIDERS= python -m backend.app.evaluation.compare --configs v0,rule   # không cần LLM, vài giây
 LLM_PROVIDERS=ollama python -m backend.app.evaluation.compare --limit 30    # Ollama CPU: ~2-3 phút/lượt
-LLM_PROVIDERS=claude python -m backend.app.evaluation.compare               # đủ 136 bài, cần API key
+LLM_PROVIDERS=claude python -m backend.app.evaluation.compare               # đủ 135 bài, cần API key
 ```
 
-- **Đầu vào:** `data/mined/mutants.jsonl`, 136 bài có nhãn đúng, đã gồm báo cáo chấm đầy đủ. Mọi cấu hình nhận cùng đề bài, code và kết quả chấm.
+- **Đầu vào:** `data/mined/mutants.jsonl`, 135 bài có nhãn đúng (đã loại biến thể trùng mã nguồn), đã gồm báo cáo chấm đầy đủ. Mọi cấu hình nhận cùng đề bài, code và kết quả chấm.
 - **Chạy tiếp được:** kết quả ghi dần vào `data/eval/results.jsonl`. Dừng giữa chừng rồi chạy lại thì chỉ chạy các lượt (bài, cấu hình, LLM) còn thiếu.
 - **Báo cáo** `docs/eval_report.md` gồm:
   - P/R/F1 xác định lỗi, tỉ lệ đúng hoàn toàn, chỉ đúng dòng;
