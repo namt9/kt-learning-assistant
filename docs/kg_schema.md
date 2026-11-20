@@ -70,6 +70,32 @@ Trang `http://localhost:8000/kg-viewer` (Cytoscape.js) cần Neo4j đang chạy 
 - mở thẳng một trạng thái bằng đường dẫn, tiện cho demo:
   `/kg-viewer#student=sv01`, `/kg-viewer#node=MEM_LEAK`, hoặc ghép cả hai bằng `&`.
 
+## Ontology OWL
+
+`knowledge/ontology/c_tutor.owl` (OWL 2, RDF/XML) được **sinh** từ cùng các file YAML, nên luôn
+khớp với đồ thị trong Neo4j. Không sửa tay; sửa YAML rồi chạy:
+
+```bash
+python -m backend.app.kg.owl              # chỉ tri thức tĩnh (file trong repo)
+python -m backend.app.kg.owl --with-logs --out /tmp/c_tutor_logs.owl   # kèm log nộp bài
+```
+
+`test_owl.py` báo lỗi nếu file trong repo cũ hơn YAML.
+
+| Thành phần | Nội dung |
+|---|---|
+| Lớp | `Concept`, `ConceptGroup`, `BugPattern`, `PedagogicalAction` (6 lớp con theo `type`: `Explanation`, `WorkedExample`, `Visualization`, `DebuggingExercise`, `Exercise`, `Quiz`), `Problem`, `Student`, `StudentCode`, `LearningStyle`, `DetectionTool`, `MinedRule` (`AddRule`, `SuppressRule`). Các lớp gốc đôi một rời nhau |
+| Thuộc tính đối tượng | Cùng tên quan hệ trong Neo4j ở dạng camelCase: `exhibits`, `remediatedBy`, `relatedTo`, `teaches`, `practices`, `prerequisiteOf` (bắc cầu), `partOf`... kèm nghịch đảo `remediates`, `hasPrerequisite`, `taughtBy`... Thêm `suitsStyle`, `detectedBy`, `ifFound` / `concludes` cho luật khai phá |
+| Lớp định nghĩa | Reasoner tự xếp cá thể vào: `MemoryBug` (lỗi liên quan khái niệm thuộc cụm Quản lý bộ nhớ), `PointerBug`, `RemediableBug` (có ít nhất một cách khắc phục), `BeginnerConcept` (level 1), `VisualAction` / `VerbalAction` / `ActiveAction` / `ReflectiveAction` |
+| Cá thể | 35 khái niệm, 23 mẫu lỗi, 36 hành động, bài tập, 73 luật khai phá, 4 phong cách, 6 công cụ |
+
+Mở trong Protégé: *File → Open*, rồi *Reasoner → HermiT → Start reasoner*. Tab *Individuals* lúc
+đó hiện các suy luận, ví dụ `MEM_LEAK` thuộc `MemoryBug`; `danh_sach_lien_ket` có `hasPrerequisite`
+tới cả `con_tro`, `bien`... (nhờ tính bắc cầu, YAML chỉ khai tiên quyết trực tiếp).
+
+Đã kiểm tra bằng bộ suy luận OWL RL (`owlrl`): không mâu thuẫn, không tham chiếu treo; suy ra
+4 `MemoryBug`, 3 `PointerBug`, 23/23 `RemediableBug`, 10 `BeginnerConcept`, 11 `VisualAction`.
+
 ## Truy vấn mẫu trong Neo4j Browser
 
 ```cypher
