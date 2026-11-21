@@ -37,7 +37,7 @@ bug_patterns:
   - code: CONST_CONDITION
     name: Điều kiện luôn đúng hoặc luôn sai
     concepts: [cau_lenh_dieu_kien, toan_tu]
-    detected_by: [gcc, cppcheck]
+    detected_by: [gcc, cppcheck, custom_rule]
     hint: Điều kiện này luôn cho cùng một kết quả nên nhánh if/vòng lặp không bao giờ (hoặc luôn luôn) chạy. Thường do gán nhầm "=" thay "==", so sánh sai biến, hoặc điều kiện bị lặp.
   - code: STRAY_SEMICOLON
     name: Dấu ";" thừa ngay sau if/for/while
@@ -72,7 +72,7 @@ bug_patterns:
   - code: DIV_BY_ZERO
     name: Chia cho 0
     concepts: [toan_tu]
-    detected_by: [cppcheck, ubsan]
+    detected_by: [cppcheck, ubsan, custom_rule]
     hint: Có phép chia (hoặc %) mà mẫu số bằng 0. Hãy kiểm tra mẫu số trước khi chia.
   - code: MISSING_RETURN
     name: Hàm có kiểu trả về nhưng thiếu return
@@ -108,13 +108,13 @@ bug_patterns:
   - code: DANGLING_PTR
     name: Dùng con trỏ sau khi đã free / trỏ tới biến cục bộ đã hết phạm vi
     concepts: [con_tro, pham_vi_bien, stack_heap, giai_phong_bo_nho]
-    detected_by: [gcc, cppcheck, asan]
+    detected_by: [gcc, cppcheck, asan, custom_rule]
     hint: Con trỏ đang trỏ tới vùng nhớ đã bị giải phóng hoặc đã hết phạm vi. Không trả về địa chỉ biến cục bộ, và không dùng con trỏ sau khi free.
   # ---- Theo kết quả chấm ----
   - code: INFINITE_LOOP
     name: Vòng lặp không dừng / thuật toán quá chậm
     concepts: [vong_lap, de_quy, do_phuc_tap]
-    detected_by: [judge]
+    detected_by: [judge, custom_rule]
     hint: Chương trình chạy quá thời gian cho phép. Hãy kiểm tra điều kiện dừng và biến đếm của vòng lặp, hoặc giảm độ phức tạp thuật toán.
   - code: UNCLASSIFIED
     name: Cảnh báo chưa phân loại

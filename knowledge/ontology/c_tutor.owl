@@ -1363,6 +1363,7 @@
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#toan_tu" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_gcc" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_cppcheck" />
+    <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_custom_rule" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_GAN_VA_SO_SANH" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_GAN_VA_SO_SANH_GO_LOI" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_DIEU_KIEN_BANG_CHAN_TRI" />
@@ -1448,6 +1449,7 @@
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#toan_tu" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_cppcheck" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_ubsan" />
+    <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_custom_rule" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_CHIA_CHO_0" />
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#MISSING_RETURN">
@@ -1548,6 +1550,7 @@
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_gcc" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_cppcheck" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_asan" />
+    <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_custom_rule" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_CON_TRO_TRUC_QUAN" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_TRA_VE_DIA_CHI_CUC_BO" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_ASAN_GO_LOI" />
@@ -1563,6 +1566,7 @@
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#de_quy" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#do_phuc_tap" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_judge" />
+    <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_custom_rule" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_VONG_LAP_DUNG" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_VONG_LAP_TRUC_QUAN" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_DO_PHUC_TAP" />

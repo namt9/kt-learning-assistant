@@ -256,6 +256,137 @@ def rule_malloc_without_free(src: str, clean: str) -> list[Finding]:
     return []
 
 
+def _block(text: str, pos: int) -> tuple[str, int] | None:
+    """Thân câu lệnh bắt đầu từ pos: khối {...} cân ngoặc, hoặc một câu lệnh tới dấu ';'."""
+    m = re.compile(r"\s*").match(text, pos)
+    i = m.end()
+    if i >= len(text):
+        return None
+    if text[i] != "{":
+        end = text.find(";", i)
+        return (text[i : end + 1], end) if end >= 0 else None
+    depth = 0
+    for j in range(i, len(text)):
+        if text[j] == "{":
+            depth += 1
+        elif text[j] == "}":
+            depth -= 1
+            if depth == 0:
+                return text[i + 1 : j], j
+    return None
+
+
+def rule_div_by_zero(src: str, clean: str) -> list[Finding]:
+    findings = []
+    # chia / lấy dư cho hằng 0 (0, 0.0, 0.f); bỏ qua 0x10, 0.5
+    for m in re.finditer(r"(?<![/*])([/%])=?\s*\(?\s*0+(?:\.0*)?[fF]?\s*\)?(?![\w.])", clean):
+        op = "chia" if m.group(1) == "/" else "lấy dư"
+        findings.append(
+            Finding(
+                bug_pattern="DIV_BY_ZERO",
+                source="custom_rule",
+                line=_line_of(clean, m.start()),
+                message=f"Phép {op} cho hằng số 0",
+                confidence=0.9,
+            )
+        )
+    return findings
+
+
+# x == x, i < i; không tính a[i] == a[0], p->n < n
+_SELF_COMPARE = re.compile(r"(?<![\w.\]>])([A-Za-z_]\w*)\s*(==|!=|<=|>=|<|>)\s*\1\b(?!\s*[\[(.])")
+
+
+def rule_const_condition(src: str, clean: str) -> list[Finding]:
+    """Điều kiện luôn đúng/sai: số không dấu so với 0 (u >= 0, u < 0) hoặc so biến với chính nó."""
+    unsigned = {v for v, t in _declared_types(clean).items() if "unsigned" in t and "*" not in t}
+    unsigned |= set(re.findall(r"\b(?:unsigned|size_t)\s+([A-Za-z_]\w*)\s*[=;,)]", clean))
+    findings = []
+    for m in re.finditer(r"\b(if|while|for)\s*\(", clean):
+        got = _call_args(clean, m.end() - 1)
+        if not got:
+            continue
+        cond = got[0]
+        if m.group(1) == "for":
+            parts = cond.split(";")
+            if len(parts) != 3:
+                continue
+            cond = parts[1]
+        why = None
+        for v in unsigned:
+            if re.search(rf"\b{v}\s*(>=|<)\s*0\b(?!\.)|\b0\s*(<=|>)\s*{v}\b", cond):
+                why = f'"{v}" là số không dấu nên luôn >= 0'
+                break
+        same = re.search(_SELF_COMPARE, cond)
+        if not why and same:
+            why = f"so sánh {same.group(1)} với chính nó"
+        if why:
+            findings.append(
+                Finding(
+                    bug_pattern="CONST_CONDITION",
+                    source="custom_rule",
+                    line=_line_of(clean, m.start()),
+                    message=f"Điều kiện của {m.group(1)} luôn cho cùng một kết quả: {why}",
+                    confidence=0.85,
+                )
+            )
+    return findings
+
+
+def rule_loop_without_exit(src: str, clean: str) -> list[Finding]:
+    """while (1) / for (;;) mà thân không có break, return, exit, goto."""
+    findings = []
+    for m in re.finditer(r"\bwhile\s*\(\s*(?:1|true)\s*\)|\bfor\s*\(\s*;\s*;\s*\)", clean):
+        if m.group(0).startswith("while") and clean[: m.start()].rstrip().endswith("}"):
+            continue  # do { ... } while (1); thân nằm phía trước, bỏ qua
+        body = _block(clean, m.end())
+        if body is None or re.search(r"\b(break|return|goto|exit|abort|_Exit)\b", body[0]):
+            continue
+        findings.append(
+            Finding(
+                bug_pattern="INFINITE_LOOP",
+                source="custom_rule",
+                line=_line_of(clean, m.start()),
+                message="Vòng lặp vô điều kiện nhưng thân không có break/return/exit để thoát",
+                confidence=0.8,
+            )
+        )
+    return findings
+
+
+_PTR_FUNC = re.compile(r"\b[A-Za-z_]\w*\s*\*+\s*([A-Za-z_]\w*)\s*\(([^;{}()]*)\)\s*(?=\{)")
+
+
+def rule_return_local_address(src: str, clean: str) -> list[Finding]:
+    """Hàm trả con trỏ tới mảng/biến cục bộ: vùng nhớ hết hạn khi hàm kết thúc."""
+    findings = []
+    for f in _PTR_FUNC.finditer(clean):
+        got = _block(clean, f.end())
+        if not got:
+            continue
+        body, start = got[0], f.end() + clean[f.end() :].index("{") + 1
+        local: dict[str, str] = {}
+        for d in _DECL.finditer(body):
+            line_start = body.rfind("\n", 0, d.start()) + 1
+            if "static" in body[line_start : d.start()]:
+                continue
+            for name, kind in _declared_types(d.group(0)).items():
+                local[name] = kind
+        for r in re.finditer(r"\breturn\s*(&)?\s*([A-Za-z_]\w*)\s*;", body):
+            kind = local.get(r.group(2), "")
+            if (r.group(1) and kind and "[]" not in kind) or (not r.group(1) and "[]" in kind):
+                findings.append(
+                    Finding(
+                        bug_pattern="DANGLING_PTR",
+                        source="custom_rule",
+                        line=_line_of(clean, start + r.start()),
+                        message=f'Hàm {f.group(1)}() trả về địa chỉ của biến cục bộ "{r.group(2)}"',
+                        confidence=0.85,
+                    )
+                )
+    return findings
+
+
 RULES: list[Rule] = [
     rule_scanf_missing_amp,
     rule_assign_in_condition,
@@ -263,6 +394,10 @@ RULES: list[Rule] = [
     rule_off_by_one,
     rule_int_division,
     rule_malloc_without_free,
+    rule_div_by_zero,
+    rule_const_condition,
+    rule_loop_without_exit,
+    rule_return_local_address,
 ]
 
 
