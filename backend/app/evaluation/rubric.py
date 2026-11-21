@@ -254,15 +254,16 @@ def paired_wins(scores: list[dict], a: str, b: str) -> tuple[int, int, int]:
     return win, tie, lose
 
 
-def agreement(llm_scores: list[dict], human: list[dict]) -> list[str]:
-    llm_by = {(s["id"], s["config"]): s for s in llm_scores}
-    pairs = [(h, llm_by[(h["id"], h["config"])]) for h in human if (h["id"], h["config"]) in llm_by]
+def agreement(a: list[dict], b: list[dict], title: str, label: str) -> list[str]:
+    """Độ khớp điểm giữa hai bên chấm trên các lời giải thích cả hai cùng chấm."""
+    b_by = {(s["id"], s["config"]): s for s in b}
+    pairs = [(x, b_by[(x["id"], x["config"])]) for x in a if (x["id"], x["config"]) in b_by]
     if len(pairs) < 3:
         return []
     out = [
-        "### Độ khớp giữa LLM-as-judge và người chấm",
+        f"### {title}",
         "",
-        f"{len(pairs)} lời giải thích được cả hai bên chấm.",
+        f"{len(pairs)} lời giải thích được {label}.",
         "",
         "| Tiêu chí | Tương quan Pearson | Lệch tuyệt đối trung bình |",
         "|---|---|---|",
@@ -278,39 +279,63 @@ def agreement(llm_scores: list[dict], human: list[dict]) -> list[str]:
     return out + [""]
 
 
-def write_report(path: Path, llm_scores: list[dict], human: list[dict], judge: str | None) -> None:
+def judge_section(scores: list[dict], judge: str) -> list[str]:
+    ids = paired_ids(scores)
+    paired = [s for s in scores if s["id"] in ids]
+    if not paired:
+        return []
+    out = table(paired, f"LLM-as-judge ({judge}), {len(ids)} bài có đủ 3 cấu hình")
+    out += ["| So sánh theo từng bài | Hơn | Hoà | Kém |", "|---|---|---|---|"]
+    for a, b in (("hybrid", "rule"), ("hybrid", "llm_only")):
+        w, t, lo = paired_wins(paired, a, b)
+        out.append(f"| {NAMES[a]} so với {NAMES[b]} | {w} | {t} | {lo} |")
+    fb = [s for s in paired if s["config"] == "hybrid" and s.get("fallback")]
+    return out + [
+        "",
+        f"Trong đó {len(fb)} lượt Hybrid phải lùi về giải thích bằng luật (LLM lỗi).",
+        "",
+    ]
+
+
+def write_report(
+    path: Path, by_judge: dict[str, list[dict]], human: list[dict], gen: str | None
+) -> None:
     out = [
         "# Chất lượng lời giải thích (rubric)",
         "",
         "> Sinh tự động bởi `python -m backend.app.evaluation.rubric`. Không sửa tay.",
         "",
-        "Thang 1–5 cho mỗi tiêu chí; giám khảo không biết lời giải thích đến từ cấu hình nào.",
+        f"Lời giải thích của LLM thuần và Hybrid sinh bởi {gen or '–'}. Thang 1–5 cho mỗi "
+        "tiêu chí; giám khảo không biết lời giải thích đến từ cấu hình nào.",
         "",
         *[f"- **{name}**: {desc}" for name, desc in CRITERIA.values()],
         "",
     ]
-    ids = paired_ids(llm_scores)
-    paired = [s for s in llm_scores if s["id"] in ids]
-    if paired:
-        out += table(paired, f"LLM-as-judge ({judge}), {len(ids)} bài có đủ 3 cấu hình")
-        out += ["| So sánh theo từng bài | Hơn | Hoà | Kém |", "|---|---|---|---|"]
-        for a, b in (("hybrid", "rule"), ("hybrid", "llm_only")):
-            w, t, lo = paired_wins(paired, a, b)
-            out.append(f"| {NAMES[a]} so với {NAMES[b]} | {w} | {t} | {lo} |")
-        fb = [s for s in paired if s["config"] == "hybrid" and s.get("fallback")]
-        out += [
-            "",
-            f"Trong đó {len(fb)} lượt Hybrid phải lùi về giải thích bằng luật (LLM lỗi).",
-            "",
-        ]
+    for judge, scores in by_judge.items():
+        out += judge_section(scores, judge)
+    judges = list(by_judge)
+    for i, a in enumerate(judges):
+        for b in judges[i + 1 :]:
+            out += agreement(
+                by_judge[a],
+                by_judge[b],
+                f"Độ khớp giữa hai giám khảo: {a} và {b}",
+                "cả hai giám khảo chấm",
+            )
     if human:
         out += table(human, f"Người chấm, {len({h['id'] for h in human})} bài")
-        out += agreement(paired or llm_scores, human)
+        for judge, scores in by_judge.items():
+            out += agreement(
+                human, scores, f"Độ khớp giữa người chấm và {judge}", "cả hai bên chấm"
+            )
+    same = [j for j in judges if gen and j.split(":", 1)[-1] in gen]
     out += [
         "## Lưu ý khi đọc",
         "",
         "- Giám khảo LLM có thể ưu ái văn phong LLM (self-preference), nhất là khi cùng model với "
-        "bên sinh lời giải thích. Vì vậy cần đối chiếu với người chấm (bảng độ khớp ở trên).",
+        "bên sinh lời giải thích"
+        + (f" (ở đây: {', '.join(same)})" if same else "")
+        + ". Vì vậy cần đối chiếu giữa các giám khảo và với người chấm (các bảng độ khớp).",
         '- Rule-based dùng câu gợi ý cố định theo mã lỗi, nên điểm "Cụ thể" thấp là đúng thiết kế.',
         "- Lỗi do máy cài vào lời giải mẫu, chưa phải bài làm thật của sinh viên.",
     ]
@@ -343,23 +368,21 @@ def main(argv=None) -> int:
         print(f"Phiếu chấm {n} dòng -> {args.human_csv}; khoá -> {args.human_key}")
         return 0
 
-    judge = None
     if not args.report_only:
         llm = make_llm()
         if llm is None:
             print("Chưa cấu hình LLM (LLM_PROVIDERS).", file=sys.stderr)
             return 1
-        judge = llm.name
         args.out.parent.mkdir(parents=True, exist_ok=True)
         run_judge(rows, records, ProblemRepository(ROOT / "data/problems"), llm, args.out)
 
-    llm_scores = []
+    by_judge: dict[str, list[dict]] = {}
     if args.out.exists():
-        all_scores = [s for s in load_records(args.out) if s["gen_llm"] in (gen, None)]
-        judge = judge or (all_scores[-1]["judge"] if all_scores else None)
-        llm_scores = [s for s in all_scores if s["judge"] == judge]
+        for s in load_records(args.out):
+            if s["gen_llm"] in (gen, None):
+                by_judge.setdefault(s["judge"], []).append(s)
     human = load_human(args.human_csv, args.human_key)
-    write_report(args.report, llm_scores, human, judge)
+    write_report(args.report, by_judge, human, gen)
     print(f"Báo cáo -> {args.report}")
     return 0
 

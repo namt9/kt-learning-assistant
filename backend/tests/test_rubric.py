@@ -125,3 +125,16 @@ def test_human_sheet_roundtrip_and_agreement(files, monkeypatch):
     report = (files / "report.md").read_text()
     assert "Người chấm" in report and "8 lời giải thích được cả hai bên chấm" in report
     assert "| Đúng | 1.00 | 0.00 |" in report
+
+
+def test_two_judges_each_get_a_section_and_agreement(files, monkeypatch):
+    a, b = FakeJudge(), FakeJudge()
+    b.name = "fake:other"
+    monkeypatch.setattr(rubric, "make_llm", lambda: FallbackLLM([a]))
+    rubric.main(args(files))
+    monkeypatch.setattr(rubric, "make_llm", lambda: FallbackLLM([b]))
+    rubric.main(args(files))
+    assert b.calls == 12  # giám khảo mới chấm lại đủ, không dùng điểm của giám khảo cũ
+    report = (files / "report.md").read_text()
+    assert "LLM-as-judge (fake:judge)" in report and "LLM-as-judge (fake:other)" in report
+    assert "Độ khớp giữa hai giám khảo: fake:judge và fake:other" in report
