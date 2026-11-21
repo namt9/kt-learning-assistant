@@ -1,0 +1,637 @@
+﻿ma,bai,code,loi_that,giai_thich,dung,cu_the,de_hieu,huong_dan,trung_thuc,ghi_chu
+H001,P010,"  1 | #include <stdio.h>
+  2 | 
+  3 | long long giai_thua(int n) {
+  4 |     if (n <= 1) return 1;
+  5 |     return n * giai_thua(n - 1);
+  6 | }
+  7 | 
+  8 | int main(void) {
+  9 |     int n;
+ 10 |     if (scanf(""%d"", &n) != 1) return 0;
+ 11 |     printf(""%lld\n"", giai_thua(N));
+ 12 |     return 0;
+ 13 | }",UNDECLARED_ID (cách cài: rename_use@11; số sau @ là dòng bị sửa),"- [UNDECLARED_ID] Dòng 11, bạn gọi `giai_thua(N)` với chữ N viết hoa, nhưng biến được khai báo ở dòng 9 là `n` viết thường. Trong C, tên biến phân biệt chữ hoa/thường (case-sensitive), nên `N` và `n` là hai tên hoàn toàn khác nhau. Trình biên dịch không tìm thấy `N` đã được khai báo ở đâu, nên báo lỗi 'undeclared'.
+  Gợi ý sửa: Thay `N` thành `n` (chữ thường) trong lời gọi hàm ở dòng 11 để khớp với biến đã khai báo.",,,,,,
+H002,P008,"  1 | #include <stdio.h>
+  2 | #include <stdlib.h>
+  3 | #include <string.h>
+  4 | 
+  5 | int main(void) {
+  6 |     char s[1001];
+  7 |     if (scanf(""%1000s"", s) != 1) return 0;
+  8 |     int len = strlen(s);
+  9 |     char *st = NULL;
+ 10 |     if (st = NULL) return 1;
+ 11 |     int top = 0, ok = 1;
+ 12 |     for (int i = 0; i < len && ok; i++) {
+ 13 |         char c = s[i];
+ 14 |         if (c == '(' || c == '[') {
+ 15 |             st[top++] = c;
+ 16 |         } else {
+ 17 |             char want = c == ')' ? '(' : '[';
+ 18 |             if (top == 0 || st[top - 1] != want) ok = 0;
+ 19 |             else top--;
+ 20 |         }
+ 21 |     }
+ 22 |     printf(""%s\n"", ok && top == 0 ? ""YES"" : ""NO"");
+ 23 |     free(st);
+ 24 |     return 0;
+ 25 | }","ASSIGN_IN_COND, NULL_DEREF (cách cài: eq_to_assign@10, forget_malloc@9; số sau @ là dòng bị sửa)","- [ASSIGN_IN_COND] Dòng 10 viết 'if (st = NULL)' – đây là phép gán, không phải so sánh. Kết quả là st bị gán lại thành NULL (luôn sai), nên khối return 1 không chạy, nhưng st vẫn là NULL mà không có malloc nào được gọi.
+  Gợi ý sửa: Đề bài yêu cầu cấp phát động, bạn cần thay dòng này bằng 'st = malloc(len * sizeof(char)); if (st == NULL) return 1;' để vừa cấp phát vừa kiểm tra lỗi.
+- [NULL_DEREF] Vì st vẫn là NULL sau dòng 10, khi vòng lặp chạy đến dòng 15 'st[top++] = c', chương trình cố ghi vào địa chỉ NULL, dẫn đến Segmentation Fault (RE).
+  Gợi ý sửa: Sau khi sửa lỗi malloc ở dòng 10, lỗi này sẽ được giải quyết tự động.",,,,,,
+H003,P005,"  1 | #include <stdio.h>
+  2 | #include <string.h>
+  3 | 
+  4 | int main(void) {
+  5 |     char s[101];
+  6 |     if (scanf(""%100s"", s) != 1) return 0;
+  7 |     int len = strlen(s);
+  8 |     for (int i = 0; i < len / 2;) {
+  9 |         char t = s[i];
+ 10 |         s[i] = s[len - 1 - i];
+ 11 |         s[len - 1 - i] = t;
+ 12 |     }
+ 13 |     printf(""%s\n"", s);
+ 14 |     return 0;
+ 15 | }",INFINITE_LOOP (cách cài: drop_increment@8; số sau @ là dòng bị sửa),"- [INFINITE_LOOP] Chương trình chạy quá thời gian cho phép. Hãy kiểm tra điều kiện dừng và biến đếm của vòng lặp, hoặc giảm độ phức tạp thuật toán.
+  Gợi ý sửa: Bảng theo dõi biến qua từng vòng lặp",,,,,,
+H004,P007,"  1 | #include <stdio.h>
+  2 | 
+  3 | struct SinhVien {
+  4 |     char ten[51];
+  5 |     double diem;
+  6 | };
+  7 | 
+  8 | int main(void) {
+  9 |     int n;
+ 10 |     if (scanf(""%d"", &n) != 1) return 0;
+ 11 |     struct SinhVien ds[100] = {0};
+ 12 |     for (int i = 0; i < n; i++) scanf(""%50s %lf"", ds[i].ten, ds[i].diem);
+ 13 |     int best = 0;
+ 14 |     for (int i = 1; i < n; i++) {
+ 15 |         if (ds[i].diem > ds[best].diem) best = i;
+ 16 |     }
+ 17 |     printf(""%s %.2f\n"", ds[best].ten, ds[best].diem);
+ 18 |     return 0;
+ 19 | }",SCANF_MISSING_AMP (cách cài: drop_amp@12; số sau @ là dòng bị sửa),"- [SCANF_MISSING_AMP] Dòng 12, `scanf(""%50s %lf"", ds[i].ten, ds[i].diem)` — `ds[i].diem` là giá trị kiểu `double`, nhưng `scanf` cần nhận **địa chỉ** (`double *`) để ghi dữ liệu vào. Thiếu `&` khiến chương trình truyền sai kiểu tham số, dẫn đến Runtime Error. Lưu ý: `ds[i].ten` là mảng char nên tự động chuyển thành con trỏ, không cần `&`, nhưng với biến số thực thì bắt buộc phải có `&`.
+  Gợi ý sửa: Thêm `&` trước `ds[i].diem` trong lời gọi scanf: `&ds[i].diem`.",,,,,,
+H005,P002,"  1 | #include <stdio.h>
+  2 | #include <stdlib.h>
+  3 | 
+  4 | int main(void) {
+  5 |     int n;
+  6 |     if (scanf(""%d"", &n) != 1) return 0;
+  7 |     int *a = malloc(n * sizeof(int));
+  8 |     if (a == NULL) return 1;
+  9 |     for (int i = 0; i < n; i++) scanf(""%d"", &a[i]);
+ 10 |     for (int i = n - 1; i >= 0; i--) printf(""%d%c"", a[i], i ? ' ' : '\n');
+ 11 |     return 0;
+ 12 | }",MEM_LEAK (cách cài: drop_free@11; số sau @ là dòng bị sửa),"- [MEM_LEAK] Ở dòng 7, bạn dùng malloc để cấp phát vùng nhớ cho mảng a. Tuy nhiên, trước khi hàm main kết thúc (dòng 11), bạn không gọi free(a) để trả lại vùng nhớ đó cho hệ thống. Đây là lỗi 'rò rỉ bộ nhớ': vùng nhớ động được cấp phát nhưng không bao giờ được giải phóng, vi phạm nguyên tắc quản lý vòng đời vùng nhớ động — ai malloc thì phải free.
+  Gợi ý sửa: Thêm lời gọi free(a) sau khi bạn đã in xong mảng và trước câu lệnh return 0 ở cuối hàm main.",,,,,,
+H006,P004,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n;
+  5 |     if (scanf(""%d"", &n) != 1) return 0;
+  6 |     int a[1000] = {0};
+  7 |     for (int i = 0; i < n;) scanf(""%d"", &a[i]);
+  8 |     int best = 0;
+  9 |     for (int i = 1; i <= n; i++) {
+ 10 |         if (a[i] > a[best]) best = i;
+ 11 |     }
+ 12 |     printf(""%d %d\n"", a[best], best + 1);
+ 13 |     return 0;
+ 14 | }","OFF_BY_ONE, INFINITE_LOOP (cách cài: lt_to_le@9, drop_increment@7; số sau @ là dòng bị sửa)","- [INFINITE_LOOP] Chương trình chạy quá thời gian cho phép. Hãy kiểm tra điều kiện dừng và biến đếm của vòng lặp, hoặc giảm độ phức tạp thuật toán.
+  Gợi ý sửa: Bảng theo dõi biến qua từng vòng lặp",,,,,,
+H007,P006,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n, m;
+  5 |     if (scanf(""%d %d"", &n, &m) != 2) return 0;
+  6 |     int a[100][100];
+  7 |     for (int i = 0; i <= n; i++)
+  8 |         for (int j = 0; j < m;) scanf(""%d"", &a[i][j]);
+  9 |     for (int i = 0; i < n; i++) {
+ 10 |         int sum = 0;
+ 11 |         for (int j = 0; j < m; j++) {
+ 12 |             sum += a[i][j];
+ 13 |         }
+ 14 |         printf(""%d\n"", sum);
+ 15 |     }
+ 16 |     return 0;
+ 17 | }","OFF_BY_ONE, INFINITE_LOOP (cách cài: lt_to_le@7, drop_increment@8; số sau @ là dòng bị sửa)","- [OFF_BY_ONE] Mảng n phần tử có chỉ số từ 0 đến n-1. Vòng lặp bắt đầu từ 0 thì điều kiện thường là i < n, không phải i <= n.
+  Gợi ý sửa: Quy tắc viết biên vòng lặp duyệt mảng
+- [INFINITE_LOOP] Chương trình chạy quá thời gian cho phép. Hãy kiểm tra điều kiện dừng và biến đếm của vòng lặp, hoặc giảm độ phức tạp thuật toán.
+  Gợi ý sửa: Bảng theo dõi biến qua từng vòng lặp",,,,,,
+H008,P010,"  1 | #include <stdio.h>
+  2 | 
+  3 | long long giai_thua(int n) {
+  4 |     if (n <= 1) return 1;
+  5 |     return n * giai_thua(n - 1);
+  6 | }
+  7 | 
+  8 | int main(void) {
+  9 |     int n;
+ 10 |     if (scanf(""%d"", n) != 1) return 0;
+ 11 |     printf(""%d\n"", giai_thua(n));
+ 12 |     return 0;
+ 13 | }","FORMAT_MISMATCH, SCANF_MISSING_AMP (cách cài: wrong_format@11, drop_amp@10; số sau @ là dòng bị sửa)","- [SCANF_MISSING_AMP] Dòng 10, bạn viết `scanf(""%d"", n)` nhưng scanf cần địa chỉ của biến để ghi giá trị vào, không phải giá trị của biến. C truyền tham số theo giá trị, nên nếu không truyền địa chỉ, scanf không thể ghi kết quả vào biến `n`. Đây là nguyên nhân gây RE vì chương trình đọc sai địa chỉ.
+  Gợi ý sửa: Thêm toán tử `&` trước `n` trong scanf để truyền địa chỉ của biến: `scanf(""%d"", &n)`.
+- [FORMAT_MISMATCH] Dòng 11, bạn dùng `%d` để in kết quả của `giai_thua(n)`, nhưng hàm này trả về kiểu `long long`. Đặc tả `%d` chỉ dùng cho `int`, dùng sai sẽ gây ra kết quả in ra không đúng, đặc biệt với các giá trị lớn như 20!.
+  Gợi ý sửa: Thay `%d` bằng `%lld` trong printf để khớp với kiểu `long long` của giá trị trả về.",,,,,,
+H009,P004,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n;
+  5 |     if (scanf(""%d"", &n) != 1) return 0;
+  6 |     int a[1000] = {0};
+  7 |     for (int i = 0; i < n;) scanf(""%d"", &a[i]);
+  8 |     int best = 0;
+  9 |     for (int i = 1; i <= n; i++) {
+ 10 |         if (a[i] > a[best]) best = i;
+ 11 |     }
+ 12 |     printf(""%d %d\n"", a[best], best + 1);
+ 13 |     return 0;
+ 14 | }","OFF_BY_ONE, INFINITE_LOOP (cách cài: lt_to_le@9, drop_increment@7; số sau @ là dòng bị sửa)","- [INFINITE_LOOP] Dòng 7: `for (int i = 0; i < n;)` thiếu phần tăng biến `i`, nên `i` không bao giờ tăng lên, vòng lặp cứ đọc vào `a[0]` mãi mãi và không kết thúc. Đây là nguyên nhân chính gây TLE.
+  Gợi ý sửa: Thêm `i++` vào phần cập nhật của vòng for, hoặc đặt `i++` sau lệnh scanf bên trong vòng lặp.
+- [OFF_BY_ONE] Dòng 9: điều kiện `i <= n` khiến vòng lặp truy cập `a[n]`, trong khi mảng chỉ có chỉ số hợp lệ từ 0 đến n-1. Phần tử `a[n]` là ngoài phạm vi và có thể gây kết quả sai.
+  Gợi ý sửa: Đổi điều kiện thành `i < n` để vòng lặp chỉ duyệt các phần tử hợp lệ.",,,,,,
+H010,P007,"  1 | #include <stdio.h>
+  2 | 
+  3 | struct SinhVien {
+  4 |     char ten[51];
+  5 |     double diem;
+  6 | };
+  7 | 
+  8 | int main(void) {
+  9 |     int n;
+ 10 |     if (scanf(""%d"", &n) != 1) return 0;
+ 11 |     struct SinhVien ds[100] = {0};
+ 12 |     for (int i = 0; i < n; i++) scanf(""%50s %lf"", ds[i].ten, ds[i].diem);
+ 13 |     int best = 0;
+ 14 |     for (int i = 1; i < n; i++) {
+ 15 |         if (ds[i].diem > ds[best].diem) best = i;
+ 16 |     }
+ 17 |     printf(""%s %.2f\n"", ds[best].ten, ds[best].diem);
+ 18 |     return 0;
+ 19 | }",SCANF_MISSING_AMP (cách cài: drop_amp@12; số sau @ là dòng bị sửa),"- [SCANF_MISSING_AMP] Dòng 12: `scanf(""%50s %lf"", ds[i].ten, ds[i].diem)` — `ds[i].diem` là giá trị kiểu `double`, nhưng `scanf` cần **địa chỉ** của biến để ghi dữ liệu vào. Trình biên dịch cảnh báo 'argument 3 has type double' thay vì 'double *'. Vì C truyền tham số theo giá trị, nếu không dùng `&`, `scanf` sẽ cố ghi vào một vùng địa chỉ sai, gây crash (Runtime Error). Lưu ý: `ds[i].ten` là mảng ký tự nên tên mảng đã là địa chỉ, không cần `&`.
+  Gợi ý sửa: Thêm `&` trước `ds[i].diem` để truyền địa chỉ: `&ds[i].diem`. Phần `ds[i].ten` giữ nguyên không cần `&`.",,,,,,
+H011,P009,"  1 | #include <stdio.h>
+  2 | 
+  3 | void swap(int *x, int *y) {
+  4 |     int t = *x;
+  5 |     *x = *y;
+  6 |     *y = t;
+  7 | }
+  8 | 
+  9 | int main(void) {
+ 10 |     int n;
+ 11 |     if (scanf(""%d"", &n) != 1) return 0;
+ 12 |     for (int i = 0; i < n; i++); {
+ 13 |         int a, b;
+ 14 |         scanf(""%d %d"", &a, &b);
+ 15 |         if (a > b) swap(&a, &b);
+ 16 |         printf(""%d %d\n"", a, b);
+ 17 |     }
+ 18 |     return 0;
+ 19 | }",STRAY_SEMICOLON (cách cài: stray_semicolon@12; số sau @ là dòng bị sửa),"- [STRAY_SEMICOLON] Dấu "";"" ngay sau if(...)/for(...)/while(...) tạo ra thân rỗng, nên khối lệnh phía sau không còn thuộc câu lệnh đó.
+  Gợi ý sửa: Sửa vòng lặp chỉ chạy một lần",,,,,,
+H012,P004,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n;
+  5 |     if (scanf(""%d"", &n) != 1) return 0;
+  6 |     int a[1000] = {0};
+  7 |     for (int i = 0; i <= n; i++) scanf(""%d"", &a[i]);
+  8 |     int best = 0;
+  9 |     for (int i = 1; i < n; i++) {
+ 10 |         if (a[i] > a[best]) best = i;
+ 11 |     }
+ 12 |     printf(""%d %d\n"", a[best], best + 1);
+ 13 |     return 0;
+ 14 | }",OFF_BY_ONE (cách cài: lt_to_le@7; số sau @ là dòng bị sửa),"- [OFF_BY_ONE] Mảng n phần tử có chỉ số từ 0 đến n-1. Vòng lặp bắt đầu từ 0 thì điều kiện thường là i < n, không phải i <= n.
+  Gợi ý sửa: Quy tắc viết biên vòng lặp duyệt mảng",,,,,,
+H013,P005,"  1 | #include <stdio.h>
+  2 | #include <string.h>
+  3 | 
+  4 | int main(void) {
+  5 |     char s[101];
+  6 |     if (scanf(""%100s"", s) != 1) return 0;
+  7 |     int len = strlen(s);
+  8 |     for (int i = 0; i < len / 2;) {
+  9 |         char t = s[i];
+ 10 |         s[i] = s[len - 1 - i];
+ 11 |         s[len - 1 - i] = t;
+ 12 |     }
+ 13 |     printf(""%s\n"", s);
+ 14 |     return 0;
+ 15 | }",INFINITE_LOOP (cách cài: drop_increment@8; số sau @ là dòng bị sửa),"- [INFINITE_LOOP] Ở dòng 8, vòng lặp `for (int i = 0; i < len / 2;)` không có phần tăng biến `i`. Sau mỗi lần hoán đổi, `i` vẫn giữ nguyên giá trị 0, khiến điều kiện `i < len / 2` luôn đúng và vòng lặp không bao giờ dừng. Đây là lỗi vòng lặp vô hạn — một nguyên nhân phổ biến gây TLE.
+  Gợi ý sửa: Thêm `i++` vào phần thứ ba của vòng `for` (hoặc cuối thân vòng lặp) để `i` tiến dần đến điều kiện dừng sau mỗi lần lặp.",,,,,,
+H014,P001,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n;
+  5 |     long long sum;
+  6 |     scanf(""%d"", &n);
+  7 |     for (int i = 0; i < n;) {
+  8 |         int x;
+  9 |         scanf(""%d"", &x);
+ 10 |         sum += x;
+ 11 |     }
+ 12 |     printf(""%lld\n"", sum);
+ 13 |     return 0;
+ 14 | }","INFINITE_LOOP, UNINIT_VAR (cách cài: drop_increment@7, drop_init@5; số sau @ là dòng bị sửa)","- [UNINIT_VAR] Tại dòng 5, bạn khai báo `long long sum;` nhưng không gán giá trị ban đầu. Biến cục bộ trong C nằm trên stack và chứa 'giá trị rác', nên khi cộng dồn ở dòng 10 (`sum += x`), kết quả sẽ sai hoàn toàn. Trình biên dịch cũng cảnh báo điều này ở dòng 12.
+  Gợi ý sửa: Hãy gán giá trị ban đầu cho `sum` ngay khi khai báo, ví dụ `long long sum = 0;`.
+- [INFINITE_LOOP] Tại dòng 7, vòng lặp `for (int i = 0; i < n;)` không có phần tăng biến đếm `i`. Vì `i` không bao giờ thay đổi, điều kiện `i < n` luôn đúng và vòng lặp chạy mãi mãi, dẫn đến TLE. Hãy theo dõi bảng giá trị `i` qua từng vòng: i luôn bằng 0, không tiến về điều kiện dừng.
+  Gợi ý sửa: Thêm `i++` vào phần cập nhật của vòng lặp `for`, ví dụ `for (int i = 0; i < n; i++)`.",,,,,,
+H015,P010,"  1 | #include <stdio.h>
+  2 | 
+  3 | long long giai_thua(int n) {
+  4 |     if (n <= 1) return 1;
+  5 |     return n * giai_thua(n - 1);
+  6 | }
+  7 | 
+  8 | int main(void) {
+  9 |     int n;
+ 10 |     if (scanf(""%d"", n) != 1) return 0;
+ 11 |     printf(""%d\n"", giai_thua(n));
+ 12 |     return 0;
+ 13 | }","FORMAT_MISMATCH, SCANF_MISSING_AMP (cách cài: wrong_format@11, drop_amp@10; số sau @ là dòng bị sửa)","- [SCANF_MISSING_AMP] scanf cần địa chỉ của biến để ghi giá trị vào, hãy viết scanf(""%d"", &x). Riêng mảng ký tự đọc bằng %s thì không cần ""&"".
+  Gợi ý sửa: Bảng đặc tả định dạng printf/scanf
+- [FORMAT_MISMATCH] Đặc tả định dạng phải khớp kiểu biến, ví dụ %d cho int, %ld cho long, %lld cho long long, %f cho float/double khi in, %lf cho double khi đọc.
+  Gợi ý sửa: Bảng đặc tả định dạng printf/scanf",,,,,,
+H016,P003,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n, x, sum;
+  5 |     if (scanf(""%d"", &n) != 1) return 0;
+  6 |     for (int i = 0; i < n; i++); {
+  7 |         scanf(""%d"", &x);
+  8 |         sum += x;
+  9 |     }
+ 10 |     double avg = (double)sum / n;
+ 11 |     printf(""%.2f\n"", avg);
+ 12 |     return 0;
+ 13 | }","STRAY_SEMICOLON, UNINIT_VAR (cách cài: stray_semicolon@6, drop_init@4; số sau @ là dòng bị sửa)","- [STRAY_SEMICOLON] Ở dòng 6, bạn viết `for (int i = 0; i < n; i++);` — dấu `;` ngay sau dấu `)` khiến thân vòng lặp là rỗng (không làm gì). Khối lệnh `{ scanf(...); sum += x; }` phía sau chỉ chạy đúng 1 lần, không phụ thuộc vào vòng lặp. Trong C, `{}` mới xác định phạm vi của for, không phải thụt lề.
+  Gợi ý sửa: Xóa dấu `;` ngay sau `for(...)` để khối lệnh bên dưới trở thành thân của vòng lặp.
+- [UNINIT_VAR] Ở dòng 4, biến `sum` được khai báo nhưng không gán giá trị ban đầu. Trong C, biến cục bộ không tự động bằng 0 mà mang 'giá trị rác' trên stack. Vì vậy khi cộng dồn `sum += x` ở dòng 8, kết quả sẽ sai hoàn toàn — đây là lý do bạn nhận được `2.33` thay vì `7.67`.
+  Gợi ý sửa: Khởi tạo `sum = 0` ngay khi khai báo, ví dụ: `int n, x, sum = 0;`.",,,,,,
+H017,P007,"  1 | #include <stdio.h>
+  2 | 
+  3 | struct SinhVien {
+  4 |     char ten[51];
+  5 |     double diem;
+  6 | };
+  7 | 
+  8 | int main(void) {
+  9 |     int n;
+ 10 |     if (scanf(""%d"", &n) != 1) return 0;
+ 11 |     struct SinhVien ds[100] = {0};
+ 12 |     for (int i = 0; i < n; i++) scanf(""%50s %lf"", ds[i].ten, ds[i].diem);
+ 13 |     int best = 0;
+ 14 |     for (int i = 1; i < n; i++) {
+ 15 |         if (ds[i].diem > ds[best].diem) best = i;
+ 16 |     }
+ 17 |     printf(""%s %.2f\n"", ds[best].ten, ds[best].diem);
+ 18 |     return 0;
+ 19 | }",SCANF_MISSING_AMP (cách cài: drop_amp@12; số sau @ là dòng bị sửa),"- [SCANF_MISSING_AMP] scanf cần địa chỉ của biến để ghi giá trị vào, hãy viết scanf(""%d"", &x). Riêng mảng ký tự đọc bằng %s thì không cần ""&"".
+  Gợi ý sửa: Bảng đặc tả định dạng printf/scanf",,,,,,
+H018,P010,"  1 | #include <stdio.h>
+  2 | 
+  3 | long long giai_thua(int n) {
+  4 |     if (n <= 1) return 1;
+  5 |     return n * giai_thua(n - 1);
+  6 | }
+  7 | 
+  8 | int main(void) {
+  9 |     int n;
+ 10 |     if (scanf(""%d"", &n) != 1) return 0;
+ 11 |     printf(""%lld\n"", giai_thua(N));
+ 12 |     return 0;
+ 13 | }",UNDECLARED_ID (cách cài: rename_use@11; số sau @ là dòng bị sửa),"- [UNDECLARED_ID] Biến hoặc hàm phải được khai báo trước khi dùng. Kiểm tra chính tả tên và phạm vi (scope) của biến; hàm thư viện cần
+  Gợi ý sửa: Cách đọc thông báo lỗi của trình biên dịch",,,,,,
+H019,P006,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n, m;
+  5 |     if (scanf(""%d %d"", &n, &m) != 2) return 0;
+  6 |     int a[100][100];
+  7 |     for (int i = 0; i <= n; i++)
+  8 |         for (int j = 0; j < m;) scanf(""%d"", &a[i][j]);
+  9 |     for (int i = 0; i < n; i++) {
+ 10 |         int sum = 0;
+ 11 |         for (int j = 0; j < m; j++) {
+ 12 |             sum += a[i][j];
+ 13 |         }
+ 14 |         printf(""%d\n"", sum);
+ 15 |     }
+ 16 |     return 0;
+ 17 | }","OFF_BY_ONE, INFINITE_LOOP (cách cài: lt_to_le@7, drop_increment@8; số sau @ là dòng bị sửa)","- [OFF_BY_ONE] Dòng 7: điều kiện `i <= n` khiến vòng lặp chạy từ i=0 đến i=n (tổng cộng n+1 lần), trong khi mảng chỉ có n hàng (chỉ số 0 đến n-1). Truy cập `a[n][...]` là vượt ngoài phạm vi mảng.
+  Gợi ý sửa: Đổi điều kiện thành `i < n` để chỉ duyệt đúng n hàng.
+- [INFINITE_LOOP] Dòng 8: vòng lặp `for (int j = 0; j < m;)` không có phần tăng biến `j`, nên sau khi đọc phần tử đầu tiên, j mãi bằng 0 và vòng lặp không bao giờ kết thúc. Đây là nguyên nhân chương trình bị TLE và không in ra kết quả gì.
+  Gợi ý sửa: Thêm `j++` vào phần cập nhật của vòng for, ví dụ `for (int j = 0; j < m; j++)`.",,,,,,
+H020,P010,"  1 | #include <stdio.h>
+  2 | 
+  3 | long long giai_thua(int n) {
+  4 |     if (n <= 1) return 1;
+  5 |     return n * giai_thua(n - 1);
+  6 | }
+  7 | 
+  8 | int main(void) {
+  9 |     int n;
+ 10 |     if (scanf(""%d"", n) != 1) return 0;
+ 11 |     printf(""%d\n"", giai_thua(n));
+ 12 |     return 0;
+ 13 | }","FORMAT_MISMATCH, SCANF_MISSING_AMP (cách cài: wrong_format@11, drop_amp@10; số sau @ là dòng bị sửa)","- [SCANF_MISSING_AMP] Dòng 10, bạn truyền `n` (giá trị int) vào scanf thay vì `&n` (địa chỉ của n). scanf cần địa chỉ để ghi giá trị vào biến, nếu truyền giá trị thì chương trình sẽ crash (Runtime Error) vì scanf cố ghi vào vùng nhớ sai.
+  Gợi ý sửa: Thêm `&` trước `n` trong lời gọi scanf: `scanf(""%d"", &n)`.
+- [FORMAT_MISMATCH] Dòng 11, hàm `giai_thua` trả về kiểu `long long` nhưng bạn dùng `%d` để in — `%d` chỉ dùng cho `int`. Điều này gây ra hành vi không xác định và kết quả in ra sẽ sai, đặc biệt với các số lớn như 20!.
+  Gợi ý sửa: Thay `%d` bằng `%lld` trong printf để khớp với kiểu `long long`.",,,,,,
+H021,P008,"  1 | #include <stdio.h>
+  2 | #include <stdlib.h>
+  3 | #include <string.h>
+  4 | 
+  5 | int main(void) {
+  6 |     char s[1001];
+  7 |     if (scanf(""%1000s"", s) != 1) return 0;
+  8 |     int len = strlen(s);
+  9 |     char *st = NULL;
+ 10 |     if (st = NULL) return 1;
+ 11 |     int top = 0, ok = 1;
+ 12 |     for (int i = 0; i < len && ok; i++) {
+ 13 |         char c = s[i];
+ 14 |         if (c == '(' || c == '[') {
+ 15 |             st[top++] = c;
+ 16 |         } else {
+ 17 |             char want = c == ')' ? '(' : '[';
+ 18 |             if (top == 0 || st[top - 1] != want) ok = 0;
+ 19 |             else top--;
+ 20 |         }
+ 21 |     }
+ 22 |     printf(""%s\n"", ok && top == 0 ? ""YES"" : ""NO"");
+ 23 |     free(st);
+ 24 |     return 0;
+ 25 | }","ASSIGN_IN_COND, NULL_DEREF (cách cài: eq_to_assign@10, forget_malloc@9; số sau @ là dòng bị sửa)","- [ASSIGN_IN_COND] Dòng 10: `if (st = NULL)` dùng toán tử gán '=' thay vì so sánh '=='. Lệnh này gán NULL cho st (không làm gì hữu ích) rồi kiểm tra giá trị NULL (luôn là 0/false), nên nhánh `return 1` không bao giờ chạy. Đây là lỗi kinh điển nhầm '=' với '==' trong điều kiện.
+  Gợi ý sửa: Thay '=' bằng '==' để kiểm tra đúng. Nhưng quan trọng hơn: bạn cần gọi malloc() để cấp phát bộ nhớ cho st trước khi dùng nó làm ngăn xếp.
+- [CONST_CONDITION] Vì `st = NULL` là phép gán trả về NULL (giá trị 0), điều kiện này luôn bằng false, nên nhánh kiểm tra lỗi không bao giờ được thực thi. Cppcheck phát hiện đây là điều kiện luôn sai (knownConditionTrueFalse).
+  Gợi ý sửa: Sau khi sửa thành '==', hãy đảm bảo logic kiểm tra NULL đúng mục đích: kiểm tra sau khi malloc xem có cấp phát thành công không.
+- [UNINIT_VAR] Dòng 9: `st` được khởi tạo là NULL nhưng không bao giờ được malloc(). Dòng 15: `st[top++] = c` ghi vào con trỏ NULL, gây lỗi runtime (segfault), đây chính là nguyên nhân RE. Đề bài yêu cầu cấp phát động bằng mảng nhưng code thiếu lời gọi malloc.
+  Gợi ý sửa: Thêm `st = (char*)malloc(len * sizeof(char));` sau khi tính len, và kiểm tra kết quả malloc trước khi dùng.",,,,,,
+H022,P003,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n, x, sum;
+  5 |     if (scanf(""%d"", &n) != 1) return 0;
+  6 |     for (int i = 0; i < n; i++); {
+  7 |         scanf(""%d"", &x);
+  8 |         sum += x;
+  9 |     }
+ 10 |     double avg = (double)sum / n;
+ 11 |     printf(""%.2f\n"", avg);
+ 12 |     return 0;
+ 13 | }","STRAY_SEMICOLON, UNINIT_VAR (cách cài: stray_semicolon@6, drop_init@4; số sau @ là dòng bị sửa)","- [STRAY_SEMICOLON] Dòng 6 có dấu ';' ngay sau `for (int i = 0; i < n; i++)`, tức là vòng lặp chỉ chạy n lần... không làm gì cả. Khối `{ scanf; sum += x; }` phía sau chỉ được thực thi đúng 1 lần, nên chỉ đọc 1 điểm thay vì n điểm.
+  Gợi ý sửa: Xóa dấu ';' ở cuối dòng for để khối lệnh bên dưới trở thành thân của vòng lặp.
+- [UNINIT_VAR] Dòng 4 khai báo `int n, x, sum;` nhưng sum không được gán giá trị ban đầu. Khi thực hiện `sum += x` ở dòng 8, sum chứa giá trị rác từ bộ nhớ, dẫn đến kết quả sai (thay vì 23 lại ra 7 như test mẫu).
+  Gợi ý sửa: Khởi tạo sum = 0 ngay khi khai báo: `int n, x, sum = 0;`",,,,,,
+H023,P003,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n, x, sum;
+  5 |     if (scanf(""%d"", &n) != 1) return 0;
+  6 |     for (int i = 0; i < n; i++); {
+  7 |         scanf(""%d"", &x);
+  8 |         sum += x;
+  9 |     }
+ 10 |     double avg = (double)sum / n;
+ 11 |     printf(""%.2f\n"", avg);
+ 12 |     return 0;
+ 13 | }","STRAY_SEMICOLON, UNINIT_VAR (cách cài: stray_semicolon@6, drop_init@4; số sau @ là dòng bị sửa)","- [STRAY_SEMICOLON] Dấu "";"" ngay sau if(...)/for(...)/while(...) tạo ra thân rỗng, nên khối lệnh phía sau không còn thuộc câu lệnh đó.
+  Gợi ý sửa: Sửa vòng lặp chỉ chạy một lần
+- [UNINIT_VAR] Biến cục bộ trong C không tự bằng 0. Hãy gán giá trị ban đầu (ví dụ int sum = 0;) trước khi đọc hoặc cộng dồn.
+  Gợi ý sửa: Vì sao biến cục bộ phải được khởi tạo",,,,,,
+H024,P001,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n;
+  5 |     long long sum;
+  6 |     scanf(""%d"", &n);
+  7 |     for (int i = 0; i < n;) {
+  8 |         int x;
+  9 |         scanf(""%d"", &x);
+ 10 |         sum += x;
+ 11 |     }
+ 12 |     printf(""%lld\n"", sum);
+ 13 |     return 0;
+ 14 | }","INFINITE_LOOP, UNINIT_VAR (cách cài: drop_increment@7, drop_init@5; số sau @ là dòng bị sửa)","- [UNINIT_VAR] Biến cục bộ trong C không tự bằng 0. Hãy gán giá trị ban đầu (ví dụ int sum = 0;) trước khi đọc hoặc cộng dồn.
+  Gợi ý sửa: Vì sao biến cục bộ phải được khởi tạo
+- [INFINITE_LOOP] Chương trình chạy quá thời gian cho phép. Hãy kiểm tra điều kiện dừng và biến đếm của vòng lặp, hoặc giảm độ phức tạp thuật toán.
+  Gợi ý sửa: Bảng theo dõi biến qua từng vòng lặp",,,,,,
+H025,P002,"  1 | #include <stdio.h>
+  2 | #include <stdlib.h>
+  3 | 
+  4 | int main(void) {
+  5 |     int n;
+  6 |     if (scanf(""%d"", &n) != 1) return 0;
+  7 |     int *a = malloc(n * sizeof(int));
+  8 |     if (a == NULL) return 1;
+  9 |     for (int i = 0; i < n; i++) scanf(""%d"", &a[i]);
+ 10 |     for (int i = n - 1; i >= 0; i--) printf(""%d%c"", a[i], i ? ' ' : '\n');
+ 11 |     return 0;
+ 12 | }",MEM_LEAK (cách cài: drop_free@11; số sau @ là dòng bị sửa),"- [MEM_LEAK] Dòng 7 cấp phát bộ nhớ động cho mảng `a` bằng `malloc`, nhưng chương trình kết thúc ở dòng 11 mà không có lệnh `free(a)`. Dù hệ điều hành thường thu hồi bộ nhớ khi process kết thúc, đây vẫn là lỗi khái niệm quan trọng: mỗi `malloc` phải có `free` tương ứng để tránh rò rỉ bộ nhớ, đặc biệt trong các chương trình dài hơn.
+  Gợi ý sửa: Thêm lệnh `free(a);` trước dòng `return 0;` ở cuối hàm main để giải phóng bộ nhớ đúng cách.",,,,,,
+H026,P004,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n;
+  5 |     if (scanf(""%d"", &n) != 1) return 0;
+  6 |     int a[1000] = {0};
+  7 |     for (int i = 0; i <= n; i++) scanf(""%d"", &a[i]);
+  8 |     int best = 0;
+  9 |     for (int i = 1; i < n; i++) {
+ 10 |         if (a[i] > a[best]) best = i;
+ 11 |     }
+ 12 |     printf(""%d %d\n"", a[best], best + 1);
+ 13 |     return 0;
+ 14 | }",OFF_BY_ONE (cách cài: lt_to_le@7; số sau @ là dòng bị sửa),"- [OFF_BY_ONE] Dòng 7: `for (int i = 0; i <= n; i++)` khiến vòng lặp chạy từ i=0 đến i=n, tức là n+1 lần. Mảng có n phần tử với chỉ số hợp lệ từ 0 đến n-1, nên khi i=n bạn đang ghi vào ô a[n] — nằm ngoài mảng. Đây là lỗi 'off-by-one' điển hình: nhầm giữa điều kiện `i <= n` (dừng tại n) và `i < n` (dừng trước n).
+  Gợi ý sửa: Đổi điều kiện vòng lặp từ `i <= n` thành `i < n` để chỉ duyệt đúng n phần tử có chỉ số 0 đến n-1.",,,,,,
+H027,P002,"  1 | #include <stdio.h>
+  2 | #include <stdlib.h>
+  3 | 
+  4 | int main(void) {
+  5 |     int n;
+  6 |     if (scanf(""%d"", &n) != 1) return 0;
+  7 |     int *a = malloc(n * sizeof(int));
+  8 |     if (a == NULL) return 1;
+  9 |     for (int i = 0; i < n; i++) scanf(""%d"", &a[i]);
+ 10 |     for (int i = n - 1; i >= 0; i--) printf(""%d%c"", a[i], i ? ' ' : '\n');
+ 11 |     return 0;
+ 12 | }",MEM_LEAK (cách cài: drop_free@11; số sau @ là dòng bị sửa),"- [MEM_LEAK] Vùng nhớ cấp phát bằng malloc/calloc/new phải được giải phóng bằng free/delete khi không dùng nữa.
+  Gợi ý sửa: Dùng AddressSanitizer để tìm lỗi bộ nhớ",,,,,,
+H028,P008,"  1 | #include <stdio.h>
+  2 | #include <stdlib.h>
+  3 | #include <string.h>
+  4 | 
+  5 | int main(void) {
+  6 |     char s[1001];
+  7 |     if (scanf(""%1000s"", s) != 1) return 0;
+  8 |     int len = strlen(s);
+  9 |     char *st = NULL;
+ 10 |     if (st = NULL) return 1;
+ 11 |     int top = 0, ok = 1;
+ 12 |     for (int i = 0; i < len && ok; i++) {
+ 13 |         char c = s[i];
+ 14 |         if (c == '(' || c == '[') {
+ 15 |             st[top++] = c;
+ 16 |         } else {
+ 17 |             char want = c == ')' ? '(' : '[';
+ 18 |             if (top == 0 || st[top - 1] != want) ok = 0;
+ 19 |             else top--;
+ 20 |         }
+ 21 |     }
+ 22 |     printf(""%s\n"", ok && top == 0 ? ""YES"" : ""NO"");
+ 23 |     free(st);
+ 24 |     return 0;
+ 25 | }","ASSIGN_IN_COND, NULL_DEREF (cách cài: eq_to_assign@10, forget_malloc@9; số sau @ là dòng bị sửa)","- [ASSIGN_IN_COND] Trong điều kiện, ""="" là phép gán, còn so sánh bằng phải dùng ""=="".
+  Gợi ý sửa: ""="" là gán, ""=="" là so sánh
+- [CONST_CONDITION] Điều kiện này luôn cho cùng một kết quả nên nhánh if/vòng lặp không bao giờ (hoặc luôn luôn) chạy. Thường do gán nhầm ""="" thay ""=="", so sánh sai biến, hoặc điều kiện bị lặp.
+  Gợi ý sửa: ""="" là gán, ""=="" là so sánh",,,,,,
+H029,P010,"  1 | #include <stdio.h>
+  2 | 
+  3 | long long giai_thua(int n) {
+  4 |     if (n <= 1) return 1;
+  5 |     return n * giai_thua(n - 1);
+  6 | }
+  7 | 
+  8 | int main(void) {
+  9 |     int n;
+ 10 |     if (scanf(""%d"", &n) != 1) return 0;
+ 11 |     printf(""%lld\n"", giai_thua(N));
+ 12 |     return 0;
+ 13 | }",UNDECLARED_ID (cách cài: rename_use@11; số sau @ là dòng bị sửa),"- [UNDECLARED_ID] Dòng 11, bạn viết `giai_thua(N)` nhưng biến được khai báo ở dòng 9 là `n` (chữ thường). Trong C, tên biến phân biệt chữ hoa/thường (case-sensitive), nên `N` và `n` là hai định danh hoàn toàn khác nhau, và `N` chưa được khai báo ở đâu cả.
+  Gợi ý sửa: Sửa `N` thành `n` (chữ thường) trong lời gọi `giai_thua(N)` là xong.",,,,,,
+H030,P009,"  1 | #include <stdio.h>
+  2 | 
+  3 | void swap(int *x, int *y) {
+  4 |     int t = *x;
+  5 |     *x = *y;
+  6 |     *y = t;
+  7 | }
+  8 | 
+  9 | int main(void) {
+ 10 |     int n;
+ 11 |     if (scanf(""%d"", &n) != 1) return 0;
+ 12 |     for (int i = 0; i < n; i++); {
+ 13 |         int a, b;
+ 14 |         scanf(""%d %d"", &a, &b);
+ 15 |         if (a > b) swap(&a, &b);
+ 16 |         printf(""%d %d\n"", a, b);
+ 17 |     }
+ 18 |     return 0;
+ 19 | }",STRAY_SEMICOLON (cách cài: stray_semicolon@12; số sau @ là dòng bị sửa),"- [STRAY_SEMICOLON] Dòng 12 có dấu ';' ngay sau `for (int i = 0; i < n; i++)`, tức là `for (...);`. Dấu ';' này tạo ra một thân vòng lặp rỗng — vòng for chạy n lần nhưng không làm gì cả. Khối lệnh `{ int a, b; ... }` phía sau chỉ được thực thi **một lần duy nhất** sau khi vòng for kết thúc, không phụ thuộc vào n. Đây là lỗi cú pháp hợp lệ nhưng sai về logic, và compiler đã cảnh báo về điều này.
+  Gợi ý sửa: Hãy xóa dấu ';' ngay sau `for (int i = 0; i < n; i++)` để khối lệnh `{...}` trở thành thân thực sự của vòng lặp.",,,,,,
+H031,P005,"  1 | #include <stdio.h>
+  2 | #include <string.h>
+  3 | 
+  4 | int main(void) {
+  5 |     char s[101];
+  6 |     if (scanf(""%100s"", s) != 1) return 0;
+  7 |     int len = strlen(s);
+  8 |     for (int i = 0; i < len / 2;) {
+  9 |         char t = s[i];
+ 10 |         s[i] = s[len - 1 - i];
+ 11 |         s[len - 1 - i] = t;
+ 12 |     }
+ 13 |     printf(""%s\n"", s);
+ 14 |     return 0;
+ 15 | }",INFINITE_LOOP (cách cài: drop_increment@8; số sau @ là dòng bị sửa),"- [INFINITE_LOOP] Dòng 8: vòng lặp `for (int i = 0; i < len / 2;)` không có phần tăng biến `i`, nên `i` luôn bằng 0, điều kiện `i < len / 2` luôn đúng và vòng lặp không bao giờ dừng. Đây là lỗi vòng lặp vô hạn (infinite loop) do quên cập nhật biến điều khiển.
+  Gợi ý sửa: Thêm `i++` vào phần thứ ba của vòng lặp for, ví dụ: `for (int i = 0; i < len / 2; i++)`.",,,,,,
+H032,P004,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n;
+  5 |     if (scanf(""%d"", &n) != 1) return 0;
+  6 |     int a[1000] = {0};
+  7 |     for (int i = 0; i < n;) scanf(""%d"", &a[i]);
+  8 |     int best = 0;
+  9 |     for (int i = 1; i <= n; i++) {
+ 10 |         if (a[i] > a[best]) best = i;
+ 11 |     }
+ 12 |     printf(""%d %d\n"", a[best], best + 1);
+ 13 |     return 0;
+ 14 | }","OFF_BY_ONE, INFINITE_LOOP (cách cài: lt_to_le@9, drop_increment@7; số sau @ là dòng bị sửa)","- [INFINITE_LOOP] Dòng 7: `for (int i = 0; i < n;)` thiếu phần tăng biến `i`, nên sau mỗi vòng lặp `i` vẫn bằng 0, điều kiện `i < n` luôn đúng và chương trình đọc mãi mà không thoát ra. Đây là lỗi điều kiện dừng: biến đếm phải tiến dần về điều kiện dừng thì vòng lặp mới kết thúc.
+  Gợi ý sửa: Thêm `i++` vào phần cập nhật của vòng for (hoặc sau lệnh scanf), để mỗi lần lặp `i` tăng lên 1 và cuối cùng vòng lặp sẽ dừng.
+- [OFF_BY_ONE] Dòng 9: vòng lặp tìm max chạy `i <= n`, tức là `i` có thể bằng `n`. Khi đó `a[n]` truy cập vào vị trí thứ n+1 (đánh số từ 0) của mảng, vượt ra ngoài n phần tử hợp lệ (chỉ số 0 đến n-1). Điều này gây ra hành vi không xác định.
+  Gợi ý sửa: Đổi điều kiện thành `i < n` để vòng lặp chỉ duyệt các phần tử hợp lệ từ chỉ số 0 đến n-1.",,,,,,
+H033,P004,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n;
+  5 |     if (scanf(""%d"", &n) != 1) return 0;
+  6 |     int a[1000] = {0};
+  7 |     for (int i = 0; i <= n; i++) scanf(""%d"", &a[i]);
+  8 |     int best = 0;
+  9 |     for (int i = 1; i < n; i++) {
+ 10 |         if (a[i] > a[best]) best = i;
+ 11 |     }
+ 12 |     printf(""%d %d\n"", a[best], best + 1);
+ 13 |     return 0;
+ 14 | }",OFF_BY_ONE (cách cài: lt_to_le@7; số sau @ là dòng bị sửa),"- [OFF_BY_ONE] Dòng 7 dùng điều kiện `i <= n` thay vì `i < n`, nên vòng lặp chạy từ i=0 đến i=n, tức là đọc n+1 phần tử vào mảng. Phần tử thứ n+1 (a[n]) không có trong input, scanf sẽ đọc giá trị rác hoặc chờ thêm input. Đây là lỗi lệch biên (off-by-one) kinh điển khi dùng vòng for với mảng 0-indexed.
+  Gợi ý sửa: Đổi điều kiện vòng lặp thành `i < n` để chỉ đọc đúng n phần tử từ a[0] đến a[n-1].",,,,,,
+H034,P001,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n;
+  5 |     long long sum;
+  6 |     scanf(""%d"", &n);
+  7 |     for (int i = 0; i < n;) {
+  8 |         int x;
+  9 |         scanf(""%d"", &x);
+ 10 |         sum += x;
+ 11 |     }
+ 12 |     printf(""%lld\n"", sum);
+ 13 |     return 0;
+ 14 | }","INFINITE_LOOP, UNINIT_VAR (cách cài: drop_increment@7, drop_init@5; số sau @ là dòng bị sửa)","- [UNINIT_VAR] Dòng 5 khai báo `long long sum;` nhưng không gán giá trị ban đầu. Khi dùng `sum += x` ở dòng 10, `sum` chứa giá trị rác bất kỳ, kết quả tính toán sẽ sai. Compiler cũng đã cảnh báo điều này.
+  Gợi ý sửa: Khởi tạo `sum = 0` ngay khi khai báo ở dòng 5.
+- [INFINITE_LOOP] Dòng 7: vòng `for (int i = 0; i < n;)` thiếu phần tăng biến `i`, nên `i` mãi bằng 0, điều kiện `i < n` luôn đúng và vòng lặp không bao giờ kết thúc. Đây là nguyên nhân gây TLE.
+  Gợi ý sửa: Thêm `i++` vào phần cập nhật của vòng for: `for (int i = 0; i < n; i++)`.",,,,,,
+H035,P006,"  1 | #include <stdio.h>
+  2 | 
+  3 | int main(void) {
+  4 |     int n, m;
+  5 |     if (scanf(""%d %d"", &n, &m) != 2) return 0;
+  6 |     int a[100][100];
+  7 |     for (int i = 0; i <= n; i++)
+  8 |         for (int j = 0; j < m;) scanf(""%d"", &a[i][j]);
+  9 |     for (int i = 0; i < n; i++) {
+ 10 |         int sum = 0;
+ 11 |         for (int j = 0; j < m; j++) {
+ 12 |             sum += a[i][j];
+ 13 |         }
+ 14 |         printf(""%d\n"", sum);
+ 15 |     }
+ 16 |     return 0;
+ 17 | }","OFF_BY_ONE, INFINITE_LOOP (cách cài: lt_to_le@7, drop_increment@8; số sau @ là dòng bị sửa)","- [OFF_BY_ONE] Dòng 7: điều kiện `i <= n` khiến vòng lặp chạy từ i=0 đến i=n, tức là n+1 lần thay vì n lần. Với mảng khai báo `a[100][100]`, chỉ số hợp lệ là 0 đến n-1. Khi i=n, bạn đang ghi vào `a[n][...]`, vượt ra ngoài vùng dữ liệu hợp lệ — đây là lỗi off-by-one kinh điển khi dùng `<=` thay vì `<`.
+  Gợi ý sửa: Đổi điều kiện thành `i < n` để vòng lặp chỉ duyệt đúng n hàng (chỉ số 0 đến n-1).
+- [INFINITE_LOOP] Dòng 8: vòng lặp `for (int j = 0; j < m;)` không có phần tăng biến j (phần thứ ba của for bị bỏ trống). Sau mỗi lần đọc, j không thay đổi, điều kiện `j < m` luôn đúng, khiến chương trình lặp mãi mãi đọc cùng một ô — đây là nguyên nhân TLE.
+  Gợi ý sửa: Thêm `j++` vào phần tăng của vòng lặp: `for (int j = 0; j < m; j++)`.",,,,,,
+H036,P009,"  1 | #include <stdio.h>
+  2 | 
+  3 | void swap(int *x, int *y) {
+  4 |     int t = *x;
+  5 |     *x = *y;
+  6 |     *y = t;
+  7 | }
+  8 | 
+  9 | int main(void) {
+ 10 |     int n;
+ 11 |     if (scanf(""%d"", &n) != 1) return 0;
+ 12 |     for (int i = 0; i < n; i++); {
+ 13 |         int a, b;
+ 14 |         scanf(""%d %d"", &a, &b);
+ 15 |         if (a > b) swap(&a, &b);
+ 16 |         printf(""%d %d\n"", a, b);
+ 17 |     }
+ 18 |     return 0;
+ 19 | }",STRAY_SEMICOLON (cách cài: stray_semicolon@12; số sau @ là dòng bị sửa),"- [STRAY_SEMICOLON] Dòng 12 có dấu `;` ngay sau `for (int i = 0; i < n; i++)`, tức là vòng lặp for chỉ thực hiện vòng lặp rỗng n lần rồi dừng. Khối `{ ... }` phía sau không phải thân của for mà là một khối lệnh độc lập, chỉ chạy đúng một lần duy nhất sau khi vòng lặp kết thúc. Đó là lý do chương trình chỉ đọc và in ra một cặp số.
+  Gợi ý sửa: Hãy xóa dấu `;` sau dấu `)` của vòng lặp for ở dòng 12 để khối `{ ... }` trở thành thân của vòng lặp.",,,,,,
