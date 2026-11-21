@@ -37,6 +37,7 @@ def make_llm(spec: str | None = None) -> FallbackLLM | None:
                     model=os.getenv("OLLAMA_MODEL", "qwen2.5:7b-instruct"),
                     base_url=os.getenv("OLLAMA_URL", "http://localhost:11434"),
                     timeout_s=float(os.getenv("OLLAMA_TIMEOUT", "300")),
+                    num_thread=int(os.getenv("OLLAMA_NUM_THREAD", "0")),
                 )
             )
         else:

@@ -16,20 +16,29 @@ class OllamaProvider:
         base_url: str = "http://localhost:11434",
         timeout_s: float = 300,
         max_tokens: int = 800,
+        num_thread: int = 0,
     ):
         self.model = model
         self.base_url = base_url.rstrip("/")
         self.timeout_s = timeout_s
         self.max_tokens = max_tokens
+        self.num_thread = num_thread
         self.name = f"ollama:{model}"
+
+    def _options(self) -> dict:
+        # num_predict: chặn câu trả lời quá dài (chạy CPU rất chậm); 800 token đủ cho chẩn đoán
+        opts = {"temperature": 0.2, "num_predict": self.max_tokens, "num_ctx": 8192}
+        if self.num_thread > 0:
+            # CPU lai (ít nhân P, nhiều nhân E): để Ollama tự chọn số luồng có thể chậm hơn 20 lần
+            opts["num_thread"] = self.num_thread
+        return opts
 
     def generate_json(self, system: str, user: str, schema: dict) -> dict:
         body = {
             "model": self.model,
             "stream": False,
             "format": schema,  # Ollama ràng buộc đầu ra theo JSON schema
-            # num_predict: chặn câu trả lời quá dài (chạy CPU rất chậm); 800 token đủ cho chẩn đoán
-            "options": {"temperature": 0.2, "num_predict": self.max_tokens, "num_ctx": 8192},
+            "options": self._options(),
             "messages": [
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
