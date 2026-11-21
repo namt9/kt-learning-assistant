@@ -1,0 +1,182 @@
+{
+ "H001": {
+  "id": "fb842f83b418",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H002": {
+  "id": "b3b29037f846",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H003": {
+  "id": "72be7b0e8afc",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H004": {
+  "id": "3861e276bbf7",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H005": {
+  "id": "caf60b4b4377",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H006": {
+  "id": "2598d5781232",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H007": {
+  "id": "cf7c59e321a2",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H008": {
+  "id": "01452b94d5e4",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H009": {
+  "id": "2598d5781232",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H010": {
+  "id": "3861e276bbf7",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H011": {
+  "id": "1e0482dded5f",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H012": {
+  "id": "a05df88f9aff",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H013": {
+  "id": "72be7b0e8afc",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H014": {
+  "id": "59b09b22ed36",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H015": {
+  "id": "01452b94d5e4",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H016": {
+  "id": "97e0592e378c",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H017": {
+  "id": "3861e276bbf7",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H018": {
+  "id": "fb842f83b418",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H019": {
+  "id": "cf7c59e321a2",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H020": {
+  "id": "01452b94d5e4",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H021": {
+  "id": "b3b29037f846",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H022": {
+  "id": "97e0592e378c",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H023": {
+  "id": "97e0592e378c",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H024": {
+  "id": "59b09b22ed36",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H025": {
+  "id": "caf60b4b4377",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H026": {
+  "id": "a05df88f9aff",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H027": {
+  "id": "caf60b4b4377",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H028": {
+  "id": "b3b29037f846",
+  "config": "rule",
+  "gen_llm": null
+ },
+ "H029": {
+  "id": "fb842f83b418",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H030": {
+  "id": "1e0482dded5f",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H031": {
+  "id": "72be7b0e8afc",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H032": {
+  "id": "2598d5781232",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H033": {
+  "id": "a05df88f9aff",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H034": {
+  "id": "59b09b22ed36",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H035": {
+  "id": "cf7c59e321a2",
+  "config": "hybrid",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ },
+ "H036": {
+  "id": "1e0482dded5f",
+  "config": "llm_only",
+  "gen_llm": "claude:claude-sonnet-4-6"
+ }
+}

@@ -41,24 +41,31 @@ class FakeLLM:
 
     def generate_json(self, system, user, schema):
         self.calls += 1
-        enum = schema["properties"]["items"]["items"]["properties"]["bug_pattern"]["enum"]
-        if "line" in schema["properties"]["items"]["items"]["properties"]:  # llm_only
-            return {
-                "summary": "s",
-                "items": [
-                    {
-                        "bug_pattern": "SCANF_MISSING_AMP",
-                        "line": 5,
-                        "explanation": "thiếu &",
-                        "fix_hint": "thêm &",
-                    },
-                    {"bug_pattern": "MEM_LEAK", "line": 2, "explanation": "bịa", "fix_hint": "x"},
-                ],
-            }
-        return {
+        props = schema["properties"]
+        if "extra" in props or "line" not in props["items"]["items"]["properties"]:  # hybrid
+            enum = props.get("items", {}).get("items", {}).get("properties", {})
+            verified = enum.get("bug_pattern", {}).get("enum", [])
+            reply = {"summary": "s", "items": [], "extra": []}
+            if verified:
+                reply["items"] = [
+                    {"bug_pattern": verified[0], "explanation": "Dòng 5 thiếu &.", "fix_hint": "&"}
+                ]
+            if "extra" in props and not verified:  # công cụ không thấy gì: LLM đề xuất
+                reply["extra"] = [
+                    {"bug_pattern": "OFF_BY_ONE", "line": 7, "explanation": "e", "fix_hint": "f"},
+                    {"bug_pattern": "MEM_LEAK", "line": 0, "explanation": "bịa", "fix_hint": "x"},
+                ]
+            return reply
+        return {  # llm_only
             "summary": "s",
             "items": [
-                {"bug_pattern": enum[0], "explanation": "Dòng 5 thiếu &.", "fix_hint": "Thêm &."}
+                {
+                    "bug_pattern": "SCANF_MISSING_AMP",
+                    "line": 5,
+                    "explanation": "thiếu &",
+                    "fix_hint": "thêm &",
+                },
+                {"bug_pattern": "MEM_LEAK", "line": 2, "explanation": "bịa", "fix_hint": "x"},
             ],
         }
 
@@ -97,6 +104,10 @@ def test_compare_end_to_end(files, monkeypatch):
     assert by["r1", "hybrid"]["provider"] == "fake" and not by["r1", "hybrid"]["fallback"]
     assert by["r1", "llm_only"]["pred"] == ["MEM_LEAK", "SCANF_MISSING_AMP"]
     assert by["r2", "rule"]["pred"] == []  # OFF_BY_ONE: công cụ không thấy
+    # hybrid: giữ lỗi LLM đề xuất có dòng thật, loại lỗi không chỉ ra dòng
+    assert by["r2", "hybrid"]["pred"] == ["OFF_BY_ONE"]
+    assert by["r2", "hybrid"]["rejected"] == ["MEM_LEAK"]
+    assert by["r1", "hybrid"]["pred"] == ["SCANF_MISSING_AMP"]
 
     text = report.read_text()
     assert "LLM thuần" in text and "Hybrid" in text and "fake" in text

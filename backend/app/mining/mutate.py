@@ -67,6 +67,26 @@ def _lines_matching(pattern: str, edit: Callable[[list[str], int], list[str] | N
 # ------------------------------------------------------------ từng toán tử
 
 
+def _block_after(src: str, pos: int) -> str:
+    """Nội dung khối { ... } bắt đầu tại vị trí dấu { đầu tiên từ pos (đếm ngoặc lồng nhau)."""
+    start = src.index("{", pos)
+    depth = 0
+    for i in range(start, len(src)):
+        depth += {"{": 1, "}": -1}.get(src[i], 0)
+        if depth == 0:
+            return src[start : i + 1]
+    return src[start:]
+
+
+def _stray_semicolon(m: re.Match) -> str:
+    """for (...) { -> for (...); {  nhưng bỏ qua khi biến khai báo trong for được dùng trong thân:
+    khi đó khối bị tách ra khỏi vòng lặp sẽ không biên dịch được (thành lỗi biên dịch, sai nhãn)."""
+    decl = re.search(r"for\s*\(\s*(?:unsigned\s+|long\s+)*\w+\s+(\w+)\s*=", m.group(1))
+    if decl and re.search(rf"\b{decl.group(1)}\b", _block_after(m.string, m.end(1))):
+        return m.group(0)
+    return m.group(1) + ";" + m.group(2)
+
+
 def _drop_amp(src: str):
     """scanf("%d", &n) -> scanf("%d", n): bỏ từng dấu & trong lời gọi scanf."""
     for call in re.finditer(r"scanf\s*\([^;]*\)", src):
@@ -193,7 +213,7 @@ OPERATORS: list[Operator] = [
     Operator(
         "stray_semicolon",
         "STRAY_SEMICOLON",
-        _replace_each(r"(for\s*\([^)]*\))(\s*\{)", lambda m: m.group(1) + ";" + m.group(2)),
+        _replace_each(r"(for\s*\([^)]*\))(\s*\{)", lambda m: _stray_semicolon(m)),
     ),
     Operator(
         "drop_braces", "MISSING_BRACES", _lines_matching(r"^\s*for\s*\(.*\)\s*\{\s*$", _drop_braces)

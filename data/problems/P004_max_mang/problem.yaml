@@ -1,0 +1,6 @@
+id: P004
+title: Giá trị lớn nhất trong mảng
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [mang, vong_lap, cau_lenh_dieu_kien]

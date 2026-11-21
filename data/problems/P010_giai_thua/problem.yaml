@@ -1,0 +1,6 @@
+id: P010
+title: Giai thừa bằng đệ quy
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [de_quy, tran_so, ham]

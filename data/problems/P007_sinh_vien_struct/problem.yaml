@@ -1,0 +1,6 @@
+id: P007
+title: Sinh viên điểm cao nhất (struct)
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [struct, chuoi, nhap_xuat]

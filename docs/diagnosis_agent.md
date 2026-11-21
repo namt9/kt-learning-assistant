@@ -6,18 +6,26 @@ Code: `backend/app/agents/diagnosis.py`, `backend/app/llm/`.
 
 ```mermaid
 flowchart LR
-    S[Bài nộp] --> R[Luật v0<br/>gcc, cppcheck, sanitizer, luật tự viết]
-    R -->|mã Bug Pattern + dòng| K[KG<br/>khái niệm, hành động sư phạm]
+    S[Bài nộp] --> R[Luật v0 + luật khử nhiễu<br/>gcc, cppcheck, sanitizer, luật tự viết]
+    R -->|lỗi đã kiểm chứng: mã + dòng| K[KG<br/>khái niệm, hành động sư phạm]
     R --> P[Prompt]
     K --> P
     P --> L[LLM<br/>Claude → Ollama]
-    L -->|JSON đúng schema| V[Kiểm tra<br/>loại mã lỗi ngoài danh sách]
-    V --> D[Diagnosis]
+    L -->|items: giải thích lỗi đã kiểm chứng| V[Kiểm tra]
+    L -->|extra: lỗi đề xuất thêm + dòng| V
+    V -->|mã trong KG, dòng có thật,<br/>không phải hệ quả đã biết| D[Diagnosis]
 ```
 
-- **Luật là nguồn sự thật**: LLM chỉ được giải thích các mã lỗi luật đã phát hiện. JSON schema giới
-  hạn `bug_pattern` trong đúng danh sách đó, và code lọc lại một lần nữa phòng khi model local không
-  tuân thủ schema. Mã bị loại được ghi vào `rejected`, dùng để đo tỉ lệ bịa ở tuần 4.
+- **Lỗi đã kiểm chứng**: lỗi công cụ tìm thấy (sau khi luật khai phá bỏ cảnh báo chỉ là hệ quả).
+  LLM phải giải thích đúng các mã này; JSON schema giới hạn `bug_pattern` của `items` trong đúng
+  danh sách đó.
+- **Lỗi LLM đề xuất thêm** (chỉ khi bài chưa đạt test): công cụ không bắt được lỗi logic như sai
+  biên vòng lặp, sai công thức. LLM ghi các lỗi này vào `extra`, và mỗi lỗi chỉ được giữ khi:
+  mã nằm trong danh mục của KG; chỉ đúng một dòng có thật trong bài; không phải mã mà luật khai
+  phá vừa xác định là hệ quả của lỗi khác. Lỗi được giữ mang `source="llm"`, `confidence=0.5` và
+  ghi chú "công cụ chưa kiểm chứng", nên giao diện phân biệt được với lỗi đã kiểm chứng.
+- **Mã sai bị loại** (bịa mã, thiếu dòng, dòng không tồn tại) được ghi vào `rejected`; code lọc lại
+  cả khi model local không tuân thủ schema. Bài đạt test và công cụ không báo gì thì không gọi LLM.
 - **KG cung cấp tri thức**: tên khái niệm, gợi ý chuẩn và hành động sư phạm (ưu tiên theo phong cách
   học) được đưa vào prompt, rồi trả về cho sinh viên dưới dạng `actions` để học thêm.
 - **Không viết hộ lời giải**: prompt yêu cầu chỉ gợi ý hướng sửa.
@@ -30,7 +38,7 @@ flowchart LR
 |---|---|---|---|
 | `rule` | Luật | Gợi ý cố định + KG | Không |
 | `llm_only` | LLM (chỉ thấy đề, code, kết quả chấm) | LLM | Có |
-| `hybrid` | Luật | LLM, có KG làm ngữ cảnh | Có |
+| `hybrid` | Luật (đã kiểm chứng) + LLM đề xuất thêm (qua kiểm tra) | LLM, có KG làm ngữ cảnh | Có |
 
 ## Lớp trung gian LLM
 
@@ -39,6 +47,10 @@ Agent chỉ gọi `FallbackLLM.generate(system, user, schema)`. Thứ tự provi
 
 - `claude`: Anthropic SDK, model `CLAUDE_MODEL` (mặc định `claude-opus-5-5`), structured outputs.
   Bật fallback phía server: nếu model từ chối vì bộ lọc an toàn, API tự chạy lại trên model dự phòng.
+- `azure`: GPT/DeepSeek triển khai trên Azure (`AZURE_OPENAI_DEPLOYMENT`, mặc định `gpt-5.5`),
+  dùng chung resource và key với Claude trên Foundry. Dùng làm giám khảo thứ hai khi chấm rubric.
+- Claude qua Microsoft Foundry (Azure): đặt `ANTHROPIC_FOUNDRY_RESOURCE` và
+  `ANTHROPIC_FOUNDRY_API_KEY`; `CLAUDE_MODEL` là tên deployment.
 - `ollama`: model local `OLLAMA_MODEL` (mặc định `qwen2.5:7b-instruct`), dùng khi demo không có
   mạng: `docker compose --profile ollama up -d` rồi
   `docker compose exec ollama ollama pull qwen2.5:7b-instruct`.
@@ -78,13 +90,38 @@ Phong cách hiệu lực được dùng ở ba chỗ:
 ```bash
 LLM_PROVIDERS= python -m backend.app.evaluation.compare --configs v0,rule   # không cần LLM, vài giây
 LLM_PROVIDERS=ollama python -m backend.app.evaluation.compare --limit 30    # Ollama CPU: ~2-3 phút/lượt
-LLM_PROVIDERS=claude python -m backend.app.evaluation.compare               # đủ 136 bài, cần API key
+LLM_PROVIDERS=claude python -m backend.app.evaluation.compare               # đủ 270 bài, cần API key
 ```
 
-- **Đầu vào:** `data/mined/mutants.jsonl`, 136 bài có nhãn đúng, đã gồm báo cáo chấm đầy đủ. Mọi cấu hình nhận cùng đề bài, code và kết quả chấm.
+- **Đầu vào:** `data/mined/mutants.jsonl`, 270 bài có nhãn đúng từ 10 bài tập (đã loại biến thể trùng mã nguồn), đã gồm báo cáo chấm đầy đủ. Mọi cấu hình nhận cùng đề bài, code và kết quả chấm.
 - **Chạy tiếp được:** kết quả ghi dần vào `data/eval/results.jsonl`. Dừng giữa chừng rồi chạy lại thì chỉ chạy các lượt (bài, cấu hình, LLM) còn thiếu.
 - **Báo cáo** `docs/eval_report.md` gồm:
   - P/R/F1 xác định lỗi, tỉ lệ đúng hoàn toàn, chỉ đúng dòng;
   - số mã LLM bịa bị chặn, tỉ lệ lùi về luật, nghi lộ lời giải, thời gian;
   - recall theo từng loại lỗi.
-- **Chưa tự động hoá:** chất lượng lời giải thích (đúng, dễ hiểu, không lộ lời giải). Phần này cần chấm theo rubric ở tuần 4: LLM-as-judge kết hợp người chấm. Trường `explanations` trong `results.jsonl` đã lưu sẵn lời giải thích của từng cấu hình để chấm.
+
+## Chấm lời giải thích theo rubric
+
+Bảng P/R/F1 chỉ đo việc xác định lỗi. Chất lượng lời giải thích được chấm bằng
+`backend/app/evaluation/rubric.py`, dựa trên lời giải thích đã lưu trong `results.jsonl` nên
+không cần chạy lại chẩn đoán.
+
+```bash
+LLM_PROVIDERS=claude python -m backend.app.evaluation.rubric       # LLM-as-judge
+python -m backend.app.evaluation.rubric --export-human 12          # phiếu chấm cho người
+python -m backend.app.evaluation.rubric --report-only              # gộp điểm người + LLM
+```
+
+- **5 tiêu chí, thang 1–5:**
+  - Đúng: đúng bản chất lỗi thật;
+  - Cụ thể: chỉ ra dòng, biến của chính code này;
+  - Dễ hiểu: hợp với sinh viên năm nhất;
+  - Hướng dẫn: cho bước sửa nhưng không đưa sẵn lời giải;
+  - Không bịa: không nêu lỗi không có.
+- **Giám khảo được biết lỗi thật đã cài** (đáp án), nhưng **không biết** lời giải thích đến từ cấu hình nào.
+- **Người chấm** nhận `data/eval/human_rubric.csv`: 3 cấu hình của mỗi bài trộn lẫn, đánh mã `H001`... Khoá giải mã nằm riêng trong `human_key.json`, người chấm không mở file này. Điền điểm, lưu lại CSV, rồi chạy `--report-only`.
+- **Báo cáo** `docs/rubric_report.md` gồm:
+  - điểm trung bình từng tiêu chí;
+  - số bài Hybrid hơn / hoà / kém từng cấu hình còn lại;
+  - độ khớp giữa LLM và người (tương quan Pearson, độ lệch trung bình).
+- **Nên dùng giám khảo khác model sinh lời giải thích** (ví dụ Claude chấm lời giải thích của Ollama), vì LLM có xu hướng ưu ái văn phong của chính mình. Đối chiếu với người chấm là cách kiểm tra lại.
