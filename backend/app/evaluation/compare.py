@@ -173,10 +173,11 @@ def run_one(
                 _leaks_solution(e["explanation"] + "\n" + e["fix_hint"])
                 for e in out["explanations"]
             )
-            if config == "llm_only":
+            if config in ("hybrid", "llm_only"):  # hybrid: gồm cả lỗi LLM đề xuất đã qua kiểm
                 lines = {}
                 for f in d.findings:
-                    lines.setdefault(f.bug_pattern, []).extend([f.line] if f.line else [])
+                    if not f.suppressed_by:
+                        lines.setdefault(f.bug_pattern, []).extend([f.line] if f.line else [])
                 out["pred"], out["pred_lines"] = sorted(lines), lines
     out["ms"] = int((time.perf_counter() - t) * 1000)
     return out
@@ -291,8 +292,10 @@ def write_report(path: Path, results: list[dict], vocab: set[str], meta: dict) -
         "",
         "## Đọc kết quả",
         "",
-        "- Rule-based và Hybrid xác định lỗi giống nhau (cùng tầng luật); khác nhau ở chất lượng "
-        "giải thích, cần chấm thêm theo rubric (LLM-as-judge + người chấm).",
+        "- Hybrid = lỗi do công cụ kiểm chứng + lỗi LLM đề xuất thêm khi bài chưa đạt test (chỉ "
+        "giữ nếu mã có trong KG và chỉ đúng dòng có thật). Recall Hybrid cao hơn Rule-based nhờ "
+        "phần LLM đề xuất; LLM lỗi thì Hybrid lùi về Rule-based. Chất lượng giải thích: xem "
+        "`docs/rubric_report.md`.",
         '- "Nghi lộ lời giải" là kiểm tra tự động thô (từ 3 dòng trông như code trong lời giải '
         "thích); cần người đọc lại các trường hợp bị đánh dấu.",
         "- Rule-based và Hybrid dùng luật khử nhiễu khai phá từ chính tập dữ liệu này, nên số đo "
