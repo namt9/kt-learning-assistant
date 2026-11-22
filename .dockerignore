@@ -1,0 +1,17 @@
+.git
+.github
+.env
+*.key
+.venv
+venv
+**/__pycache__
+.pytest_cache
+.ruff_cache
+.sandbox_work
+*.db
+data/eval
+data/mined
+data/raw
+docs
+evaluation
+mining
