@@ -110,6 +110,12 @@
              border-bottom-left-radius: 3px; }
   .msg .meta { display: block; font-size: 11px; color: var(--muted); margin-top: 4px; }
   .msg a { color: var(--accent); }
+  /* markdown tối giản trong văn bản của LLM */
+  code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+         background: var(--line); padding: 1px 4px; border-radius: 4px; }
+  pre.md-code { margin: 6px 0; padding: 8px 10px; border-radius: 6px; overflow-x: auto;
+                white-space: pre-wrap; background: var(--code-bg); color: var(--code-text);
+                font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
   .chips button { font-size: 12px; padding: 4px 10px; border-radius: 999px; }
   #chat-form { display: flex; gap: 8px; }
@@ -202,6 +208,19 @@ tiếp, giải thích khái niệm C/C++ hoặc gợi ý hướng làm bài đan
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g,
   (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// Markdown tối giản cho đề bài và văn bản LLM: ```khối code```, `code`, **đậm**, dòng tiêu đề #.
+// Escape trước rồi mới thay định dạng, nên văn bản không thể chèn HTML.
+function md(s) {
+  const blocks = [];
+  let h = esc(s).replace(/```[\w+-]*\n?([\s\S]*?)```/g, (_, code) => {
+    blocks.push(`<pre class="md-code">${code.replace(/^\n+|\n+$/g, "")}</pre>`);
+    return `\u0000${blocks.length - 1}\u0000`;
+  });
+  h = h.replace(/`([^`\n]+)`/g, "<code>$1</code>")
+       .replace(/\*\*([^*\n]+)\*\*/g, "<b>$1</b>")
+       .replace(/^#{1,4} +(.+)$/gm, "<b>$1</b>");
+  return h.replace(/\n*\u0000(\d+)\u0000\n*/g, (_, i) => blocks[+i]);  // khối code đã tự xuống dòng
+}
 let current = null, names = { concepts: {}, groups: {} };
 
 const AGENTS = { grading: "Chấm bài", mined_rules: "Khử nhiễu", knowledge_graph: "Cập nhật KG",
@@ -239,7 +258,7 @@ async function selectProblem(id) {
   $("problems").querySelectorAll("li").forEach((li) =>
     li.classList.toggle("active", li.dataset.id === id));
   $("ptitle").textContent = `${p.id}. ${p.title}`;
-  $("statement").textContent = p.statement +
+  $("statement").innerHTML = md(p.statement.trim()) +
     `\n\nGiới hạn: ${p.time_limit_s}s, ${p.memory_mb}MB · ${p.test_count} test`;
 }
 
@@ -289,12 +308,12 @@ function renderResult(res) {
   }
 
   if (d) {
-    html += `<h3>Chẩn đoán</h3><p>${esc(d.explanation)}
+    html += `<h3>Chẩn đoán</h3><p>${md(d.explanation)}
       <span class="muted">(${d.llm_provider ? "giải thích bởi " + esc(d.llm_provider) : "giải thích bằng luật"})</span></p>`;
     html += d.items.map((it) => `<div class="card bug">
         <b>${esc(it.bug_pattern)}</b>${it.lines.length ? ` · dòng ${it.lines.join(", ")}` : ""}
-        <div>${esc(it.explanation)}</div>
-        ${it.fix_hint ? `<div class="fix">🔧 ${esc(it.fix_hint)}</div>` : ""}
+        <div>${md(it.explanation)}</div>
+        ${it.fix_hint ? `<div class="fix">🔧 ${md(it.fix_hint)}</div>` : ""}
         ${it.concepts.length ? `<div class="muted">Khái niệm: ${it.concepts.map((c) =>
           `<a href="/kg-viewer#node=${encodeURIComponent(c)}" target="_blank" data-event="open_kg" data-ref="${esc(c)}">${esc(conceptName(c))}</a>`).join(", ")}</div>` : ""}
       </div>`).join("");
@@ -499,7 +518,8 @@ const AGENT_NAMES = { diagnosis: "Diagnosis Agent", learning_path: "Learning-Pat
 function addMsg(who, text, meta = "", links = []) {
   const div = document.createElement("div");
   div.className = `msg ${who}`;
-  div.textContent = text;
+  if (who === "bot") div.innerHTML = md(text);
+  else div.textContent = text;
   for (const l of links) {
     div.append(document.createElement("br"));
     const a = document.createElement("a");
