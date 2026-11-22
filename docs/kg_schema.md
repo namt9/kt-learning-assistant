@@ -94,7 +94,7 @@ Mở trong Protégé: *File → Open*, rồi *Reasoner → HermiT → Start reas
 tới cả `con_tro`, `bien`... (nhờ tính bắc cầu, YAML chỉ khai tiên quyết trực tiếp).
 
 Đã kiểm tra bằng bộ suy luận OWL RL (`owlrl`): không mâu thuẫn, không tham chiếu treo; suy ra
-4 `MemoryBug`, 3 `PointerBug`, 23/23 `RemediableBug`, 10 `BeginnerConcept`, 11 `VisualAction`.
+4 `MemoryBug`, 4 `PointerBug`, 23/23 `RemediableBug`, 12 `BeginnerConcept`, 11 `VisualAction` (chạy lại 22/11 sau khi thêm 5 khái niệm).
 
 ## Truy vấn mẫu trong Neo4j Browser
 
