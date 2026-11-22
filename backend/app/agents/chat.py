@@ -115,7 +115,8 @@ CONCEPT_PROMPT = (
     "Bạn là trợ giảng môn Lập trình C/C++ cho sinh viên năm nhất. Trả lời câu hỏi về một khái "
     'niệm bằng tiếng Việt, ngắn gọn (4-7 câu), thân thiện, xưng "bạn". Dựa trên tri thức được '
     "cung cấp; có thể kèm một ví dụ code C rất ngắn minh hoạ khái niệm, nhưng KHÔNG giải hộ bài "
-    "tập nào."
+    'tập nào. Không dùng dấu nháy kép thẳng (") trong câu trả lời; muốn nhấn mạnh thì dùng '
+    "“ ” hoặc **…**."  # nháy kép thẳng làm Claude kết thúc chuỗi JSON sớm, câu trả lời bị cụt
 )
 
 
