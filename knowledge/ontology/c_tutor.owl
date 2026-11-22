@@ -556,6 +556,26 @@
     <ct:partOf rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#nhom_nen_tang" />
     <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
   </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#dieu_kien_dung">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Concept" />
+    <rdfs:label xml:lang="vi">Điều kiện dừng của vòng lặp</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dieu_kien_dung</ct:identifier>
+    <ct:level rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</ct:level>
+    <ct:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Biến điều khiển phải tiến dần tới điều kiện dừng sau mỗi lần lặp; kiểm tra biên &lt; hay &lt;=, giá trị đầu và bước nhảy.</ct:description>
+    <ct:partOf rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#nhom_nen_tang" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#toan_tu" />
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chia_nguyen">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Concept" />
+    <rdfs:label xml:lang="vi">Phép chia nguyên và chia lấy dư</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">chia_nguyen</ct:identifier>
+    <ct:level rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</ct:level>
+    <ct:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Hai số nguyên chia nhau cho kết quả nguyên (7 / 2 = 3); % chỉ dùng cho số nguyên; số chia phải khác 0.</ct:description>
+    <ct:partOf rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#nhom_nen_tang" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#toan_tu" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#kieu_du_lieu" />
+  </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#bien">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Concept" />
     <rdfs:label xml:lang="vi">Biến</rdfs:label>
@@ -620,6 +640,16 @@
     <ct:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">const,</ct:description>
     <ct:partOf rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#nhom_bien" />
     <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#bien" />
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#so_khong_dau">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Concept" />
+    <rdfs:label xml:lang="vi">Số nguyên không dấu</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">so_khong_dau</ct:identifier>
+    <ct:level rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</ct:level>
+    <ct:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">unsigned, size_t luôn &gt;= 0; trừ quá 0 sẽ quay vòng thành số rất lớn, nên điều kiện u &gt;= 0 luôn đúng.</ct:description>
+    <ct:partOf rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#nhom_bien" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#kieu_du_lieu" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tran_so" />
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#dia_chi">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Concept" />
@@ -691,6 +721,17 @@
     <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro" />
     <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#truyen_tham_chieu" />
   </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro_treo">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Concept" />
+    <rdfs:label xml:lang="vi">Con trỏ treo (dangling pointer)</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">con_tro_treo</ct:identifier>
+    <ct:level rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</ct:level>
+    <ct:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Con trỏ vẫn giữ địa chỉ của vùng nhớ đã hết hạn (biến cục bộ sau khi hàm trả về, hoặc vùng đã free).</ct:description>
+    <ct:partOf rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#nhom_con_tro" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#pham_vi_bien" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#giai_phong_bo_nho" />
+  </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Concept" />
     <rdfs:label xml:lang="vi">Mảng một chiều</rdfs:label>
@@ -759,6 +800,15 @@
     <ct:partOf rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#nhom_ctdl" />
     <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang" />
     <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#struct" />
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chi_so_mang">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Concept" />
+    <rdfs:label xml:lang="vi">Chỉ số và biên của mảng</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">chi_so_mang</ct:identifier>
+    <ct:level rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</ct:level>
+    <ct:description rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mảng n phần tử có chỉ số hợp lệ từ 0 đến n - 1; truy cập ngoài khoảng này là hành vi không xác định.</ct:description>
+    <ct:partOf rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#nhom_ctdl" />
+    <ct:hasPrerequisite rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang" />
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#bo_nho">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Concept" />
@@ -958,6 +1008,7 @@
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">So sánh printf("%f", 5/2), printf("%f", 5.0/2) và printf("%f", (double)5/2). Kết quả phép chia phụ thuộc kiểu toán hạng, không phụ thuộc kiểu biến nhận.</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ep_kieu" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#kieu_du_lieu" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chia_nguyen" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_verbal" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_reflective" />
   </owl:NamedIndividual>
@@ -969,6 +1020,7 @@
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Làm bài P003, bảo đảm in đúng 2 chữ số thập phân với mọi bộ test.</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ep_kieu" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chia_nguyen" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_active" />
     <ct:usesProblem rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#P003" />
   </owl:NamedIndividual>
@@ -980,6 +1032,7 @@
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Bảng so sánh int (±2.1×10^9), long long (±9.2×10^18), unsigned. Minh họa INT_MAX + 1 quay vòng thành số âm.</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tran_so" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#kieu_du_lieu" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#so_khong_dau" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_visual" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_reflective" />
   </owl:NamedIndividual>
@@ -1037,6 +1090,17 @@
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_visual" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_reflective" />
   </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_SO_KHONG_DAU">
+    <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Explanation" />
+    <rdfs:label xml:lang="vi">Số không dấu không bao giờ âm</rdfs:label>
+    <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PA_SO_KHONG_DAU</ct:identifier>
+    <ct:level rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</ct:level>
+    <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cho for (unsigned i = n - 1; i &gt;= 0; i--). In giá trị i sau khi i = 0 rồi giảm thêm 1: i thành 4294967295 nên vòng lặp không dừng. Sửa bằng int, hoặc viết for (unsigned i = n; i-- &gt; 0;).</ct:content>
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#so_khong_dau" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#kieu_du_lieu" />
+    <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_verbal" />
+    <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_active" />
+  </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_KHOI_LENH_TRUC_QUAN">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#Visualization" />
     <rdfs:label xml:lang="vi">Khối lệnh nào thuộc if/for?</rdfs:label>
@@ -1067,6 +1131,7 @@
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Với mỗi vòng lặp, xác định biến điều khiển, giá trị đầu, bước thay đổi, và chứng minh điều kiện sẽ sai sau hữu hạn bước. Với đệ quy, xác định trường hợp cơ sở.</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#de_quy" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#dieu_kien_dung" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_verbal" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_reflective" />
   </owl:NamedIndividual>
@@ -1077,6 +1142,7 @@
     <ct:level rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</ct:level>
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lập bảng giá trị i và điều kiện ở mỗi vòng (trace table) cho 3–4 vòng đầu để thấy biến có tiến về điều kiện dừng không.</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#dieu_kien_dung" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_visual" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_active" />
   </owl:NamedIndividual>
@@ -1109,6 +1175,7 @@
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ví dụ tính trung bình khi n có thể bằng 0; thêm if (n == 0) xử lý riêng. Phép % cũng bị lỗi khi chia cho 0.</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#toan_tu" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#cau_lenh_dieu_kien" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chia_nguyen" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_verbal" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_active" />
   </owl:NamedIndividual>
@@ -1177,6 +1244,7 @@
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#pham_vi_bien" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#stack_heap" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro_treo" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_verbal" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_reflective" />
   </owl:NamedIndividual>
@@ -1188,6 +1256,7 @@
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vẽ mảng 5 ô có chỉ số 0..4; đánh dấu ô a[5] nằm ngoài mảng. So sánh hai vòng lặp i &lt; n và i &lt;= n.</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chi_so_mang" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_visual" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_reflective" />
   </owl:NamedIndividual>
@@ -1199,6 +1268,7 @@
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Duyệt xuôi: for (i = 0; i &lt; n; i++). Duyệt ngược: for (i = n - 1; i &gt;= 0; i--). Kiểm tra bằng hai trường hợp biên: phần tử đầu và phần tử cuối.</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chi_so_mang" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_verbal" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_reflective" />
   </owl:NamedIndividual>
@@ -1210,6 +1280,7 @@
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Làm bài P001 rồi P002, chạy thử với n = 1 (trường hợp biên nhỏ nhất).</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chi_so_mang" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_active" />
     <ct:usesProblem rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#P001" />
   </owl:NamedIndividual>
@@ -1277,6 +1348,7 @@
     <ct:content rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ví dụ free(p) hai lần gây crash; sửa bằng free(p); p = NULL; vì free(NULL) là an toàn. Tương tự, không dùng p sau khi free.</ct:content>
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#giai_phong_bo_nho" />
     <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro_null" />
+    <ct:teaches rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro_treo" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_verbal" />
     <ct:suitsStyle rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#style_active" />
   </owl:NamedIndividual>
@@ -1361,12 +1433,14 @@
     <ct:hint rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Điều kiện này luôn cho cùng một kết quả nên nhánh if/vòng lặp không bao giờ (hoặc luôn luôn) chạy. Thường do gán nhầm "=" thay "==", so sánh sai biến, hoặc điều kiện bị lặp.</ct:hint>
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#cau_lenh_dieu_kien" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#toan_tu" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#so_khong_dau" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_gcc" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_cppcheck" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_custom_rule" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_GAN_VA_SO_SANH" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_GAN_VA_SO_SANH_GO_LOI" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_DIEU_KIEN_BANG_CHAN_TRI" />
+    <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_SO_KHONG_DAU" />
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#STRAY_SEMICOLON">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#BugPattern" />
@@ -1426,6 +1500,7 @@
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#kieu_du_lieu" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#ep_kieu" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#toan_tu" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chia_nguyen" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_custom_rule" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_CHIA_NGUYEN_VI_DU" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_CHIA_NGUYEN_BAI_TAP" />
@@ -1437,9 +1512,11 @@
     <ct:hint rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kết quả vượt quá phạm vi của kiểu int (khoảng ±2.1 tỉ). Hãy dùng long long cho tổng hoặc tích lớn.</ct:hint>
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#kieu_du_lieu" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tran_so" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#so_khong_dau" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_ubsan" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_TRAN_SO_TRUC_QUAN" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_TRAN_SO_BAI_TAP" />
+    <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_SO_KHONG_DAU" />
   </owl:NamedIndividual>
   <owl:NamedIndividual rdf:about="http://www.semanticweb.org/cs2307/ontologies/c-tutor#DIV_BY_ZERO">
     <rdf:type rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#BugPattern" />
@@ -1447,6 +1524,7 @@
     <ct:identifier rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DIV_BY_ZERO</ct:identifier>
     <ct:hint rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Có phép chia (hoặc %) mà mẫu số bằng 0. Hãy kiểm tra mẫu số trước khi chia.</ct:hint>
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#toan_tu" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chia_nguyen" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_cppcheck" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_ubsan" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_custom_rule" />
@@ -1469,6 +1547,8 @@
     <ct:hint rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mảng n phần tử có chỉ số từ 0 đến n-1. Vòng lặp bắt đầu từ 0 thì điều kiện thường là i &lt; n, không phải i &lt;= n.</ct:hint>
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chi_so_mang" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#dieu_kien_dung" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_custom_rule" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_VONG_LAP_TRUC_QUAN" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_CHI_SO_MANG" />
@@ -1483,6 +1563,7 @@
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#mang" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tran_bo_dem" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#bo_nho" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#chi_so_mang" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_gcc" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_cppcheck" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_asan" />
@@ -1531,6 +1612,7 @@
     <ct:hint rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Một vùng nhớ chỉ được free một lần. Sau khi free hãy gán con trỏ = NULL để tránh free lại.</ct:hint>
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#giai_phong_bo_nho" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#quan_ly_bo_nho" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro_treo" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_cppcheck" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_asan" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_ASAN_GO_LOI" />
@@ -1547,6 +1629,7 @@
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#pham_vi_bien" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#stack_heap" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#giai_phong_bo_nho" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#con_tro_treo" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_gcc" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_cppcheck" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_asan" />
@@ -1565,6 +1648,7 @@
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#vong_lap" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#de_quy" />
     <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#do_phuc_tap" />
+    <ct:relatedTo rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#dieu_kien_dung" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_judge" />
     <ct:detectedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#tool_custom_rule" />
     <ct:remediatedBy rdf:resource="http://www.semanticweb.org/cs2307/ontologies/c-tutor#PA_VONG_LAP_DUNG" />

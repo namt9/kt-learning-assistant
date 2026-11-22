@@ -2,9 +2,9 @@
 
 | File | Nội dung |
 |---|---|
-| `concepts.yaml` | Concept map C/C++: 5 cụm, 35 khái niệm, quan hệ tiên quyết |
+| `concepts.yaml` | Concept map C/C++: 5 cụm, 40 khái niệm, quan hệ tiên quyết |
 | `bug_patterns.yaml` | 23 mẫu lỗi, khái niệm liên quan, gợi ý cố định của v0 |
-| `pedagogical_actions.yaml` | 36 hành động sư phạm: sửa lỗi nào, dạy khái niệm nào, hợp phong cách học nào |
+| `pedagogical_actions.yaml` | 37 hành động sư phạm: sửa lỗi nào, dạy khái niệm nào, hợp phong cách học nào |
 | `ontology/c_tutor.owl` | Ontology OWL 2 **sinh tự động** từ ba file trên (mở bằng Protégé), xem [docs/kg_schema.md](../docs/kg_schema.md#ontology-owl) |
 
 Lược đồ đồ thị và cách nạp vào Neo4j: [docs/kg_schema.md](../docs/kg_schema.md).

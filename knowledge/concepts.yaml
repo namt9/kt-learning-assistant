@@ -68,6 +68,18 @@ concepts:
     level: 2
     prerequisites: [vong_lap]
     description: Ước lượng số phép tính theo kích thước dữ liệu (O(n), O(n^2)...), giới hạn thời gian.
+  - id: dieu_kien_dung
+    name: Điều kiện dừng của vòng lặp
+    group: nhom_nen_tang
+    level: 2
+    prerequisites: [vong_lap, toan_tu]
+    description: Biến điều khiển phải tiến dần tới điều kiện dừng sau mỗi lần lặp; kiểm tra biên < hay <=, giá trị đầu và bước nhảy.
+  - id: chia_nguyen
+    name: Phép chia nguyên và chia lấy dư
+    group: nhom_nen_tang
+    level: 1
+    prerequisites: [toan_tu, kieu_du_lieu]
+    description: Hai số nguyên chia nhau cho kết quả nguyên (7 / 2 = 3); % chỉ dùng cho số nguyên; số chia phải khác 0.
 
   # ------------------------------------------------------------ Biến và kiểu dữ liệu
   - id: bien
@@ -112,6 +124,12 @@ concepts:
     level: 1
     prerequisites: [bien]
     description: const, #define; dùng hằng cho kích thước mảng.
+  - id: so_khong_dau
+    name: Số nguyên không dấu
+    group: nhom_bien
+    level: 2
+    prerequisites: [kieu_du_lieu, tran_so]
+    description: unsigned, size_t luôn >= 0; trừ quá 0 sẽ quay vòng thành số rất lớn, nên điều kiện u >= 0 luôn đúng.
 
   # ------------------------------------------------------------ Con trỏ
   - id: dia_chi
@@ -156,6 +174,12 @@ concepts:
     level: 3
     prerequisites: [con_tro, truyen_tham_chieu]
     description: T **p; dùng cho mảng con trỏ, mảng 2 chiều động, sửa con trỏ trong hàm.
+  - id: con_tro_treo
+    name: Con trỏ treo (dangling pointer)
+    group: nhom_con_tro
+    level: 3
+    prerequisites: [con_tro, pham_vi_bien, giai_phong_bo_nho]
+    description: Con trỏ vẫn giữ địa chỉ của vùng nhớ đã hết hạn (biến cục bộ sau khi hàm trả về, hoặc vùng đã free).
 
   # ------------------------------------------------------------ Cấu trúc dữ liệu
   - id: mang
@@ -200,6 +224,12 @@ concepts:
     level: 3
     prerequisites: [mang, struct]
     description: Vào trước ra trước (FIFO); enqueue, dequeue; hàng đợi vòng.
+  - id: chi_so_mang
+    name: Chỉ số và biên của mảng
+    group: nhom_ctdl
+    level: 1
+    prerequisites: [mang]
+    description: Mảng n phần tử có chỉ số hợp lệ từ 0 đến n - 1; truy cập ngoài khoảng này là hành vi không xác định.
 
   # ------------------------------------------------------------ Quản lý bộ nhớ
   - id: bo_nho

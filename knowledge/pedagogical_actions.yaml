@@ -57,7 +57,7 @@ actions:
     type: VI_DU
     title: "5 / 2 bằng 2: chia nguyên và chia thực"
     content: So sánh printf("%f", 5/2), printf("%f", 5.0/2) và printf("%f", (double)5/2). Kết quả phép chia phụ thuộc kiểu toán hạng, không phụ thuộc kiểu biến nhận.
-    teaches: [ep_kieu, kieu_du_lieu]
+    teaches: [ep_kieu, kieu_du_lieu, chia_nguyen]
     remediates: [INT_DIVISION]
     styles: [verbal, reflective]
     level: 1
@@ -65,7 +65,7 @@ actions:
     type: BAI_TAP
     title: Luyện tập tính trung bình đúng kiểu
     content: Làm bài P003, bảo đảm in đúng 2 chữ số thập phân với mọi bộ test.
-    teaches: [ep_kieu, vong_lap]
+    teaches: [ep_kieu, vong_lap, chia_nguyen]
     remediates: [INT_DIVISION]
     styles: [active]
     level: 2
@@ -74,7 +74,7 @@ actions:
     type: TRUC_QUAN
     title: Bảng phạm vi giá trị các kiểu số nguyên
     content: Bảng so sánh int (±2.1×10^9), long long (±9.2×10^18), unsigned. Minh họa INT_MAX + 1 quay vòng thành số âm.
-    teaches: [tran_so, kieu_du_lieu]
+    teaches: [tran_so, kieu_du_lieu, so_khong_dau]
     remediates: [INT_OVERFLOW]
     styles: [visual, reflective]
     level: 2
@@ -121,6 +121,14 @@ actions:
     remediates: [CONST_CONDITION]
     styles: [visual, reflective]
     level: 2
+  - id: PA_SO_KHONG_DAU
+    type: GIAI_THICH
+    title: Số không dấu không bao giờ âm
+    content: "Cho for (unsigned i = n - 1; i >= 0; i--). In giá trị i sau khi i = 0 rồi giảm thêm 1: i thành 4294967295 nên vòng lặp không dừng. Sửa bằng int, hoặc viết for (unsigned i = n; i-- > 0;)."
+    teaches: [so_khong_dau, kieu_du_lieu]
+    remediates: [CONST_CONDITION, INT_OVERFLOW]
+    styles: [verbal, active]
+    level: 2
   - id: PA_KHOI_LENH_TRUC_QUAN
     type: TRUC_QUAN
     title: Khối lệnh nào thuộc if/for?
@@ -141,7 +149,7 @@ actions:
     type: GIAI_THICH
     title: Kiểm tra điều kiện dừng của vòng lặp
     content: Với mỗi vòng lặp, xác định biến điều khiển, giá trị đầu, bước thay đổi, và chứng minh điều kiện sẽ sai sau hữu hạn bước. Với đệ quy, xác định trường hợp cơ sở.
-    teaches: [vong_lap, de_quy]
+    teaches: [vong_lap, de_quy, dieu_kien_dung]
     remediates: [INFINITE_LOOP]
     styles: [verbal, reflective]
     level: 2
@@ -149,7 +157,7 @@ actions:
     type: TRUC_QUAN
     title: Bảng theo dõi biến qua từng vòng lặp
     content: Lập bảng giá trị i và điều kiện ở mỗi vòng (trace table) cho 3–4 vòng đầu để thấy biến có tiến về điều kiện dừng không.
-    teaches: [vong_lap]
+    teaches: [vong_lap, dieu_kien_dung]
     remediates: [INFINITE_LOOP, OFF_BY_ONE]
     styles: [visual, active]
     level: 1
@@ -173,7 +181,7 @@ actions:
     type: VI_DU
     title: Kiểm tra mẫu số trước khi chia
     content: Ví dụ tính trung bình khi n có thể bằng 0; thêm if (n == 0) xử lý riêng. Phép % cũng bị lỗi khi chia cho 0.
-    teaches: [toan_tu, cau_lenh_dieu_kien]
+    teaches: [toan_tu, cau_lenh_dieu_kien, chia_nguyen]
     remediates: [DIV_BY_ZERO]
     styles: [verbal, active]
     level: 1
@@ -223,7 +231,7 @@ actions:
     type: VI_DU
     title: Không trả về địa chỉ biến cục bộ
     content: Ví dụ hàm trả về &x với x cục bộ; sau khi hàm kết thúc, vùng stack của x bị thu hồi. Sửa bằng cấp phát động hoặc truyền mảng từ nơi gọi.
-    teaches: [pham_vi_bien, stack_heap, con_tro]
+    teaches: [pham_vi_bien, stack_heap, con_tro, con_tro_treo]
     remediates: [DANGLING_PTR]
     styles: [verbal, reflective]
     level: 2
@@ -233,7 +241,7 @@ actions:
     type: TRUC_QUAN
     title: Chỉ số mảng từ 0 đến n-1
     content: Vẽ mảng 5 ô có chỉ số 0..4; đánh dấu ô a[5] nằm ngoài mảng. So sánh hai vòng lặp i < n và i <= n.
-    teaches: [mang, vong_lap]
+    teaches: [mang, vong_lap, chi_so_mang]
     remediates: [OFF_BY_ONE, ARRAY_OOB]
     styles: [visual, reflective]
     level: 1
@@ -241,7 +249,7 @@ actions:
     type: GIAI_THICH
     title: Quy tắc viết biên vòng lặp duyệt mảng
     content: "Duyệt xuôi: for (i = 0; i < n; i++). Duyệt ngược: for (i = n - 1; i >= 0; i--). Kiểm tra bằng hai trường hợp biên: phần tử đầu và phần tử cuối."
-    teaches: [mang, vong_lap]
+    teaches: [mang, vong_lap, chi_so_mang]
     remediates: [OFF_BY_ONE]
     styles: [verbal, reflective]
     level: 1
@@ -249,7 +257,7 @@ actions:
     type: BAI_TAP
     title: Luyện duyệt mảng không vượt biên
     content: Làm bài P001 rồi P002, chạy thử với n = 1 (trường hợp biên nhỏ nhất).
-    teaches: [mang, vong_lap]
+    teaches: [mang, vong_lap, chi_so_mang]
     remediates: [OFF_BY_ONE, ARRAY_OOB]
     styles: [active]
     level: 1
@@ -301,7 +309,7 @@ actions:
     type: VI_DU
     title: Gán NULL ngay sau khi free
     content: Ví dụ free(p) hai lần gây crash; sửa bằng free(p); p = NULL; vì free(NULL) là an toàn. Tương tự, không dùng p sau khi free.
-    teaches: [giai_phong_bo_nho, con_tro_null]
+    teaches: [giai_phong_bo_nho, con_tro_null, con_tro_treo]
     remediates: [DOUBLE_FREE, DANGLING_PTR]
     styles: [verbal, active]
     level: 2

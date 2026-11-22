@@ -36,7 +36,7 @@ bug_patterns:
     hint: Trong điều kiện, "=" là phép gán, còn so sánh bằng phải dùng "==".
   - code: CONST_CONDITION
     name: Điều kiện luôn đúng hoặc luôn sai
-    concepts: [cau_lenh_dieu_kien, toan_tu]
+    concepts: [cau_lenh_dieu_kien, toan_tu, so_khong_dau]
     detected_by: [gcc, cppcheck, custom_rule]
     hint: Điều kiện này luôn cho cùng một kết quả nên nhánh if/vòng lặp không bao giờ (hoặc luôn luôn) chạy. Thường do gán nhầm "=" thay "==", so sánh sai biến, hoặc điều kiện bị lặp.
   - code: STRAY_SEMICOLON
@@ -61,17 +61,17 @@ bug_patterns:
     hint: Đặc tả định dạng phải khớp kiểu biến, ví dụ %d cho int, %ld cho long, %lld cho long long, %f cho float/double khi in, %lf cho double khi đọc.
   - code: INT_DIVISION
     name: Chia nguyên ngoài ý muốn
-    concepts: [kieu_du_lieu, ep_kieu, toan_tu]
+    concepts: [kieu_du_lieu, ep_kieu, toan_tu, chia_nguyen]
     detected_by: [custom_rule]
     hint: Chia hai số nguyên trong C cho kết quả nguyên (5/2 = 2). Muốn ra số thực, hãy ép kiểu một toán hạng, ví dụ (double)a / b.
   - code: INT_OVERFLOW
     name: Tràn số nguyên
-    concepts: [kieu_du_lieu, tran_so]
+    concepts: [kieu_du_lieu, tran_so, so_khong_dau]
     detected_by: [ubsan]
     hint: Kết quả vượt quá phạm vi của kiểu int (khoảng ±2.1 tỉ). Hãy dùng long long cho tổng hoặc tích lớn.
   - code: DIV_BY_ZERO
     name: Chia cho 0
-    concepts: [toan_tu]
+    concepts: [toan_tu, chia_nguyen]
     detected_by: [cppcheck, ubsan, custom_rule]
     hint: Có phép chia (hoặc %) mà mẫu số bằng 0. Hãy kiểm tra mẫu số trước khi chia.
   - code: MISSING_RETURN
@@ -82,12 +82,12 @@ bug_patterns:
   # ---- Mảng, con trỏ, bộ nhớ ----
   - code: OFF_BY_ONE
     name: Sai biên vòng lặp (lệch một phần tử)
-    concepts: [vong_lap, mang]
+    concepts: [vong_lap, mang, chi_so_mang, dieu_kien_dung]
     detected_by: [custom_rule]
     hint: Mảng n phần tử có chỉ số từ 0 đến n-1. Vòng lặp bắt đầu từ 0 thì điều kiện thường là i < n, không phải i <= n.
   - code: ARRAY_OOB
     name: Truy cập mảng ngoài phạm vi
-    concepts: [mang, tran_bo_dem, bo_nho]
+    concepts: [mang, tran_bo_dem, bo_nho, chi_so_mang]
     detected_by: [gcc, cppcheck, asan, ubsan]
     hint: Chương trình đọc hoặc ghi ra ngoài vùng nhớ của mảng. Hãy kiểm tra chỉ số lớn nhất và kích thước khai báo của mảng.
   - code: NULL_DEREF
@@ -102,18 +102,18 @@ bug_patterns:
     hint: Vùng nhớ cấp phát bằng malloc/calloc/new phải được giải phóng bằng free/delete khi không dùng nữa.
   - code: DOUBLE_FREE
     name: Giải phóng bộ nhớ hai lần
-    concepts: [giai_phong_bo_nho, quan_ly_bo_nho]
+    concepts: [giai_phong_bo_nho, quan_ly_bo_nho, con_tro_treo]
     detected_by: [cppcheck, asan]
     hint: Một vùng nhớ chỉ được free một lần. Sau khi free hãy gán con trỏ = NULL để tránh free lại.
   - code: DANGLING_PTR
     name: Dùng con trỏ sau khi đã free / trỏ tới biến cục bộ đã hết phạm vi
-    concepts: [con_tro, pham_vi_bien, stack_heap, giai_phong_bo_nho]
+    concepts: [con_tro, pham_vi_bien, stack_heap, giai_phong_bo_nho, con_tro_treo]
     detected_by: [gcc, cppcheck, asan, custom_rule]
     hint: Con trỏ đang trỏ tới vùng nhớ đã bị giải phóng hoặc đã hết phạm vi. Không trả về địa chỉ biến cục bộ, và không dùng con trỏ sau khi free.
   # ---- Theo kết quả chấm ----
   - code: INFINITE_LOOP
     name: Vòng lặp không dừng / thuật toán quá chậm
-    concepts: [vong_lap, de_quy, do_phuc_tap]
+    concepts: [vong_lap, de_quy, do_phuc_tap, dieu_kien_dung]
     detected_by: [judge, custom_rule]
     hint: Chương trình chạy quá thời gian cho phép. Hãy kiểm tra điều kiện dừng và biến đếm của vòng lặp, hoặc giảm độ phức tạp thuật toán.
   - code: UNCLASSIFIED
