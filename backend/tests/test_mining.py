@@ -11,8 +11,9 @@ from backend.app.mining.apriori import (
     frequent_itemsets,
     prune_redundant,
 )
+from backend.app.mining.generate import dedupe
 from backend.app.mining.mine import code_features, mine, predict, scores, transaction
-from backend.app.mining.mutate import OPERATORS, pair_mutants, single_mutants
+from backend.app.mining.mutate import OPERATORS, Mutant, pair_mutants, single_mutants
 
 SOLUTIONS = sorted((ROOT / "data" / "problems").glob("*/solution.c"))
 
@@ -125,3 +126,20 @@ def test_suppress_rules_remove_cascading_warnings():
     # mã không bao giờ có nhãn (không cài được) thì không được học thành "luôn báo sai"
     t = transaction(record("RE", ["CONST_CONDITION"], ["NULL_DEREF"]), label_vocab=vocab)
     assert "fp=CONST_CONDITION" not in t
+
+
+def test_dedupe_keeps_shortest_explanation():
+    # free sớm rồi xoá free cho cùng đoạn code với chỉ xoá free: nhãn đúng là MEM_LEAK
+    pair = Mutant(
+        "int *a = malloc(4);", ("DANGLING_PTR", "MEM_LEAK"), ("early_free@11", "drop_free@10")
+    )
+    single = Mutant("int *a = malloc(4);", ("MEM_LEAK",), ("drop_free@11",))
+    other = Mutant("int x;", ("UNINIT_VAR",), ("drop_init@3",))
+    assert dedupe([pair, single, other]) == [single, other]
+
+
+def test_benchmark_ids_are_unique():
+    import json
+
+    ids = [json.loads(line)["id"] for line in (ROOT / "data/mined/mutants.jsonl").open()]
+    assert len(ids) == len(set(ids))

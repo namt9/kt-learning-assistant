@@ -194,3 +194,58 @@ def test_hybrid_prompt_adapts_to_learning_style(catalog):
     agent(catalog, plain).diagnose(report(UNINIT), SOURCE, styles=[])
     assert "sơ đồ" in visual.calls[0]["user"] and "câu hỏi gợi mở" in visual.calls[0]["user"]
     assert "Cách trình bày" not in plain.calls[0]["user"]
+
+
+def _extra_reply(*extra):
+    return {
+        "summary": "s",
+        "items": [{"bug_pattern": "UNINIT_VAR", "explanation": "e", "fix_hint": "f"}],
+        "extra": [
+            {"bug_pattern": c, "line": ln, "explanation": f"thêm {c}", "fix_hint": "h"}
+            for c, ln in extra
+        ],
+    }
+
+
+def test_hybrid_keeps_llm_extra_bug_with_valid_line(catalog):
+    llm = FakeLLM(reply=_extra_reply(("OFF_BY_ONE", 3)))
+    d = agent(catalog, llm).diagnose(report(UNINIT[:1]), SOURCE)
+    assert [it.bug_pattern for it in d.items] == ["UNINIT_VAR", "OFF_BY_ONE"]
+    extra = next(f for f in d.findings if f.bug_pattern == "OFF_BY_ONE")
+    assert extra.source == "llm" and extra.line == 3 and extra.confidence < 1
+    assert d.items[1].actions == ["PA_OFF_BY_ONE"]  # tri thức sư phạm lấy từ KG
+    schema = llm.calls[0]["schema"]["properties"]
+    assert "UNINIT_VAR" not in schema["extra"]["items"]["properties"]["bug_pattern"]["enum"]
+    assert any("chưa kiểm chứng" in n for n in d.notes)
+
+
+def test_hybrid_rejects_unverifiable_extras(catalog):
+    sup = Finding(bug_pattern="MEM_LEAK", source="asan", line=2, message="leak",
+                  suppressed_by="MR001")  # fmt: skip
+    llm = FakeLLM(reply=_extra_reply(("OFF_BY_ONE", 0), ("INFINITE_LOOP", 99), ("MEM_LEAK", 2),
+                                     ("KHONG_CO", 2)))  # fmt: skip
+    d = agent(catalog, llm).diagnose(report([UNINIT[0], sup]), SOURCE)
+    assert [it.bug_pattern for it in d.items] == ["UNINIT_VAR"]
+    # thiếu dòng, dòng không tồn tại, mã luật đã xác định là hệ quả, mã ngoài danh mục
+    assert d.rejected == ["OFF_BY_ONE", "INFINITE_LOOP", "MEM_LEAK", "KHONG_CO"]
+    enum = llm.calls[0]["schema"]["properties"]["extra"]["items"]["properties"]["bug_pattern"]
+    assert "MEM_LEAK" not in enum["enum"]
+
+
+def test_hybrid_no_extras_when_tests_pass(catalog):
+    llm = FakeLLM(reply=_extra_reply(("OFF_BY_ONE", 3)))
+    d = agent(catalog, llm).diagnose(report(UNINIT[:1], Verdict.AC), SOURCE)
+    assert "extra" not in llm.calls[0]["schema"]["properties"]
+    assert [it.bug_pattern for it in d.items] == ["UNINIT_VAR"]
+    assert agent(catalog, llm).diagnose(report([], Verdict.AC), SOURCE).items == []
+    assert len(llm.calls) == 1  # bài đạt, không có cảnh báo: không gọi LLM
+
+
+def test_hybrid_asks_llm_when_tools_find_nothing_but_tests_fail(catalog):
+    llm = FakeLLM(reply={"summary": "s", "extra": [
+        {"bug_pattern": "OFF_BY_ONE", "line": 3, "explanation": "e", "fix_hint": "f"}]})  # fmt: skip
+    d = agent(catalog, llm).diagnose(report([]), SOURCE)
+    assert d.mode == DiagnosisMode.HYBRID and [it.bug_pattern for it in d.items] == ["OFF_BY_ONE"]
+    assert "items" not in llm.calls[0]["schema"]["properties"]  # không có lỗi đã kiểm chứng
+    failed = agent(catalog, FakeLLM(error="mất mạng")).diagnose(report([]), SOURCE)
+    assert failed.mode == DiagnosisMode.RULE and failed.items == []

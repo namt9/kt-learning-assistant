@@ -1,0 +1,6 @@
+id: P009
+title: Hoán đổi qua con trỏ
+language: [c, cpp]
+time_limit_s: 1
+memory_mb: 64
+concepts: [con_tro, truyen_tham_chieu, ham]

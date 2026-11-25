@@ -1,4 +1,13 @@
+# Chạy toàn bộ hệ thống (chạy lệnh từ thư mục gốc repo):
+#   docker compose up -d --build        -> http://localhost:8000 (v1), /v0, /kg-viewer
+# Khoá LLM đọc từ .env (xem .env.example). Không có khoá thì chẩn đoán lùi về luật + KG.
 services:
+  # Chỉ để build image kt-sandbox (chạy code sinh viên); container chạy xong là thoát.
+  sandbox:
+    build: ./sandbox
+    image: kt-sandbox
+    command: ["true"]
+
   neo4j:
     image: neo4j:5
     ports:
@@ -8,6 +17,38 @@ services:
       NEO4J_AUTH: ${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-change-me}
     volumes:
       - neo4j_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u \"$${NEO4J_AUTH%%/*}\" -p \"$${NEO4J_AUTH#*/}\" 'RETURN 1' >/dev/null"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 10s
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      OLLAMA_URL: http://ollama:11434
+      SANDBOX_MODE: docker
+      SANDBOX_IMAGE: kt-sandbox
+      DB_PATH: /var/lib/tutor/app.db
+      # Backend gọi `docker run -v <thư mục>:/work` trên Docker của máy chủ, nên thư mục làm việc
+      # phải có CÙNG đường dẫn trong container và trên máy chủ (Docker Desktop: phải nằm dưới /home).
+      WORK_DIR: ${PWD}/.sandbox_work
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PWD}/.sandbox_work:${PWD}/.sandbox_work
+      - app_data:/var/lib/tutor
+    depends_on:
+      sandbox:
+        condition: service_completed_successfully
+      neo4j:
+        condition: service_healthy
 
   # LLM local dự phòng, chỉ chạy khi gọi: docker compose --profile ollama up -d
   # Tải model lần đầu: docker compose exec ollama ollama pull qwen2.5:7b-instruct
@@ -21,4 +62,5 @@ services:
 
 volumes:
   neo4j_data:
+  app_data:
   ollama_data:

@@ -47,3 +47,63 @@ def test_int_division():
 def test_malloc_without_free():
     assert ("MEM_LEAK", 1) in found("int *p = malloc(4);\nint main(void){ return 0; }")
     assert not found("int *p;\nvoid f(void){ p = malloc(4); free(p); }")
+
+
+def test_div_by_zero_literal_only():
+    src = "int f(int a, int b){\n int x = a / 0;\n int y = a % (0);\n double z = a / 0.0;\n x /= 0;\n return a / b + a / 0x10 + (int)(a / 0.5) + b % 10;\n}"
+    assert found(src) == {
+        ("DIV_BY_ZERO", 2),
+        ("DIV_BY_ZERO", 3),
+        ("DIV_BY_ZERO", 4),
+        ("DIV_BY_ZERO", 5),
+    }
+
+
+def test_const_condition_unsigned_and_self_compare():
+    src = """void f(int n, int a[]) {
+    for (unsigned i = n - 1; i >= 0; i--) a[i] = 0;
+    size_t k = n;
+    while (k >= 0) k--;
+    if (n == n) a[0] = 1;
+    for (int j = n - 1; j >= 0; j--) a[j] = 0;
+    if (a[n] == a[0] || n < a[n] || n >= 0) a[1] = 2;
+}"""
+    assert found(src) == {("CONST_CONDITION", 2), ("CONST_CONDITION", 4), ("CONST_CONDITION", 5)}
+
+
+def test_loop_without_exit():
+    src = """int f(int n) {
+    while (1) { n++; }
+    for (;;) n--;
+    while (1) { if (n > 3) break; n++; }
+    for (;;) { if (n == 0) return n; n--; }
+    do { n++; } while (1);
+    while (true) { exit(0); }
+}"""
+    assert found(src) == {("INFINITE_LOOP", 2), ("INFINITE_LOOP", 3)}
+
+
+def test_return_local_address_but_not_static_or_heap():
+    src = """char *dao(char *s) {
+    char kq[100];
+    return kq;
+}
+int *tro(void) {
+    int x = 5;
+    return &x;
+}
+char *ok1(void) {
+    static char buf[10];
+    return buf;
+}
+int *ok2(int n) {
+    int *p = malloc(n * sizeof(int));
+    return p;
+}
+char *ok3(char *s) {
+    return s;
+}"""
+    assert {x for x in found(src) if x[0] == "DANGLING_PTR"} == {
+        ("DANGLING_PTR", 3),
+        ("DANGLING_PTR", 7),
+    }

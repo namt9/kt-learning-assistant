@@ -49,6 +49,19 @@ def _record(judge: Judge, problem, m: Mutant) -> dict:
     }
 
 
+def dedupe(mutants: list[Mutant]) -> list[Mutant]:
+    """Bỏ biến thể trùng mã nguồn, giữ cách cài lỗi ít thao tác nhất.
+
+    Hai cách cài khác nhau có thể ra cùng một đoạn code (ví dụ free sớm rồi xoá free = chỉ xoá
+    free). Nhãn đúng của đoạn code đó là lời giải thích ngắn nhất; nhãn của cách dài hơn là sai.
+    """
+    best: dict[str, Mutant] = {}
+    for m in mutants:
+        if m.source not in best or len(m.ops) < len(best[m.source].ops):
+            best[m.source] = m
+    return list(best.values())
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--out", type=Path, default=Path("data/mined/mutants.jsonl"))
@@ -67,7 +80,7 @@ def main(argv=None) -> int:
         problem = problems.get(summary.id)
         solution = s.problems_dir.glob(f"{summary.id}_*/solution.c")
         src = next(solution).read_text(encoding="utf-8")
-        for m in single_mutants(src) + pair_mutants(src, args.pairs, args.seed):
+        for m in dedupe(single_mutants(src) + pair_mutants(src, args.pairs, args.seed)):
             jobs.append((problem, m))
     print(f"Chấm {len(jobs)} biến thể ({s.sandbox_mode})...", file=sys.stderr)
 

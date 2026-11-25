@@ -5,9 +5,12 @@ Ba chế độ, cũng là ba cấu hình đem so sánh trong phần thực nghi�
 - rule     : luật (gcc/cppcheck/sanitizer/luật tự viết) xác định lỗi, giải thích lấy từ gợi ý
              cố định và hành động sư phạm trong KG. Không gọi LLM.
 - llm_only : LLM đọc code và kết quả chấm, tự tìm lỗi rồi giải thích. Không dùng luật, KG.
-- hybrid   : luật xác định lỗi (nguồn sự thật), KG cấp khái niệm + cách sửa, LLM chỉ được
-             giải thích đúng các lỗi đó. Mã lỗi ngoài danh sách bị chặn bởi JSON schema
-             và bị lọc lại trong code (phòng model local không tuân thủ schema).
+- hybrid   : lỗi do công cụ tìm thấy (đã qua luật khử nhiễu) là lỗi đã kiểm chứng; KG cấp
+             khái niệm + cách sửa, LLM giải thích đúng các lỗi đó. Khi bài chưa đạt test, LLM
+             được đề xuất thêm lỗi công cụ không bắt được (sai biên, sai công thức...), nhưng
+             chỉ được giữ nếu: mã nằm trong danh mục của KG, chỉ đúng một dòng có thật, và
+             không phải mã mà luật khai phá đã xác định là hệ quả của lỗi khác. Mã sai chỗ bị
+             chặn bởi JSON schema và bị lọc lại trong code (phòng model không tuân thủ schema).
 
 LLM lỗi hoặc chưa cấu hình thì hybrid tự lùi về rule, kèm ghi chú trong `notes`.
 """
@@ -47,9 +50,13 @@ Yêu cầu:
 - Gợi ý hướng sửa nhưng KHÔNG viết lại lời giải hoàn chỉnh: sinh viên cần tự sửa để học.
 - Không bịa thêm thông tin về kết quả chạy ngoài những gì được cung cấp."""
 
-HYBRID_TASK = """Hệ thống luật đã xác định CHÍNH XÁC các lỗi dưới đây. \
-Chỉ giải thích những lỗi này, đúng mã lỗi đã cho, không thêm lỗi khác \
-(lỗi do luật phát hiện đã được kiểm chứng bằng công cụ, còn lỗi bạn tự đoán thì chưa)."""
+HYBRID_TASK = """Các lỗi dưới đây đã được công cụ kiểm chứng: giải thích từng lỗi trong `items`, \
+đúng mã lỗi đã cho."""
+
+HYBRID_EXTRA_TASK = """Bài làm chưa đạt test. Nếu đọc code thấy lỗi khác làm bài sai mà công cụ \
+chưa phát hiện (ví dụ sai biên vòng lặp, sai điều kiện, sai công thức), ghi vào `extra`: chọn mã \
+gần nhất trong danh mục bên dưới và BẮT BUỘC ghi đúng số dòng chứa lỗi. Chỉ thêm khi chắc chắn \
+lỗi đó làm chương trình sai; không thêm góp ý về phong cách. Không có thì để `extra` rỗng."""
 
 # Cách trình bày theo phong cách học (Felder–Silverman rút gọn)
 STYLE_GUIDE = {
@@ -153,7 +160,8 @@ class DiagnosisAgent:
         ):
             notes.append(f"Bỏ qua cảnh báo {code}: là hệ quả của lỗi gốc khác (luật {rule}).")
         kn = self._knowledge(list(groups), styles, notes)
-        if not groups:
+        failing = report.grading.verdict != Verdict.AC
+        if not groups and not (mode == DiagnosisMode.HYBRID and failing):
             return self._no_findings(report, mode, notes)
 
         if mode == DiagnosisMode.HYBRID:
@@ -161,6 +169,8 @@ class DiagnosisAgent:
                 return self._hybrid(report, source, problem, groups, kn, notes, styles)
             except LLMError as e:
                 notes.append(f"LLM không trả lời được ({e}): trả về giải thích bằng luật.")
+            if not groups:
+                return self._no_findings(report, DiagnosisMode.RULE, notes)
         return self._rule(report, groups, kn, notes)
 
     def _items_base(self, groups, kn) -> dict[str, DiagnosisItem]:
@@ -215,6 +225,11 @@ class DiagnosisAgent:
 
     def _hybrid(self, report, source, problem, groups, kn, notes, styles=()) -> Diagnosis:
         base = self._items_base(groups, kn)
+        suppressed = {f.bug_pattern for f in report.findings if f.suppressed_by} - set(groups)
+        failing = report.grading.verdict != Verdict.AC
+        extra_codes = (
+            sorted(set(self.catalog.codes()) - set(groups) - suppressed) if failing else []
+        )
         lines = []
         for code, fs in groups.items():
             p = self.catalog.get(code)
@@ -228,14 +243,17 @@ class DiagnosisAgent:
                 f"  hành động sư phạm trong KG: {acts or '(chưa có)'}"
             )
         guide = "\n".join(f"- {STYLE_GUIDE[s]}" for s in styles if s in STYLE_GUIDE)
-        user = (
-            f"{self._context(report, source, problem)}\n\n"
-            + (f"## Cách trình bày phù hợp với sinh viên này\n{guide}\n\n" if guide else "")
-            + f"## Lỗi đã xác định\n{HYBRID_TASK}\n"
-            + "\n".join(lines)
+        user = f"{self._context(report, source, problem)}\n\n" + (
+            f"## Cách trình bày phù hợp với sinh viên này\n{guide}\n\n" if guide else ""
         )
-        schema = _schema(list(groups), with_line=False)
-        res = self.llm.generate(SYSTEM_PROMPT, user, schema)
+        if groups:
+            user += f"## Lỗi đã xác định\n{HYBRID_TASK}\n" + "\n".join(lines) + "\n\n"
+        else:
+            user += "## Lỗi đã xác định\nCông cụ chưa xác định được lỗi nào.\n\n"
+        if extra_codes:
+            catalog = "\n".join(f"- {c}: {self.catalog.get(c).name}" for c in extra_codes)
+            user += f"## Lỗi công cụ chưa phát hiện\n{HYBRID_EXTRA_TASK}\n{catalog}\n"
+        res = self.llm.generate(SYSTEM_PROMPT, user, _hybrid_schema(list(groups), extra_codes))
         notes += [f"Đã lùi sang provider sau vì: {a}" for a in res.attempts]
 
         rejected = []
@@ -246,9 +264,50 @@ class DiagnosisAgent:
                 continue
             base[code].explanation = it.get("explanation") or base[code].explanation
             base[code].fix_hint = it.get("fix_hint") or base[code].fix_hint
+
+        # lỗi LLM đề xuất thêm: chỉ giữ khi qua được các điều kiện kiểm chứng
+        n_lines = len(source.splitlines())
+        extra: dict[str, dict] = {}
+        for it in res.data.get("extra", []):
+            code, line = it.get("bug_pattern"), it.get("line")
+            if code in base or code in extra:
+                continue
+            if code not in extra_codes or not isinstance(line, int) or not 1 <= line <= n_lines:
+                rejected.append(str(code))
+                continue
+            extra[code] = it
+        findings = list(report.findings)
+        if extra:
+            kx = self._knowledge(list(extra), styles, notes)
+            for code, it in extra.items():
+                acts = kx["actions"][code]
+                findings.append(
+                    Finding(
+                        bug_pattern=code,
+                        source="llm",
+                        line=it["line"],
+                        message=it.get("explanation", ""),
+                        confidence=0.5,
+                    )
+                )
+                base[code] = DiagnosisItem(
+                    bug_pattern=code,
+                    lines=[it["line"]],
+                    explanation=it.get("explanation") or self.catalog.get(code).hint,
+                    fix_hint=it.get("fix_hint") or (acts[0].title if acts else ""),
+                    concepts=kx["concepts"][code],
+                    actions=[a.id for a in acts],
+                )
+            notes.append(
+                "LLM phát hiện thêm (công cụ chưa kiểm chứng): " + ", ".join(sorted(extra))
+            )
+        if not base:
+            d = self._no_findings(report, DiagnosisMode.HYBRID, notes)
+            return d.model_copy(update={"llm_provider": res.provider, "rejected": rejected})
         summary = res.data.get("summary") or f"Phát hiện {len(base)} loại lỗi."
-        return self._finish(report, list(base.values()), kn, DiagnosisMode.HYBRID, notes,
-                            summary, res.provider, rejected)  # fmt: skip
+        d = self._finish(report, list(base.values()), kn, DiagnosisMode.HYBRID, notes,
+                         summary, res.provider, rejected)  # fmt: skip
+        return d.model_copy(update={"findings": findings})
 
     def _llm_only(self, report, source, problem, notes) -> Diagnosis:
         if self.llm is None:
@@ -282,6 +341,21 @@ class DiagnosisAgent:
             rejected=rejected,
             notes=notes + [f"Đã lùi sang provider sau vì: {a}" for a in res.attempts],
         )
+
+
+def _hybrid_schema(verified: list[str], extra_codes: list[str]) -> dict:
+    """Hybrid: `items` giải thích lỗi đã kiểm chứng; `extra` (khi bài chưa đạt) là lỗi LLM
+    đề xuất thêm, bắt buộc có số dòng. Bỏ hẳn mảng nào không có mã hợp lệ (enum rỗng)."""
+    schema = _schema(verified, with_line=False)
+    if not verified:
+        del schema["properties"]["items"]
+        schema["required"].remove("items")
+    if extra_codes:
+        extra = _schema(extra_codes, with_line=True)["properties"]["items"]
+        extra["description"] = "Lỗi công cụ chưa phát hiện; rỗng nếu không chắc chắn"
+        schema["properties"]["extra"] = extra
+        schema["required"].append("extra")
+    return schema
 
 
 def _schema(codes: list[str], with_line: bool) -> dict:

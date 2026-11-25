@@ -3,11 +3,16 @@
 Đầu ra bị ràng buộc bằng structured outputs (`output_config.format`), nên luôn là JSON
 đúng schema. Bật fallback phía server: nếu model từ chối vì bộ lọc an toàn, API tự chạy
 lại yêu cầu trên model dự phòng.
+
+Chạy qua Microsoft Foundry (Azure) khi có ANTHROPIC_FOUNDRY_RESOURCE hoặc
+ANTHROPIC_FOUNDRY_BASE_URL (khoá: ANTHROPIC_FOUNDRY_API_KEY; CLAUDE_MODEL là tên deployment).
+Foundry không hỗ trợ fallback phía server nên bỏ tham số này.
 """
 
 from __future__ import annotations
 
 import json
+import os
 
 from .base import LLMError
 
@@ -19,27 +24,37 @@ class ClaudeProvider:
         import anthropic  # chỉ cần cài khi thật sự dùng Claude
 
         self._anthropic = anthropic
-        # Đọc khoá từ ANTHROPIC_API_KEY (hoặc profile `ant auth login`)
-        self.client = anthropic.Anthropic(timeout=timeout_s, max_retries=2)
+        self.foundry = bool(
+            os.getenv("ANTHROPIC_FOUNDRY_RESOURCE") or os.getenv("ANTHROPIC_FOUNDRY_BASE_URL")
+        )
+        if self.foundry:
+            self.client = anthropic.AnthropicFoundry(timeout=timeout_s, max_retries=2)
+        else:
+            # Đọc khoá từ ANTHROPIC_API_KEY (hoặc profile `ant auth login`)
+            self.client = anthropic.Anthropic(timeout=timeout_s, max_retries=2)
         self.model = model
         self.effort = effort
         self.name = f"claude:{model}"
 
+    def _request(self, system: str, user: str, schema: dict) -> dict:
+        req = {
+            "model": self.model,
+            "max_tokens": 16000,
+            "system": system,
+            "messages": [{"role": "user", "content": user}],
+            "output_config": {
+                "effort": self.effort,
+                "format": {"type": "json_schema", "schema": schema},
+            },
+        }
+        if not self.foundry:
+            req |= {"betas": ["server-side-fallback-2026-07-01"], "fallbacks": "default"}
+        return req
+
     def generate_json(self, system: str, user: str, schema: dict) -> dict:
         a = self._anthropic
         try:
-            resp = self.client.beta.messages.create(
-                model=self.model,
-                max_tokens=16000,
-                system=system,
-                messages=[{"role": "user", "content": user}],
-                output_config={
-                    "effort": self.effort,
-                    "format": {"type": "json_schema", "schema": schema},
-                },
-                betas=["server-side-fallback-2026-07-01"],
-                fallbacks="default",
-            )
+            resp = self.client.beta.messages.create(**self._request(system, user, schema))
         except a.AuthenticationError:
             raise LLMError("sai hoặc thiếu ANTHROPIC_API_KEY") from None
         except a.RateLimitError:

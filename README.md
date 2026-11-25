@@ -33,15 +33,29 @@ Hệ thống gồm hai phiên bản:
 Luồng xử lý một lần nộp bài (`backend/app/judge/judge.py`):
 
 1. Biên dịch bằng `gcc -std=c11` / `g++ -std=c++17` với `-Wall -Wextra`. Cảnh báo và lỗi được ánh xạ sang mã Bug Pattern.
-2. Phân tích tĩnh: `cppcheck` (nếu có) cộng với 6 luật tự viết (`backend/app/rules/custom.py`): thiếu `&` trong scanf, `=` trong điều kiện, `;` thừa sau if/for/while, lệch biên vòng lặp, chia nguyên gán cho số thực, malloc không free.
+2. Phân tích tĩnh: `cppcheck` (nếu có) cộng với 10 luật tự viết (`backend/app/rules/custom.py`): thiếu `&` trong scanf, `=` trong điều kiện, `;` thừa sau if/for/while, lệch biên vòng lặp, chia nguyên gán cho số thực, malloc không free, chia cho hằng 0, điều kiện luôn đúng/sai (số không dấu `>= 0`, so biến với chính nó), `while (1)` không có lối thoát, trả địa chỉ biến cục bộ.
 3. Chạy test trong sandbox, trả về AC / WA / CE / RE / TLE / MLE và điểm theo tỉ lệ test đạt.
 4. Biên dịch lại với AddressSanitizer + UBSan và chạy lại tối đa 3 test, ưu tiên test sai: phát hiện tràn mảng, rò rỉ bộ nhớ, dùng con trỏ đã free, NULL, tràn số...
 5. Gộp và khử trùng lặp lỗi, gắn câu gợi ý cố định từ `knowledge/bug_patterns.yaml`, lưu log vào SQLite (bảng `submissions` và `findings`).
 
 API (xem đầy đủ tại `/docs`): `GET /problems`, `GET /problems/{id}`, `POST /submit`,
-`GET /submissions/{id}`, `GET /students/{id}/submissions`. Giao diện v0 nằm ở `/`.
+`GET /submissions/{id}`, `GET /students/{id}/submissions`. Giao diện v0 nằm ở `/v0`, v1 ở `/`.
 
-## Chạy thử
+## Chạy bằng Docker Compose (dùng khi demo)
+
+Chỉ cần Docker. Chạy từ thư mục gốc repo:
+
+```bash
+cp .env.example .env            # điền khoá LLM (không có khoá thì chẩn đoán lùi về luật + KG)
+docker compose up -d --build    # build kt-sandbox + backend, chạy Neo4j, nạp KG
+```
+
+- v1 (trợ lý): http://localhost:8000 · v0: http://localhost:8000/v0 · KG: http://localhost:8000/kg-viewer · API: http://localhost:8000/docs
+- Backend gọi Docker của máy chủ qua `/var/run/docker.sock` để chạy từng lần nộp trong container `kt-sandbox` (tắt mạng, giới hạn RAM/CPU/PID). Thư mục `.sandbox_work/` được mount cùng đường dẫn vào container, nên phải chạy lệnh từ thư mục repo (Docker Desktop: repo phải nằm dưới `/home`).
+- Log nộp bài nằm trong volume `app_data`, tách khỏi `app.db` khi chạy trực tiếp.
+- LLM local dự phòng: `docker compose --profile ollama up -d` rồi đặt `LLM_PROVIDERS=claude,ollama`.
+
+## Chạy trực tiếp (phát triển)
 
 Yêu cầu: Python 3.10+, gcc/g++, Docker (cho chế độ an toàn).
 
